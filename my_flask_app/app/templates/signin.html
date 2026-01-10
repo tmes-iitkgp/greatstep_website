@@ -1,21 +1,53 @@
 {% extends "base.html" %}
 
-{% block title %}Sign In - Great Step{% endblock %}
+{% block title %}Sign In - TMES{% endblock %}
 
 {% block content %}
-<div class="signin">
-    <h1>Sign In</h1>
-    <form method="POST" action="{{ url_for('signin') }}">
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<form class="auth-form-card" method="POST" action="{{ url_for('signin') }}">
+    <div class="auth-header">
+        <p>Sign In</p>
+    </div>
+    <div class="auth-body">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="eg: himanshu@gmail.com" required>
         </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+        
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="******************" required>
+            <p class="form-hint" id="password-hint">Please choose a password.</p>
         </div>
-        <button type="submit">Sign In</button>
-    </form>
-    <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a></p>
-</div>
+        
+        <div class="auth-actions">
+            <button type="submit" class="auth-btn-primary">Sign In</button>
+            <a href="{{ url_for('reset_password') }}" class="auth-link-blue">Forgot Password?</a>
+        </div>
+        
+        <p class="auth-footer-text">
+            New to TMES? <a href="{{ url_for('signup') }}" class="auth-link-blue font-bold">Sign Up</a>
+        </p>
+    </div>
+</form>
+
+<p class="auth-copyright">©2025 TMES IIT Kgp. All rights reserved.</p>
+
+<script>
+// Hide password hint when password is entered
+document.getElementById('password').addEventListener('input', function() {
+    const hint = document.getElementById('password-hint');
+    hint.style.display = this.value ? 'none' : 'block';
+});
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            showToast('{{ message }}', '{{ category }}');
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+</script>
 {% endblock %}

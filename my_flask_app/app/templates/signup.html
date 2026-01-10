@@ -1,29 +1,100 @@
 {% extends "base.html" %}
 
-{% block title %}Sign Up - Great Step{% endblock %}
+{% block title %}Sign Up - TMES{% endblock %}
 
 {% block content %}
-<div class="signup">
-    <h1>Sign Up</h1>
-    <form method="POST" action="{{ url_for('signup') }}">
-        <div>
-            <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" name="firstName" required>
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<form class="auth-form-card" method="POST" action="{{ url_for('signup') }}">
+    <div class="auth-header">
+        <p>Sign Up</p>
+    </div>
+    <div class="auth-body">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="abc@gmail.com" required>
+            <p class="form-error" id="email-error" style="display: none;">Enter a valid email</p>
         </div>
-        <div>
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" name="lastName" required>
+        
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="********" required>
+            <p class="form-error" id="password-error" style="display: none;">
+                Password should have atleast 6 characters<br>One uppercase, one lowercase and one number
+            </p>
         </div>
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+        
+        <div class="form-group">
+            <label for="cpassword">Confirm Password</label>
+            <input type="password" id="cpassword" name="cpassword" placeholder="********" required>
+            <p class="form-error" id="cpassword-error" style="display: none;">Password doesn't match</p>
         </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+        
+        <div class="form-group">
+            <label for="referral">Referral Code(Optional)</label>
+            <input type="text" id="referral" name="referral" placeholder="GS23-RAJ">
         </div>
-        <button type="submit">Sign Up</button>
-    </form>
-    <p>Already have an account? <a href="{{ url_for('signin') }}">Sign In</a></p>
-</div>
+        
+        <div class="auth-actions-end">
+            <button type="submit" class="auth-btn-next">Next</button>
+        </div>
+        
+        <p class="auth-footer-text">
+            Already Registered? <a href="{{ url_for('signin') }}" class="auth-link-blue font-bold">Sign In</a>
+        </p>
+    </div>
+</form>
+
+<p class="auth-copyright">©2025 TMES IIT Kgp. All rights reserved.</p>
+
+<script>
+// Password validation
+document.getElementById('password').addEventListener('input', function() {
+    const password = this.value;
+    const error = document.getElementById('password-error');
+    const hasMin6 = password.length >= 6;
+    const hasUpper = /[A-Z]/.test(password);
+    const hasLower = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    
+    if (password && !(hasMin6 && hasUpper && hasLower && hasNumber)) {
+        error.style.display = 'block';
+    } else {
+        error.style.display = 'none';
+    }
+});
+
+// Confirm password validation
+document.getElementById('cpassword').addEventListener('input', function() {
+    const password = document.getElementById('password').value;
+    const error = document.getElementById('cpassword-error');
+    
+    if (this.value && this.value !== password) {
+        error.style.display = 'block';
+    } else {
+        error.style.display = 'none';
+    }
+});
+
+// Email validation
+document.getElementById('email').addEventListener('blur', function() {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const error = document.getElementById('email-error');
+    
+    if (this.value && !emailRegex.test(this.value)) {
+        error.style.display = 'block';
+    } else {
+        error.style.display = 'none';
+    }
+});
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            showToast('{{ message }}', '{{ category }}');
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+</script>
 {% endblock %}

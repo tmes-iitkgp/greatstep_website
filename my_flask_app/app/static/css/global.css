@@ -1,0 +1,286 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+/* CSS Variables - Using React's theme1 (dark theme) as default */
+:root {
+    --font-default: 'Barlow', sans-serif;
+    --font-sz-p: 1.2rem;
+    
+    /* Gradients - Dark Theme */
+    --gradient-text: #77e1ac;
+    --gradient-tmes: #6D67E4;
+    --gradiant_nav: #0a1521;
+    
+    /* Colors - Dark Theme (theme1 from React) */
+    --color-pri: #000000;
+    --color-sec: #fff;
+    --color-bg: #0E2E50;
+    --color-text: #EFF5F5;
+    --color-subtext: #aa92ff;
+    --color-footer: #0E2E50;
+    --color-events: #001428;
+    --color-events-text: #87c1ff;
+    --color-about: #0d1b2a;
+    --color-about-text: #f0e1ff;
+    --color-about-cards: #001428;
+    --color-tmes: #0d1b2a;
+    --color-great: #0d1b2a;
+    --color-error: rgb(255, 255, 240);
+}
+
+/* Light theme (optional) */
+.light-theme {
+    --gradient-text: #77e1ac;
+    --gradient-tmes: #ffb765;
+    --gradiant_nav: #ffffff;
+    
+    --color-pri: #ffffff;
+    --color-sec: #000000;
+    --color-bg: #FAF7F0;
+    --color-text: #000000;
+    --color-subtext: rgb(8, 164, 167);
+    --color-footer: #0E2E50;
+    --color-events: #ffedf3;
+    --color-events-text: #F2789F;
+    --color-about: #EFFFFD;
+    --color-about-text: #68e1d3;
+    --color-about-cards: #defffb;
+    --color-tmes: #fff9f1;
+    --color-great: #E1FFEE;
+    --color-error: rgb(255, 255, 240);
+}
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    font-family: var(--font-default);
+    font-weight: normal !important;
+}
+
+*:before,
+*:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-default);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-default);
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--color-text);
+}
+
+p {
+    margin-bottom: 15px;
+    color: var(--color-text);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: var(--color-subtext);
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+ul, ol {
+    padding-left: 20px;
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 12px 30px;
+    font-size: 16px;
+    line-height: 1.5;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.btn-primary {
+    color: var(--white);
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover {
+    color: var(--white);
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow);
+}
+
+.btn-secondary {
+    color: var(--white);
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.btn-secondary:hover {
+    color: var(--white);
+    background-color: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow);
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    background-color: transparent;
+    border-color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+    color: var(--white);
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-outline-secondary {
+    color: var(--secondary);
+    background-color: transparent;
+    border-color: var(--secondary);
+}
+
+.btn-outline-secondary:hover {
+    color: var(--white);
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+/* Form Styles */
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--dark);
+    background-color: var(--white);
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    color: var(--dark);
+    background-color: var(--white);
+    border-color: var(--primary);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Card Styles */
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: var(--white);
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 20px;
+}
+
+.card-title {
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.card-text {
+    color: var(--gray);
+}
+
+/* Section Styles */
+.section {
+    padding: 80px 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-title h2 {
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 20px;
+}
+
+.section-title p {
+    font-size: 18px;
+    color: var(--gray);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .section {
+        padding: 60px 0;
+    }
+
+    .section-title h2 {
+        font-size: 30px;
+    }
+
+    .section-title {
+        margin-bottom: 40px;
+    }
+
+    .btn {
+        padding: 10px 25px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 576px) {
+    .section-title h2 {
+        font-size: 25px;
+    }
+
+    .section-title p {
+        font-size: 16px;
+    }
+}

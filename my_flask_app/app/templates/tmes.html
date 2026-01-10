@@ -3,8 +3,219 @@
 {% block title %}TMES - Great Step{% endblock %}
 
 {% block content %}
-<section class="tmes">
-    <h1>TMES</h1>
-    <p>Technology Mining Engineering Society.</p>
-</section>
+<div id="tmes">
+    <!-- Header Section -->
+    <section class="header section__padding">
+        <div class="header-content">
+            <h1 class="text__tmes">WELCOME TO TMES</h1>
+            <p>
+                Technology Mining Engineering Society (TMES) aims at bringing a
+                closer association among the students and faculty members in the
+                department. It has initiated Social Cultural and Sports Events,
+                which brings them together for a closer interaction.
+            </p>
+        </div>
+
+        <div class="header-image">
+            <img src="{{ url_for('static', filename='images/tmes_home.jpg') }}" 
+                 alt="TMES" />
+        </div>
+    </section>
+
+    <!-- TMES Info Section (Prof component) -->
+    <section class="tmes_info_ section__padding">
+        <div class="tmes_info_-image">
+            <img src="{{ url_for('static', filename='images/tmes_home2.jpg') }}" alt="TMES Events" />
+        </div>
+        <div class="tmes_info_-content">
+            <h4>Some of the noted events are:</h4>
+            <ul>
+                <li>Freshers for the newly enrolled students</li>
+                <li>GREAT STEP - National level techno-management fest</li>
+                <li>Teacher Day - appreciation for the teaching faculty</li>
+                <li>Picnic</li>
+                <li>Mine visits for the enrolled students</li>
+                <li>Farewell for the outgoing students</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- TMES Carousel Section (Swiper_Scroll component) -->
+    <section class="carousel2">
+        <div class="swiper-container">
+            <div class="swiper-wrapper" id="tmes-carousel-track">
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/assets/1.jpg') }}" alt="TMES Event 1" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/assets/2.jpg') }}" alt="TMES Event 2" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/assets/3.jpg') }}" alt="TMES Event 3" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/assets/4.jpg') }}" alt="TMES Event 4" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/assets/5.png') }}" alt="TMES Event 5" />
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // TMES carousel with seamless infinite loop and drag functionality
+    const tmesTrack = document.getElementById('tmes-carousel-track');
+    if (tmesTrack) {
+        const slides = Array.from(tmesTrack.children);
+        const slideCount = slides.length;
+        let isDragging = false;
+        let startX = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+        let animationID;
+        let autoScrollInterval;
+        
+        // Clone slides at beginning and end for seamless loop
+        slides.forEach(slide => {
+            const cloneEnd = slide.cloneNode(true);
+            tmesTrack.appendChild(cloneEnd);
+        });
+        slides.forEach(slide => {
+            const cloneStart = slide.cloneNode(true);
+            tmesTrack.insertBefore(cloneStart, tmesTrack.firstChild);
+        });
+        
+        // Get slide width after cloning
+        function getSlideWidth() {
+            return slides[0].offsetWidth + 20; // 20 is the gap
+        }
+        
+        // Start at the first "real" slide (after clones)
+        function initPosition() {
+            const slideWidth = getSlideWidth();
+            currentTranslate = -slideWidth * slideCount;
+            prevTranslate = currentTranslate;
+            tmesTrack.style.transform = `translateX(${currentTranslate}px)`;
+        }
+        
+        // Check and handle loop boundaries
+        function checkBounds() {
+            const slideWidth = getSlideWidth();
+            const minTranslate = -slideWidth * (slideCount * 2);
+            const maxTranslate = 0;
+            
+            if (currentTranslate <= minTranslate) {
+                currentTranslate += slideWidth * slideCount;
+                tmesTrack.style.transition = 'none';
+                tmesTrack.style.transform = `translateX(${currentTranslate}px)`;
+                tmesTrack.offsetHeight; // Force reflow
+            } else if (currentTranslate >= maxTranslate) {
+                currentTranslate -= slideWidth * slideCount;
+                tmesTrack.style.transition = 'none';
+                tmesTrack.style.transform = `translateX(${currentTranslate}px)`;
+                tmesTrack.offsetHeight; // Force reflow
+            }
+            prevTranslate = currentTranslate;
+        }
+        
+        // Step-wise autoscroll
+        function autoScroll() {
+            if (!isDragging) {
+                const slideWidth = getSlideWidth();
+                tmesTrack.style.transition = 'transform 0.5s ease-in-out';
+                currentTranslate -= slideWidth;
+                tmesTrack.style.transform = `translateX(${currentTranslate}px)`;
+                
+                setTimeout(() => {
+                    checkBounds();
+                }, 550);
+            }
+        }
+        
+        function startAutoScroll() {
+            autoScrollInterval = setInterval(autoScroll, 2500);
+        }
+        
+        function stopAutoScroll() {
+            clearInterval(autoScrollInterval);
+        }
+        
+        // Drag functionality
+        tmesTrack.style.cursor = 'grab';
+        
+        function dragStart(e) {
+            isDragging = true;
+            startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+            tmesTrack.style.cursor = 'grabbing';
+            tmesTrack.style.transition = 'none';
+            stopAutoScroll();
+            animationID = requestAnimationFrame(animation);
+        }
+        
+        function dragEnd() {
+            isDragging = false;
+            tmesTrack.style.cursor = 'grab';
+            cancelAnimationFrame(animationID);
+            
+            // Snap to nearest slide
+            const slideWidth = getSlideWidth();
+            const movedBy = currentTranslate - prevTranslate;
+            
+            if (Math.abs(movedBy) > slideWidth / 4) {
+                if (movedBy < 0) {
+                    currentTranslate = prevTranslate - slideWidth;
+                } else {
+                    currentTranslate = prevTranslate + slideWidth;
+                }
+            } else {
+                currentTranslate = prevTranslate;
+            }
+            
+            tmesTrack.style.transition = 'transform 0.3s ease-out';
+            tmesTrack.style.transform = `translateX(${currentTranslate}px)`;
+            prevTranslate = currentTranslate;
+            
+            setTimeout(() => {
+                checkBounds();
+                startAutoScroll();
+            }, 350);
+        }
+        
+        function dragMove(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+            currentTranslate = prevTranslate + currentX - startX;
+        }
+        
+        function animation() {
+            tmesTrack.style.transform = `translateX(${currentTranslate}px)`;
+            if (isDragging) requestAnimationFrame(animation);
+        }
+        
+        // Mouse events
+        tmesTrack.addEventListener('mousedown', dragStart);
+        tmesTrack.addEventListener('mouseup', dragEnd);
+        tmesTrack.addEventListener('mouseleave', dragEnd);
+        tmesTrack.addEventListener('mousemove', dragMove);
+        
+        // Touch events
+        tmesTrack.addEventListener('touchstart', dragStart);
+        tmesTrack.addEventListener('touchend', dragEnd);
+        tmesTrack.addEventListener('touchmove', dragMove);
+        
+        // Prevent image dragging
+        tmesTrack.querySelectorAll('img').forEach(img => {
+            img.addEventListener('dragstart', e => e.preventDefault());
+        });
+        
+        // Initialize
+        initPosition();
+        startAutoScroll();
+    }
+});
+</script>
 {% endblock %}

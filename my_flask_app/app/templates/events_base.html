@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Events - Great Step{% endblock %}
+
+{% block content %}
+<div class="events">
+    <div class="events_second">
+        <a href="{{ url_for('competitions') }}">
+            <div class="changebutton {% if active_tab == 'competitions' %}change-active{% endif %}" id="button-2">
+                <div id="slide"></div>
+                <span>Competitions</span>
+            </div>
+        </a>
+        <a href="{{ url_for('workshops') }}">
+            <div class="changebutton {% if active_tab == 'workshops' %}change-active{% endif %}" id="button-2">
+                <div id="slide"></div>
+                <span>Workshops</span>
+            </div>
+        </a>
+        <a href="{{ url_for('panel_discussion') }}">
+            <div class="changebutton {% if active_tab == 'panel_discussion' %}change-active{% endif %}" id="button-2">
+                <div id="slide"></div>
+                <span>Panel Discussion</span>
+            </div>
+        </a>
+    </div>
+    
+    {% block events_content %}{% endblock %}
+</div>
+{% endblock %}

@@ -1,0 +1,198 @@
+# Event data matching React's Offline_Comps.js
+EVENTS_DATA = {
+    "Enviro_CS": {
+        "name": "Enviro Case Study",
+        "image": "images/Events/enviro.jpg",
+        "info": [
+            "This is a case study competition where participants have to come up with a sophisticated and complete solution about environmental problems faced in mining industry.",
+            "It is a two phase event one is online and second offline. In online phase you will be given a problem statement on which you have to submit your paper on the same. After this shortlisted teams will be going in offline phase which is going to held at GREAT STEP IIT Kharagpur in which you will be having a debate/presentation/ question answer round on your problem statement.",
+            "It involves collecting and analyzing data from a specific region and use of this the information for betterment of our future.",
+            "This will be a very great opportunity for you all to test your techno-environmental skills by presentation yourself before the brightest people of our country.",
+        ],
+        "contact": "Amgoth Jithender Kumar Naik",
+        "phoneno": "+91 9154015089",
+        "prize": "₹25000",
+        "ps": "https://drive.google.com/file/d/12ajOciN-jvbc74RD138h6yvMptZ4M5K2/view?usp=sharing",
+        "rules": "https://drive.google.com/file/d/1828UqzmbiDukBw63g3b_NBRd12vorMG9/view?usp=sharing",
+        "teamLen": 4,
+    },
+    "Mine_CS": {
+        "name": "National Mining Innovation Challenge",
+        "image": "images/Events/mineo.jpg",
+        "info": [
+            "Unleash your full potential with the groundbreaking Mineo case study competition. Not only exploring the latest buzz and advancements in the Mining Industry but also immerse yourself in a world of innovation and uncover the secrets of the buzz-worthy progress being made.",
+            "Here is a chance to soar to new heights in your understanding of Geoscience and gain a comprehensive understanding of its fundamental principles. It serves as the ultimate test of your analytical and presentation skills, pushing the boundaries of your abilities and showcasing your expertise to the world.",
+            "The competition is divided into two thrilling phases, both rounds will be held at the prestigious IIT Kharagpur during the fest. Gather a team of 4 Ug/Pg and join this exciting event, where you will not only learn, but also leave a lasting impact.",
+        ],
+        "contact": "Amgoth Jithender Kumar Naik",
+        "phoneno": "+91 9154015089",
+        "prize": "₹30000",
+        "ps": "https://drive.google.com/file/d/1QtZA1UaEcfUaLqLj8fepdt4oxl5VaXw5/view?usp=drivesdk",
+        "rules": "https://drive.google.com/file/d/10clpeFBfPZsm_e7BJ7UyHI7pC_v76Tyb/view?usp=drive_link",
+        "teamLen": 4,
+    },
+    "Petro_CS": {
+        "name": "Petro Case Study",
+        "image": "images/Events/petro.jpg",
+        "info": [
+            "Case study presents an opportunity to investigate into buzz in Petroleum Industry,",
+            "A case study on petro would typically analyse a specific company or Issue related to petroleum Industry where participants could able to examine and focus on the analysis of boarder Industry trends and challenges.",
+            "This is a two phase event is which first round will be online and second round in offline. In online scenario you will be given a problem statement on which participants will be submitting on the same and then shortlisted teams will be selected to participate in offline phase which is going to be held at GREAT STEP IIT Kharagpur in which participants will be having a debate, presentation, question answer round on the problem statement given.",
+            "The specific content of this case study would depend on the focus and objective of the analysis.",
+        ],
+        "contact": "Amgoth Jithender Kumar Naik",
+        "phoneno": "+91 9154015089",
+        "prize": "₹25000",
+        "ps": "https://unstop.com/api/competition/get-attachment/67d02c34a5116_Petro_case_study.pdf.pdf",
+        "rules": "https://drive.google.com/file/d/1q_s7BAVNTE_Go9YiDWwjcuIdKv4SOKSY/view?usp=drive_link",
+        "teamLen": 4,
+    },
+    "Safety_Hunt": {
+        "name": "Safety Hunt",
+        "image": "images/Events/safetyhunt.jpg",
+        "info": [
+            "Safety hunt gives all the enthusiasts the tangible experience of being a professional, working mining engineer. A question on-spot would be given, that is practical, and should be solved with your team and approach to an optimal solution. It is an offline event conducted during the GREAT STEP, IIT Kharagpur.",
+            "Advantages of participating in this event are:",
+            "1. Exposure to real-life mining problems,",
+            "2. Designing optimal approach to solve the issue economically",
+            "Grab this opportunity to be part of the offline fest and win exciting prizes!",
+        ],
+        "contact": "Emmadi Manasvi",
+        "phoneno": "+91 9100445328",
+        "prize": "₹6000",
+        "teamLen": 3,
+    },
+    "Geobotics": {
+        "name": "Geobotics",
+        "image": "images/Events/geobotics.jpg",
+        "info": [
+            "Geobotics is a competition that is designed for the enthusiasts to solve different complications in the mining industry. The problem statements will revolve around mining that is inaccessible or is hazardous for man to enter. It is an offline event, organized at IIT Kharagpur, and UG/PG with a team of 4 can participate. Prize money worth 31k can be won.",
+        ],
+        "contact": "Aman Goswami",
+        "phoneno": "+91 6006775747",
+        "prize": "₹31000",
+        "ps": "https://drive.google.com/file/d/1ql07E87enV6wySIF9D0Ik_aq1Fnd6Pra/view?usp=share_link",
+        "teamLen": 4,
+    },
+    "Safety_DA": {
+        "name": "Mine Safety and Geo-Data Analytics",
+        "image": "images/Events/safetydata.jpg",
+        "info": [
+            "We are living in a world with trillions of data that need to be processed and analyzed for better insight and foresight. To provide a hands-on to all the budding analysts out there this event was launched to test the analytical skills of the students by showcasing what they can extract from the data.",
+            "It is a two phase event in which first phase is conducted through online mode and second will be at IIT Kharagpur during the fest. A team of 3 UG/PG can participate in this event.",
+        ],
+        "contact": "Emmadi Manasvi",
+        "phoneno": "+91 9100445328",
+        "prize": "₹15000",
+        "rules": "https://drive.google.com/file/d/14hW4kdayirG8sCw73mMsEe1s1RCY96SS/view?usp=drive_link",
+        "ps": "https://drive.google.com/file/d/1msORuwhfW021wTENFnosa7yhDNAZ2yT_/view?usp=drive_link",
+        "teamLen": 4,
+    },
+    "Indu_Design": {
+        "name": "Industrial Design",
+        "image": "images/Events/IDP.jpg",
+        "info": [
+            "Industrial Design is a competition where participants design innovative mining equipment or systems.",
+            "Participants will showcase their creativity and engineering skills by proposing solutions to real-world mining challenges.",
+        ],
+        "prize": "₹20000",
+        "teamLen": 4,
+    },
+    "Nmic": {
+        "name": "Rock - Resiliance",
+        "image": "images/Events/nmic.jpg",
+        "info": [
+            "Rock Resiliance tests your knowledge of rock mechanics and mining engineering principles.",
+            "Participants will face challenging problems related to rock behavior and mining stability.",
+        ],
+        "prize": "₹15000",
+        "teamLen": 4,
+    },
+    "Mineac": {
+        "name": "Mineac",
+        "image": "images/Events/mineac.jpg",
+        "info": [
+            "Mineac is a quiz competition testing your knowledge of mining, geology, and related fields.",
+            "Teams compete in multiple rounds of challenging questions.",
+        ],
+        "prize": "₹10000",
+        "teamLen": 3,
+    },
+    "Quiz_Spiel": {
+        "name": "Quiz Spiel",
+        "image": "images/Events/quizSpell.jpg",
+        "info": [
+            "Quiz Spiel is an online quiz competition covering various topics in mining and engineering.",
+            "Test your knowledge and compete with participants from across the country.",
+        ],
+        "prize": "₹5000",
+        "teamLen": 2,
+    },
+    "Mine_Shot": {
+        "name": "Mine Shot",
+        "image": "images/Events/ms.jpg",
+        "info": [
+            "Mine Shot is a photography competition focused on mining and industrial themes.",
+            "Capture the beauty and challenges of the mining industry through your lens.",
+        ],
+        "prize": "₹5000",
+        "teamLen": 1,
+    },
+    "gth": {
+        "name": "Guess The Theme",
+        "image": "images/Events/gth.gif",
+        "info": [
+            "Guess The Theme is a fun event where participants guess mining-related themes from clues.",
+            "A light-hearted competition to enjoy with friends!",
+        ],
+        "prize": "Exciting prizes",
+        "teamLen": 2,
+    },
+    "publiQuiz": {
+        "name": "Quizomania",
+        "image": "images/Events/publiQuiz.jpg",
+        "info": [
+            "Quizomania is an exciting public quiz event open to all.",
+            "Test your general knowledge and mining expertise!",
+        ],
+        "prize": "Exciting prizes",
+        "teamLen": 2,
+    },
+    "code_ext": {
+        "name": "CODE-X-TRACTION",
+        "image": "images/Events/code_ext.jpg",
+        "info": [
+            "CODE-X-TRACTION is a coding competition focused on solving mining-related problems.",
+            "Showcase your programming skills and algorithmic thinking.",
+        ],
+        "prize": "₹15000",
+        "teamLen": 3,
+    },
+    "Mine_A_Thon": {
+        "name": "Mine-A-Thon",
+        "image": "images/Events/mine_a_thon.jpg",
+        "info": [
+            "Mine-A-Thon is a hackathon focused on developing solutions for the mining industry.",
+            "Teams work together to create innovative solutions within a limited time.",
+        ],
+        "prize": "₹25000",
+        "teamLen": 4,
+    },
+    "Pitch_Perfect": {
+        "name": "Pitch Perfect",
+        "image": "images/Events/pitch_perfect.jpeg",
+        "info": [
+            "A pitching event is a platform where individuals or teams can present their innovative ideas to a panel of judges, investors, or other interested parties.",
+            "Participants typically have enough time to give their concepts; the judges or audience members can ask questions and provide feedback.",
+            "This idea-pitching event aims to showcase new and creative ideas and identify potential investment opportunities.",
+        ],
+        "contact": "Amgoth Jithender Kumar Naik",
+        "phoneno": "+91 9154015089",
+        "prize": "₹15000",
+        "submission": "https://forms.gle/K4bXdaiZfUoxKQQw5",
+        "teamLen": 3,
+    },
+}
+
+def get_event_data(event_id):
+    return EVENTS_DATA.get(event_id, None)

@@ -1,36 +1,181 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Great Step{% endblock %}</title>
+
+    <!-- Tailwind CSS with prefix -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            prefix: 'tw-',
+            important: true,
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Global SCSS Variables and Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <!-- Add Bootstrap or other CSS -->
+
+    {% block extra_head %}{% endblock %}
 </head>
-<body>
+<body style="font-family: var(--font-default); background-color: var(--color-bg); color: var(--color-text); min-height: 100vh; display: flex; flex-direction: column;">
+    <!-- Navigation -->
     <nav>
-        <div class="navbar">
-            <ul>
-                <li><a href="{{ url_for('tmes') }}">Home</a></li>
-                <li><a href="{{ url_for('home') }}">GreatStep</a></li>
-                <li><a href="{{ url_for('events') }}">Events</a></li>
-                <li><a href="{{ url_for('about') }}">About</a></li>
-                <li><a href="{{ url_for('signin') }}">Sign In</a></li>
-            </ul>
+        <div class="navbar navbar-expand-lg">
+            <button class="toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <div class="hori-selector">
+                        <div class="left"></div>
+                        <div class="right"></div>
+                    </div>
+
+                    <a class="nav-link{% if request.endpoint == 'tmes' %} active{% endif %}" href="{{ url_for('tmes') }}">
+                        <li class="nav-item">
+                            <i class="bi bi-minecart-loaded"></i>Home
+                        </li>
+                    </a>
+                    <a class="nav-link{% if request.endpoint == 'home' %} active{% endif %}" href="{{ url_for('home') }}">
+                        <li class="nav-item">
+                            <i class="far fa-clone"></i>GreatStep
+                        </li>
+                    </a>
+                    <a class="nav-link{% if request.endpoint in ['events', 'competitions', 'workshops', 'panel_discussion', 'quiz_spiel', 'enviro_cs', 'petro_cs', 'mine_cs', 'safety_hunt', 'safety_da', 'geobotics', 'pitch_perfect', 'nmic', 'code_ext', 'mine_a_thon', 'gth', 'mine_shot', 'publi_quiz', 'indu_design', 'mineac'] %} active{% endif %}" href="{{ url_for('events') }}">
+                        <li class="nav-item">
+                            <i class="bi bi-calendar-event"></i>Events
+                        </li>
+                    </a>
+                    <a class="nav-link{% if request.endpoint == 'about' %} active{% endif %}" href="{{ url_for('about') }}">
+                        <li class="nav-item">
+                            <i class="far fa-file-alt"></i>About
+                        </li>
+                    </a>
+                    <a class="nav-link{% if request.endpoint in ['signin', 'signup', 'reset_password'] %} active{% endif %}" href="{{ url_for('signin') }}">
+                        <li class="nav-item">
+                            <i class="fas fa-user-circle"></i>Sign In
+                        </li>
+                    </a>
+                </ul>
+            </div>
         </div>
     </nav>
 
+    <!-- Main Content -->
     <main>
         {% block content %}{% endblock %}
     </main>
 
-    <footer>
-        <div class="footer">
-            <p>&copy; TMES, All Right Reserved.</p>
-            <p>Contact: greatstept@gmail.com</p>
+    <!-- Footer -->
+    <footer class="container-fluid text-white-50 footer pt-5">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="text-white mb-4">Quick Links</h5>
+                    <a class="btn btn-link text-white-50" href="{{ url_for('about') }}">
+                        About Us
+                    </a>
+                    <a class="btn btn-link text-white-50" href="{{ url_for('about') }}">
+                        Contact Us
+                    </a>
+                    <a class="btn btn-link text-white-50" href="{{ url_for('events') }}">
+                        Events
+                    </a>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <h5 class="text-white mb-4">Get In Touch</h5>
+                    <p class="mb-2">
+                        <i class="bi bi-geo-alt-fill"></i> &nbsp; &nbsp; Department of
+                        Mining Engineering, IIT Kharagpur, Kharagpur, West-Bengal 721302
+                    </p>
+                    <p class="mb-2">
+                        <i class="bi bi-chat-right-fill"></i>&nbsp; &nbsp;&nbsp;
+                        <a href="mailto:greatstept@gmail.com">greatstept@gmail.com</a>
+                    </p>
+                    <div class="d-flex pt-2">
+                        <a class="btn btn-outline-light btn-social" target="_blank" href="https://www.facebook.com/greatstep/">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a class="btn btn-outline-light btn-social" target="_blank" href="https://in.linkedin.com/company/great-step-iit-kharagpur">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a class="btn btn-outline-light btn-social" target="_blank" href="https://instagram.com/tmes_iitkgp">
+                            <i class="bi bi-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy;<a class="border-bottom text-white-50" href="https://www.tmesiitkgp.in">TMES</a>, All Right Reserved.
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="footer-menu">
+                            <a href="{{ url_for('home') }}">GREAT STEP</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Scripts -->
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+    <!-- Toast Notifications -->
+    <script>
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            if (!container) {
+                const newContainer = document.createElement('div');
+                newContainer.id = 'toast-container';
+                document.body.appendChild(newContainer);
+            }
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span>${message}</span>
+                <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+            `;
+            
+            document.getElementById('toast-container').appendChild(toast);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease-in forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
 </body>
 </html>

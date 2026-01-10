@@ -1,28 +1,214 @@
-{% extends "base.html" %}
+{% extends "events_base.html" %}
+{% set active_tab = 'competitions' %}
 
 {% block title %}Competitions - Great Step{% endblock %}
 
-{% block content %}
-<section class="competitions">
-    <h1>Competitions</h1>
-    <div class="events-list">
-        <div class="event-type">
-            <h2>Tech Events 2025</h2>
-            <div class="event-cards">
-                <div class="card">
-                    <img src="{{ url_for('static', filename='images/safetydata.jpg') }}" alt="Mine Safety and Geo-Data Analytics">
-                    <h3>Mine Safety and Geo-Data Analytics</h3>
-                    <a href="{{ url_for('safety_da') }}">View Details</a>
+{% block events_content %}
+<div id="home">
+    <!-- Tech Events 2025 -->
+    <div class="types">
+        <h2 class="animate-charcter">Tech Events 2025</h2>
+    </div>
+    <div class="events_cards">
+        <div class="card_first text">
+            <div class="card_img">
+                <img src="{{ url_for('static', filename='images/Events/safetydata.jpg') }}" alt="Mine Safety and Geo-Data Analytics" loading="lazy">
+                <div class="card_hover">
+                    <a href="{{ url_for('safety_da') }}" class="event_button">know more</a>
                 </div>
-                <!-- Add more cards -->
             </div>
-        </div>
-        <div class="event-type">
-            <h2>Oncampus Events 2025</h2>
-            <div class="event-cards">
-                <!-- Add event cards -->
-            </div>
+            <a href="{{ url_for('safety_da') }}">
+                <div class="card_check">
+                    <h2>Mine Safety and Geo-Data Analytics</h2>
+                </div>
+            </a>
         </div>
     </div>
-</section>
+
+    <!-- Oncampus Events 2025 -->
+    <div class="types">
+        <h2 class="animate-charcter">Oncampus Events 2025</h2>
+    </div>
+    <div class="events_cards">
+        <div class="card_first text">
+            <div class="card_img">
+                <img src="{{ url_for('static', filename='images/Events/petro.jpg') }}" alt="Petro Case Study" loading="lazy">
+                <div class="card_hover">
+                    <a href="{{ url_for('petro_cs') }}" class="event_button">know more</a>
+                </div>
+            </div>
+            <a href="{{ url_for('petro_cs') }}">
+                <div class="card_check">
+                    <h2>Petro Case Study</h2>
+                </div>
+            </a>
+        </div>
+
+        <div class="card_first text">
+            <div class="card_img">
+                <img src="{{ url_for('static', filename='images/Events/enviro.jpg') }}" alt="Enviro Case Study" loading="lazy">
+                <div class="card_hover">
+                    <a href="{{ url_for('enviro_cs') }}" class="event_button">know more</a>
+                </div>
+            </div>
+            <a href="{{ url_for('enviro_cs') }}">
+                <div class="card_check">
+                    <h2>Enviro Case Study</h2>
+                </div>
+            </a>
+        </div>
+
+        <div class="card_first text">
+            <div class="card_img">
+                <img src="{{ url_for('static', filename='images/Events/mineo.jpg') }}" alt="National Mining Innovation Challenge" loading="lazy">
+                <div class="card_hover">
+                    <a href="{{ url_for('mine_cs') }}" class="event_button">know more</a>
+                </div>
+            </div>
+            <a href="{{ url_for('mine_cs') }}">
+                <div class="card_check">
+                    <h2>National Mining Innovation Challenge</h2>
+                </div>
+            </a>
+        </div>
+
+        <div class="card_first text">
+            <div class="card_img">
+                <img src="{{ url_for('static', filename='images/Events/safetyhunt.jpg') }}" alt="Safety Hunt" loading="lazy">
+                <div class="card_hover">
+                    <a href="{{ url_for('safety_hunt') }}" class="event_button">know more</a>
+                </div>
+            </div>
+            <a href="{{ url_for('safety_hunt') }}">
+                <div class="card_check">
+                    <h2>Safety Hunt</h2>
+                </div>
+            </a>
+        </div>
+
+        <div class="card_first text">
+            <div class="card_img">
+                <img src="{{ url_for('static', filename='images/Events/geobotics.jpg') }}" alt="Geobotics" loading="lazy">
+                <div class="card_hover">
+                    <a href="{{ url_for('geobotics') }}" class="event_button">know more</a>
+                </div>
+            </div>
+            <a href="{{ url_for('geobotics') }}">
+                <div class="card_check">
+                    <h2>Geobotics</h2>
+                </div>
+            </a>
+        </div>
+
+        <div class="card_first text">
+            <div class="card_img">
+                <img src="{{ url_for('static', filename='images/Events/IDP.jpg') }}" alt="Industrial Design" loading="lazy">
+                <div class="card_hover">
+                    <a href="{{ url_for('indu_design') }}" class="event_button">know more</a>
+                </div>
+            </div>
+            <a href="{{ url_for('indu_design') }}">
+                <div class="card_check">
+                    <h2>Industrial Design</h2>
+                </div>
+            </a>
+        </div>
+
+        <div class="card_first text">
+            <div class="card_img">
+                <img src="{{ url_for('static', filename='images/Events/nmic.jpg') }}" alt="Rock - Resiliance" loading="lazy">
+                <div class="card_hover">
+                    <a href="{{ url_for('nmic') }}" class="event_button">know more</a>
+                </div>
+            </div>
+            <a href="{{ url_for('nmic') }}">
+                <div class="card_check">
+                    <h2>Rock - Resiliance</h2>
+                </div>
+            </a>
+        </div>
+
+        <div class="card_first text">
+            <div class="card_img">
+                <img src="{{ url_for('static', filename='images/Events/mineac.jpg') }}" alt="Mineac" loading="lazy">
+                <div class="card_hover">
+                    <a href="{{ url_for('mineac') }}" class="event_button">know more</a>
+                </div>
+            </div>
+            <a href="{{ url_for('mineac') }}">
+                <div class="card_check">
+                    <h2>Mineac</h2>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Online Events 2025 -->
+    <div class="types">
+        <h2 class="animate-charcter">Online Events 2025</h2>
+    </div>
+    <div class="events_cards">
+        <div class="card_first">
+            <div class="card_img">
+                <img src="{{ url_for('static', filename='images/Events/quizSpell.jpg') }}" alt="Quiz Spiel" loading="lazy">
+                <div class="card_hover">
+                    <a href="{{ url_for('quiz_spiel') }}" class="event_button">know more</a>
+                </div>
+            </div>
+            <a href="{{ url_for('quiz_spiel') }}">
+                <div class="card_check">
+                    <h2>Quiz Spiel</h2>
+                </div>
+            </a>
+        </div>
+
+        <div class="card_first text">
+            <div class="card_img">
+                <img src="{{ url_for('static', filename='images/Events/ms.jpg') }}" alt="Mine Shot" loading="lazy">
+                <div class="card_hover">
+                    <a href="{{ url_for('mine_shot') }}" class="event_button">know more</a>
+                </div>
+            </div>
+            <a href="{{ url_for('mine_shot') }}">
+                <div class="card_check">
+                    <h2>Mine Shot</h2>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Have Fun -->
+    <div class="types">
+        <h2 class="animate-charcter">Have Fun</h2>
+    </div>
+    <div class="events_cards">
+        <div class="card_first">
+            <div class="card_img">
+                <img src="{{ url_for('static', filename='images/Events/gth.gif') }}" alt="Guess The Theme" loading="lazy">
+                <div class="card_hover">
+                    <a href="{{ url_for('gth') }}" class="event_button">know more</a>
+                </div>
+            </div>
+            <a href="{{ url_for('gth') }}">
+                <div class="card_check">
+                    <h2>Guess The Theme</h2>
+                </div>
+            </a>
+        </div>
+
+        <div class="card_first">
+            <div class="card_img">
+                <img src="{{ url_for('static', filename='images/Events/publiQuiz.jpg') }}" alt="Quizomania" loading="lazy">
+                <div class="card_hover">
+                    <a href="{{ url_for('publi_quiz') }}" class="event_button">know more</a>
+                </div>
+            </div>
+            <a href="{{ url_for('publi_quiz') }}">
+                <div class="card_check">
+                    <h2>Quizomania</h2>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock %}

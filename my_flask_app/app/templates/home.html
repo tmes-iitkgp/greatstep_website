@@ -3,33 +3,163 @@
 {% block title %}Home - Great Step{% endblock %}
 
 {% block content %}
-<div class="header section__padding">
-    <div class="header-content">
-        <div class="header-image">
-            <img src="{{ url_for('static', filename='images/ncl.png') }}" alt="NCL" style="height: 90px;">
-            <h2>&</h2>
-            <img src="{{ url_for('static', filename='images/gmdc.jpg') }}" alt="GMDC">
-        </div>
+<div id="home">
+    <!-- Header Section -->
+    <section class="header section__padding">
+        <div class="header-content">
+            <div class="header-image">
+                <div>
+                    <img style="height: 90px;" src="{{ url_for('static', filename='images/Sponsors/ncl.png') }}" alt="NCL" />
+                </div>
+                <h2 class="text__tmes">&amp;</h2>
+                <div>
+                    <img src="{{ url_for('static', filename='images/Sponsors/gmdc.jpg') }}" alt="GMDC" />
+                </div>
+            </div>
 
-        <h2 class="text__tmes">Technology Mining Engineering Society</h2>
-        <p style="font-size: 1.6rem;" class="animate-charcter">
-            Presents
-        </p>
-        <h1 class="animate-charcter">GREAT-STEP"25</h1>
-        <h2 class="animate-charcter" style="font-size: 1.2rem;">28th - 30th March</h2>
-        <p>
-            Upholding the esteem of being the antecedent, the Department of Mining Engineering, IIT Kharagpur has always believed in the flow of practical knowledge with innovation as inspiration,
-            which has rejuvenated the ancestral engineering ideals into the modern facts.
-        </p>
-        <p>
-            With this vision as guidance and zeal to keep pace with the developments in the Mining and Geology industries, the Department of Mining engineering initiated{" "}
-            <b>
-                <a href="https://tmesiitkgp.in/">GREATSTEP</a>
-            </b>{" "}
-            (acronym for Geo-Resource Engineering and Technology Students' Teachers' and Employers' Partnership) in 2008 to create a common platform for all the budding Mining engineers. The last
-            thirteen editions were filled with mind churning challenges, several informative guest lectures and workshops aimed at the expansion of thoughts into the unexplored realms of the field.
-        </p>
-    </div>
+            <h2 class="text__tmes">Technology Mining Engineering Society</h2>
+            <p style="font-size: 1.6rem;" class="animate-charcter">
+                PRESENTS
+            </p>
+            <h1 class="animate-charcter gradient__text">GREAT-STEP"25</h1>
+            <h2 class="animate-charcter" style="font-size: 1.2rem; color: var(--color-subtext);">28TH - 30TH MARCH</h2>
+            <p>
+                Upholding the esteem of being the antecedent, the Department of Mining Engineering, IIT Kharagpur has always believed in the flow of practical knowledge with innovation as inspiration,
+                which has rejuvenated the ancestral engineering ideals into the modern facts.
+            </p>
+            <p>
+                With this vision as guidance and zeal to keep pace with the developments in the Mining and Geology industries, the Department of Mining engineering initiated
+                <b><a href="https://tmesiitkgp.in/">GREATSTEP</a></b>
+                (acronym for Geo-Resource Engineering and Technology Students' Teachers' and Employers' Partnership) in 2008 to create a common platform for all the budding Mining engineers. The last
+                thirteen editions were filled with mind churning challenges, several informative guest lectures and workshops aimed at the expansion of thoughts into the unexplored realms of the field.
+            </p>
+        </div>
+    </section>
+
+    <!-- Image Carousel/Swiper Section -->
+    <section class="carousel2">
+        <div class="swiper-container">
+            <div class="swiper-wrapper" id="carousel-track">
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/GS/a (1).jpg') }}" alt="Event 1" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/GS/a (2).jpg') }}" alt="Event 2" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/GS/a (3).jpg') }}" alt="Event 3" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/GS/a (4).jpg') }}" alt="Event 4" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/GS/a (5).jpg') }}" alt="Event 5" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/GS/a (6).jpg') }}" alt="Event 6" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/GS/a (7).jpg') }}" alt="Event 7" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/GS/a (8).jpg') }}" alt="Event 8" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/GS/a (9).jpg') }}" alt="Event 9" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="{{ url_for('static', filename='images/GS/a (10).jpg') }}" alt="Event 10" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video/Prof Section -->
+    <section class="video_section Prof section__padding" style="height: fit-content;">
+        <div style="width: 100%; display: flex; justify-content: center;">
+            <video src="{{ url_for('static', filename='videos/vid2.mp4') }}" controls></video>
+        </div>
+    </section>
+
+    <!-- Sponsors Slider Section -->
+    <section class="section__padding sponsors-slider" style="padding: 1rem 0;">
+        <div style="display: flex; justify-content: center;">
+            <h1 class="gradient__text animate-charcter" style="font-size: 3rem;">
+                Our Sponsors
+            </h1>
+        </div>
+        <div class="marquee-container">
+            <div class="marquee">
+                <div class="marquee-content" id="sponsor-track">
+                    <div class="sponsor-card">
+                        <img src="https://media-hosting.imagekit.io/4ee0822bc4994db1/WCL-TITLE SPONSOR.png?Expires=1837712100&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=pYbSVwCIiko0Zmo8sQZN7bss56Jn2YyItpKTE8A0-cTuKnJmENOoal9Ti74Ql9gqLzajnAkLrimvgvBq815exzujcVZVC1MB7BLRev9JyVKgcZWxjk9kB3A3RndBKpQSvTjsTmkdn01LL7Q6M3J3I10Phy~pS6jwjQV~ouPC0Jifx9qpYLilsbzpc0uUYo-c3RBs8G5OhQkXpGXYU2OUJiy4AqSIUPTDald92eCaGesL8nQip8kC83ogMiPRJ3w7gKobvr~mLs7pRPkxyJ93RE9IesDTqFH3h3uUDVNRf6V~77pm5xopwQelTPU-C1pw-lhHAvMlkThVigByxsKVqg__" alt="WCL" />
+                    </div>
+                    <div class="sponsor-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/d/df/GujaratMineralDevelopmentCorporationLogo.jpg" alt="GMDC" />
+                    </div>
+                    <div class="sponsor-card">
+                        <img src="https://media-hosting.imagekit.io/8e1fa0affe1647b2/TEXMIN-TECHNOLOGY PARTNER.png?Expires=1837712254&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=WYgnnZv7t-VLCUudJOAxc-SadLP3s2X3Ns24fP0Mztj6o71R7RTR7E1Zm6fIqZPI-PX9LYghLa7hMDyigi5VdvilzTliZvaC3oupkZlRRN5dj8MLFh6-x9MS~brwfetla7nc0wwLOErGn9Hd~ktIBtZ-0gzpJ7CCwkSyOD9OBrz~WU-IfgJxTVhAshVdWn~IP4z~-Z381u9fZ0lKM0KTEDAdG2fgHH~ktf-SNjSr3p-~LRQ6u20KvrULy8QSi4Y716tjuyAJV1LbIauxaZTYQn47z72QNLWIRD~TlEtSWepIQrNTsjPKh7Z7-lnVnsWcIhL~ubSHDGKxnl6Uoxc1gQ__" alt="TEXMIN" />
+                    </div>
+                    <div class="sponsor-card">
+                        <img src="https://media-hosting.imagekit.io/da40cc6660e746c2/MG-EDUCATIONAL PARTNER.png?Expires=1837712435&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=aQBODNxzGUA9GhOTr3wPAxjJb6J8ApSaW4FbzjweB3NeEcSKHh-iIfT9OFDZ70O900wzPae9XSPFI9bvef7g1IlFlocIGrCBy8FujTg0U7d7jWDqHIdgpcyTgo1F2VPsGKripFberKNcLI5EgvFkx-HirrjLGRjzA-lIwKacnwZ7eevoSw5eCaLEEh-x1IyLDhvsrD39T87YvP-cIvNmKPfKsVzmQvM1uc5Lyde97oWAjJC6Bc5aaEHCR40eF-fiA8aU4z06gFlXS77c2gX8wZ15oWj8fGTkFR0UDTv6h8glep-AT231AIEgA3132oSl~o0I1zvegXV7U48j40464g__" alt="MG" />
+                    </div>
+                    <div class="sponsor-card">
+                        <img src="https://media-hosting.imagekit.io/ee27a4146b314493/SIGMA-CORE SPONSOR.png?Expires=1837711918&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=CNEtGbz-ESgvHuTOJoUBNP-AJNxpKkQHMcRjg-jBP~Q9OmLSXx0ThkaeOxKgquCyirsRBH1z0PBMC1IR4fNQ9M9bVbInK1HwLQXh3-xo9cNmmKOgfoU2Z-UAF18tEdNb06Sq8rfHJf2QFAVNdVJNWwsGD~~hA3jSMusE8pCvyEoUt4HQr1cUqiHbemMyZc7ZuU6xQ7KlljYswNTBJNfznT42JY5VYk-xsKnViu-ABJXgEEdvn6rx-T~ziuVpUkpdKn5yCaVKyiXH-yH-QAnqmZMePhvxqgxExKkiPIv9ityzlRsedFx73CtpFaafNtJ39395gjWhX-tkzUv82M6BTg__" alt="SIGMA" />
+                    </div>
+                    <div class="sponsor-card">
+                        <img src="https://azureadb2cblob.blob.core.windows.net/resources/Prod/OM_Logo_on-transparent.png" alt="OMC" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
-<!-- Add more sections like Swiper, Prof, SkillsSlider -->
+
+<script>
+// Auto-scroll carousel
+document.addEventListener('DOMContentLoaded', function() {
+    const track = document.getElementById('carousel-track');
+    if (track) {
+        let scrollAmount = 0;
+        const scrollSpeed = 1;
+        
+        function autoScroll() {
+            scrollAmount += scrollSpeed;
+            if (scrollAmount >= track.scrollWidth / 2) {
+                scrollAmount = 0;
+            }
+            track.style.transform = `translateX(-${scrollAmount}px)`;
+            requestAnimationFrame(autoScroll);
+        }
+        
+        // Clone slides for infinite scroll effect
+        const slides = track.innerHTML;
+        track.innerHTML = slides + slides;
+        
+        autoScroll();
+    }
+    
+    // Auto-scroll sponsors
+    const sponsorTrack = document.getElementById('sponsor-track');
+    if (sponsorTrack) {
+        let sponsorScroll = 0;
+        const sponsorSpeed = 1;
+        
+        function autoScrollSponsors() {
+            sponsorScroll += sponsorSpeed;
+            if (sponsorScroll >= sponsorTrack.scrollWidth / 2) {
+                sponsorScroll = 0;
+            }
+            sponsorTrack.style.transform = `translateX(-${sponsorScroll}px)`;
+            requestAnimationFrame(autoScrollSponsors);
+        }
+        
+        // Clone sponsors for infinite scroll effect
+        const sponsors = sponsorTrack.innerHTML;
+        sponsorTrack.innerHTML = sponsors + sponsors;
+        
+        autoScrollSponsors();
+    }
+});
+</script>
 {% endblock %}
