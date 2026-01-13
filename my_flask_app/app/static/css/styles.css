@@ -289,6 +289,28 @@ body {
     animation: shimmer 3s ease-in-out infinite;
 }
 
+@media (max-width: 768px) {
+    .header-content h1.gradient__text {
+        font-size: 2.5rem !important;
+        line-height: 2.8rem !important;
+        padding: 0 0.2em !important;
+        word-break: break-word !important;
+    }
+}
+@media (max-width: 500px) {
+    .header-content h1.gradient__text {
+        font-size: 2.2rem !important;
+        line-height: 2.4rem !important;
+        padding: 0 0.1em !important;
+    }
+}
+@media (max-width: 400px) {
+    .header-content h1.gradient__text {
+        font-size: 1.5rem !important;
+        line-height: 1.7rem !important;
+    }
+}
+
 @keyframes shimmer {
     0%, 100% { filter: brightness(1); }
     50% { filter: brightness(1.2); }
@@ -898,6 +920,62 @@ nav .toggler .fa-solid {
     background: linear-gradient(180deg, var(--color-bg-secondary) 0%, var(--color-bg) 100%);
     color: var(--color-text);
     border-top: 1px solid rgba(233, 69, 96, 0.2);
+}
+
+/* --- TMES: Responsive for competitions/about/events pages --- */
+@media (max-width: 900px) {
+    .events_cards {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 1rem !important;
+        padding: 0 1rem !important;
+    }
+    .about_container, .types {
+        padding: 0 1rem !important;
+    }
+}
+
+@media (max-width: 650px) {
+    .events_cards {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1rem !important;
+        padding: 0 0.5rem !important;
+    }
+    .card_first, .info_cards article {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        margin: 0 auto 1rem auto !important;
+        box-sizing: border-box !important;
+    }
+    .about_container, .types {
+        padding: 0 0.5rem !important;
+    }
+    .types h2, .about .heading, .Gsec_h2 {
+        font-size: 1.5rem !important;
+        text-align: center !important;
+        padding: 0.5rem 0 !important;
+        word-break: break-word;
+    }
+    .card_img img, .info_cards img {
+        max-width: 100% !important;
+        height: auto !important;
+        object-fit: contain !important;
+    }
+    .card_img, .card_hover, .card_check {
+        width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+    .info_cards {
+        flex-direction: column !important;
+        gap: 1rem !important;
+        padding: 0 !important;
+    }
+    .divider {
+        margin: 1rem 0 !important;
+    }
+}
 }
 
 .footer a {
@@ -2121,6 +2199,19 @@ nav .toggler .fa-solid {
     .tmes_info_-content h4 {
         font-size: 24px;
         line-height: 32px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    #tmes .header-content h1.text__tmes {
+        font-size: 24px;
+        line-height: 32px;
+        word-break: break-word;
+        padding: 0 0.2em;
+    }
+    #tmes .header-content p {
+        font-size: 13px;
+        line-height: 20px;
     }
     
     .tmes_info_-image {
