@@ -614,7 +614,6 @@ def resend_otp():
     last_resend_time = session.get(last_resend_key)
     
     if last_resend_time:
-        from datetime import datetime
         time_diff = (datetime.utcnow() - datetime.fromisoformat(last_resend_time)).total_seconds()
         if time_diff < 60:
             remaining = int(60 - time_diff)
