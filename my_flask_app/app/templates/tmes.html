@@ -2,63 +2,51 @@
 
 {% block title %}TMES - Great Step{% endblock %}
 
+
 {% block content %}
 <div id="tmes">
-    <!-- Header Section -->
-    <section class="header section__padding">
-        <div class="header-content">
-            <h1 class="text__tmes">WELCOME TO TMES</h1>
-            <p>
-                Technology Mining Engineering Society (TMES) aims at bringing a
-                closer association among the students and faculty members in the
-                department. It has initiated Social Cultural and Sports Events,
-                which brings them together for a closer interaction.
+    <!-- Animated Welcome Heading -->
+    <section class="welcome-section section__padding">
+        <h1 class="welcome-heading animate-welcome">Welcome to TMES</h1>
+        <div class="welcome-content">
+            <p class="welcome-description">
+                The Technology Mining Engineering Society (TMES) promotes close collaboration between students and faculty by organizing social, cultural, and sports activities that strengthen interaction and departmental unity.
             </p>
         </div>
+    </section>
 
-        <div class="header-image">
-            <img src="{{ url_for('static', filename='images/tmes_home.jpg') }}" 
-                 alt="TMES" />
+    <!-- TMES Team Photo Section -->
+    <section class="tmes-team-photo-section section__padding">
+        <div class="tmes-team-photo-container">
+            <img src="{{ url_for('static', filename='images/Team/tmes_team_placeholder.jpg') }}" alt="TMES Team Photo" class="tmes-team-photo" />
         </div>
     </section>
 
-    <!-- TMES Info Section (Prof component) -->
-    <section class="tmes_info_ section__padding">
-        <div class="tmes_info_-image">
-            <img src="{{ url_for('static', filename='images/tmes_home2.jpg') }}" alt="TMES Events" />
-        </div>
-        <div class="tmes_info_-content">
-            <h4>Some of the noted events are:</h4>
-            <ul>
-                <li>Freshers for the newly enrolled students</li>
-                <li>GREAT STEP - National level techno-management fest</li>
-                <li>Teacher Day - appreciation for the teaching faculty</li>
-                <li>Picnic</li>
-                <li>Mine visits for the enrolled students</li>
-                <li>Farewell for the outgoing students</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- TMES Carousel Section (Swiper_Scroll component) -->
+    <!-- Our Events Section (scrolling bar with event photos and names) -->
     <section class="carousel2">
+        <div class="carousel2-title">
+            <h2>Our Events</h2>
+        </div>
         <div class="swiper-container">
             <div class="swiper-wrapper" id="tmes-carousel-track">
-                <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/assets/1.jpg') }}" alt="TMES Event 1" />
+                <!-- Placeholder event slides, replace src and names when images are provided -->
+                <div class="swiper-slide event-slide">
+                    <img src="{{ url_for('static', filename='images/Events/placeholder1.jpg') }}" alt="Event 1" />
+                    <div class="event-name">Event Name 1</div>
                 </div>
-                <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/assets/2.jpg') }}" alt="TMES Event 2" />
+                <div class="swiper-slide event-slide">
+                    <img src="{{ url_for('static', filename='images/Events/placeholder2.jpg') }}" alt="Event 2" />
+                    <div class="event-name">Event Name 2</div>
                 </div>
-                <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/assets/3.jpg') }}" alt="TMES Event 3" />
+                <div class="swiper-slide event-slide">
+                    <img src="{{ url_for('static', filename='images/Events/placeholder3.jpg') }}" alt="Event 3" />
+                    <div class="event-name">Event Name 3</div>
                 </div>
-                <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/assets/4.jpg') }}" alt="TMES Event 4" />
+                <div class="swiper-slide event-slide">
+                    <img src="{{ url_for('static', filename='images/Events/placeholder4.jpg') }}" alt="Event 4" />
+                    <div class="event-name">Event Name 4</div>
                 </div>
-                <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/assets/5.png') }}" alt="TMES Event 5" />
-                </div>
+                <!-- Add more event slides as needed -->
             </div>
         </div>
     </section>

@@ -1,3 +1,25 @@
+{% block extra_scripts %}
+<script>
+// Enable zoom effect on tap for event cards on mobile
+document.addEventListener('DOMContentLoaded', function() {
+    function isTouchDevice() {
+        return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    }
+    if (isTouchDevice()) {
+        document.querySelectorAll('.card_first').forEach(function(card) {
+            card.addEventListener('touchstart', function() {
+                card.classList.add('zoom-on-tap');
+            });
+            card.addEventListener('touchend', function() {
+                setTimeout(function() {
+                    card.classList.remove('zoom-on-tap');
+                }, 300);
+            });
+        });
+    }
+});
+</script>
+{% endblock %}
 {% extends "base.html" %}
 
 {% block title %}Events - Great Step{% endblock %}

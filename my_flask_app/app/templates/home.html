@@ -82,17 +82,13 @@
             <p style="font-size: 1.6rem;" class="animate-charcter">
                 PRESENTS
             </p>
-            <h1 class="animate-charcter gradient__text">GREAT-STEP"25</h1>
-            <h2 class="animate-charcter" style="font-size: 1.2rem; color: var(--color-subtext);">28TH - 30TH MARCH</h2>
+            <h1 class="animate-charcter gradient__text">GREAT-STEP’25</h1>
+            <h2 class="animate-charcter" style="font-size: 1.2rem; color: var(--color-subtext);">13th-15th MARCH</h2>
             <p>
-                Upholding the esteem of being the antecedent, the Department of Mining Engineering, IIT Kharagpur has always believed in the flow of practical knowledge with innovation as inspiration,
-                which has rejuvenated the ancestral engineering ideals into the modern facts.
+                Upholding its legacy as a pioneer in the field, the Department of Mining Engineering, IIT Kharagpur has consistently championed the integration of practical knowledge with innovation. This philosophy has transformed traditional engineering principles into solutions aligned with modern technological demands.
             </p>
             <p>
-                With this vision as guidance and zeal to keep pace with the developments in the Mining and Geology industries, the Department of Mining engineering initiated
-                <b><a href="https://tmesiitkgp.in/">GREATSTEP</a></b>
-                (acronym for Geo-Resource Engineering and Technology Students' Teachers' and Employers' Partnership) in 2008 to create a common platform for all the budding Mining engineers. The last
-                thirteen editions were filled with mind churning challenges, several informative guest lectures and workshops aimed at the expansion of thoughts into the unexplored realms of the field.
+                With this vision and a commitment to keeping pace with advancements in the Mining and Geology industries, the Department launched GREATSTEP (Geo-Resource Engineering and Technology Students’–Teachers’–Employers’ Partnership) in 2008. Designed as a collaborative platform for aspiring mining engineers, the fest has, over thirteen editions, hosted intellectually stimulating challenges, insightful guest lectures, and hands-on workshops that encourage exploration beyond conventional boundaries.
             </p>
             
             <!-- Register Now Button -->
@@ -151,7 +147,7 @@
     <!-- Video/Prof Section -->
     <section class="video_section Prof section__padding" style="height: fit-content;">
         <div style="width: 100%; display: flex; justify-content: center;">
-            <video src="{{ url_for('static', filename='videos/vid2.mp4') }}" controls></video>
+            <video src="{{ url_for('static', filename='videos/vid2.mp4') }}" controls loop autoplay muted></video>
         </div>
     </section>
 
@@ -194,34 +190,37 @@
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
 }
-
 @keyframes smoothSponsorScroll {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
 }
-
 #carousel-track {
-    animation: smoothCarouselScroll 60s linear infinite;
+    animation: smoothCarouselScroll 25s linear infinite;
     will-change: transform;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
-
 #carousel-track:hover,
 #carousel-track.paused {
     animation-play-state: paused !important;
 }
-
 #sponsor-track {
-    animation: smoothSponsorScroll 40s linear infinite;
+    animation: smoothSponsorScroll 15s linear infinite;
     will-change: transform;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
 }
-
 #sponsor-track:hover,
 #sponsor-track.paused {
     animation-play-state: paused !important;
+}
+@media (max-width: 600px) {
+    #carousel-track {
+        animation-duration: 12s !important;
+    }
+    #sponsor-track {
+        animation-duration: 7s !important;
+    }
 }
 </style>
 
