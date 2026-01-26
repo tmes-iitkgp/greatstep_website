@@ -33,6 +33,9 @@ class Config:
     
     # Great Step Registration Fee (in paise, 100 paise = 1 INR)
     GREATSTEP_REGISTRATION_FEE = int(os.environ.get('GREATSTEP_REGISTRATION_FEE', 50000))  # Default: ₹500
+    
+    # Main Admin Email (Protected)
+    MAIN_ADMIN_EMAIL = os.environ.get('MAIN_ADMIN_EMAIL')
 
 
 class DevelopmentConfig(Config):

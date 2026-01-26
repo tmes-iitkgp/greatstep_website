@@ -162,6 +162,12 @@ def admin_revoke_user(user_id):
     """Revoke admin access from a user"""
     user = User.query.get_or_404(user_id)
     
+    # Prevent revoking Main Admin
+    main_admin = app.config.get('MAIN_ADMIN_EMAIL')
+    if main_admin and user.email.lower() == main_admin.lower():
+        flash('Cannot revoke access of the Main Admin.', 'error')
+        return redirect(url_for('admin_users'))
+    
     # Prevent self-revocation
     if user.id == session.get('user_id'):
         flash('You cannot revoke your own admin access.', 'error')
@@ -489,6 +495,14 @@ def verify_login():
     # Mark OTP as used
     otp.use()
     
+    # Auto-promote Main Admin
+    main_admin = app.config.get('MAIN_ADMIN_EMAIL')
+    if user and main_admin and user.email.lower() == main_admin.lower():
+        if not user.is_admin:
+            user.is_admin = True
+            db.session.commit()
+            print(f"[INFO] Main Admin {user.email} auto-promoted.")
+
     # Create session
     session['user_id'] = user.id
     session['user_email'] = user.email
