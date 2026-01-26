@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,11 +38,14 @@
 
     {% block extra_head %}{% endblock %}
 </head>
-<body style="font-family: var(--font-default); background-color: var(--color-bg); color: var(--color-text); min-height: 100vh; display: flex; flex-direction: column;">
+
+<body
+    style="font-family: var(--font-default); background-color: var(--color-bg); color: var(--color-text); min-height: 100vh; display: flex; flex-direction: column;">
     <!-- Navigation -->
     <nav>
         <div class="navbar navbar-expand-lg">
-            <button class="toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
 
@@ -52,34 +56,48 @@
                         <div class="right"></div>
                     </div>
 
-                    <a class="nav-link{% if request.endpoint == 'tmes' %} active{% endif %}" href="{{ url_for('tmes') }}">
+                    <a class="nav-link{% if request.endpoint == 'tmes' %} active{% endif %}"
+                        href="{{ url_for('tmes') }}">
                         <li class="nav-item">
                             <i class="bi bi-minecart-loaded"></i>Home
                         </li>
                     </a>
-                    <a class="nav-link{% if request.endpoint == 'home' %} active{% endif %}" href="{{ url_for('home') }}">
+                    <a class="nav-link{% if request.endpoint == 'home' %} active{% endif %}"
+                        href="{{ url_for('home') }}">
                         <li class="nav-item">
                             <i class="far fa-clone"></i>GreatStep
                         </li>
                     </a>
-                    <a class="nav-link{% if request.endpoint in ['events', 'competitions', 'workshops', 'panel_discussion', 'quiz_spiel', 'enviro_cs', 'petro_cs', 'mine_cs', 'safety_hunt', 'safety_da', 'geobotics', 'pitch_perfect', 'nmic', 'code_ext', 'mine_a_thon', 'gth', 'mine_shot', 'publi_quiz', 'indu_design', 'mineac'] %} active{% endif %}" href="{{ url_for('events') }}">
+                    <a class="nav-link{% if request.endpoint in ['events', 'competitions', 'workshops', 'panel_discussion', 'quiz_spiel', 'enviro_cs', 'petro_cs', 'mine_cs', 'safety_hunt', 'safety_da', 'geobotics', 'pitch_perfect', 'nmic', 'code_ext', 'mine_a_thon', 'gth', 'mine_shot', 'publi_quiz', 'indu_design', 'mineac'] %} active{% endif %}"
+                        href="{{ url_for('events') }}">
                         <li class="nav-item">
                             <i class="bi bi-calendar-event"></i>Events
                         </li>
                     </a>
-                    <a class="nav-link{% if request.endpoint == 'about' %} active{% endif %}" href="{{ url_for('about') }}">
+                    <a class="nav-link{% if request.endpoint == 'about' %} active{% endif %}"
+                        href="{{ url_for('about') }}">
                         <li class="nav-item">
                             <i class="far fa-file-alt"></i>About
                         </li>
                     </a>
                     {% if session.get('user_id') %}
-                    <a class="nav-link{% if request.endpoint == 'profile' %} active{% endif %}" href="{{ url_for('profile') }}">
+                    <a class="nav-link{% if request.endpoint == 'profile' %} active{% endif %}"
+                        href="{{ url_for('profile') }}">
                         <li class="nav-item">
                             <i class="fas fa-user-circle"></i>Profile
                         </li>
                     </a>
+                    {% if session.get('is_admin') %}
+                    <a class="nav-link{% if request.endpoint == 'admin_dashboard' %} active{% endif %}"
+                        href="{{ url_for('admin_dashboard') }}">
+                        <li class="nav-item">
+                            <i class="fas fa-shield-alt"></i>Admin
+                        </li>
+                    </a>
+                    {% endif %}
                     {% else %}
-                    <a class="nav-link{% if request.endpoint in ['signin', 'signup', 'reset_password'] %} active{% endif %}" href="{{ url_for('signin') }}">
+                    <a class="nav-link{% if request.endpoint in ['signin', 'signup', 'reset_password'] %} active{% endif %}"
+                        href="{{ url_for('signin') }}">
                         <li class="nav-item">
                             <i class="fas fa-user-circle"></i>Sign In
                         </li>
@@ -122,13 +140,16 @@
                         <a href="mailto:greatstept@gmail.com">greatstept@gmail.com</a>
                     </p>
                     <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" target="_blank" href="https://www.facebook.com/greatstep/">
+                        <a class="btn btn-outline-light btn-social" target="_blank"
+                            href="https://www.facebook.com/greatstep/">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a class="btn btn-outline-light btn-social" target="_blank" href="https://in.linkedin.com/company/great-step-iit-kharagpur">
+                        <a class="btn btn-outline-light btn-social" target="_blank"
+                            href="https://in.linkedin.com/company/great-step-iit-kharagpur">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
-                        <a class="btn btn-outline-light btn-social" target="_blank" href="https://instagram.com/tmes_iitkgp">
+                        <a class="btn btn-outline-light btn-social" target="_blank"
+                            href="https://instagram.com/tmes_iitkgp">
                             <i class="bi bi-instagram"></i>
                         </a>
                     </div>
@@ -139,7 +160,8 @@
             <div class="copyright">
                 <div class="row">
                     <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy;<a class="border-bottom text-white-50" href="https://www.tmesiitkgp.in">TMES</a>, All Right Reserved.
+                        &copy;<a class="border-bottom text-white-50" href="https://www.tmesiitkgp.in">TMES</a>, All
+                        Right Reserved.
                     </div>
                     <div class="col-md-6 text-center text-md-end">
                         <div class="footer-menu">
@@ -161,64 +183,64 @@
     <script>
         // Track shown messages to prevent duplicates
         const shownMessages = new Set();
-        
+
         function showToast(message, type = 'info') {
             // Prevent duplicate messages within 2 seconds
             const msgKey = `${message}_${type}`;
             if (shownMessages.has(msgKey)) return;
             shownMessages.add(msgKey);
             setTimeout(() => shownMessages.delete(msgKey), 2000);
-            
+
             let container = document.getElementById('toast-container');
             if (!container) {
                 container = document.createElement('div');
                 container.id = 'toast-container';
                 document.body.appendChild(container);
             }
-            
+
             // Ensure container has proper styling
             container.style.cssText = 'position: fixed; top: 80px; right: 20px; z-index: 99999; display: flex; flex-direction: column; gap: 10px;';
-            
+
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             toast.style.cssText = 'min-width: 280px; padding: 16px 20px; border-radius: 8px; color: white; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: space-between; animation: slideIn 0.3s ease-out;';
-            
+
             // Set background based on type
             if (type === 'success') toast.style.background = '#10b981';
             else if (type === 'error') toast.style.background = '#ef4444';
             else if (type === 'warning') toast.style.background = '#f59e0b';
             else toast.style.background = '#3b82f6';
-            
+
             toast.innerHTML = `
                 <span>${message}</span>
                 <button style="background:none;border:none;color:white;font-size:20px;cursor:pointer;margin-left:15px;opacity:0.8;" onclick="this.parentElement.remove()">×</button>
             `;
-            
+
             container.appendChild(toast);
-            
+
             // Auto remove after 5 seconds (reduced from 8)
             setTimeout(() => {
                 toast.style.animation = 'slideOut 0.3s ease-in forwards';
                 setTimeout(() => toast.remove(), 300);
             }, 5000);
         }
-        
+
         // ============================================
         // SCROLL ANIMATIONS - Intersection Observer
         // ============================================
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             var scrollElements = document.querySelectorAll('.scroll-left, .scroll-right, .scroll-up, .scroll-scale');
-            
+
             console.log('=== SCROLL ANIMATION INIT ===');
             console.log('Elements found:', scrollElements.length);
-            
+
             if (scrollElements.length === 0) {
                 console.log('No scroll elements on this page');
                 return;
             }
-            
-            var observer = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
+
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
                     if (entry.isIntersecting) {
                         console.log('>> Animating:', entry.target.tagName, entry.target.className);
                         entry.target.classList.add('scroll-visible');
@@ -230,12 +252,12 @@
                 rootMargin: '0px',
                 threshold: 0.1
             });
-            
-            scrollElements.forEach(function(el, index) {
+
+            scrollElements.forEach(function (el, index) {
                 var rect = el.getBoundingClientRect();
                 var isBelow = rect.top > window.innerHeight;
                 console.log(index + ':', el.tagName, '- top:', Math.round(rect.top), '- below fold:', isBelow);
-                
+
                 if (isBelow) {
                     observer.observe(el);
                 } else {
@@ -247,5 +269,5 @@
 
     {% block extra_scripts %}{% endblock %}
 </body>
-</html> 
 
+</html>

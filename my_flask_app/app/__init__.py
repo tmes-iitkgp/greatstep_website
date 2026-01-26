@@ -43,6 +43,143 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+# Admin required decorator
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('Please sign in to access this page', 'error')
+            return redirect(url_for('signin'))
+        
+        user = User.query.get(session['user_id'])
+        if not user or not user.is_admin:
+            flash('Admin access only', 'error')
+            return redirect(url_for('home'))
+            
+        return f(*args, **kwargs)
+    return decorated_function
+
+@app.route('/admin/dashboard')
+@admin_required
+def admin_dashboard():
+    """Admin dashboard with stats and all registrations"""
+    # Fetch all registrations sorted by newest first
+    registrations = GreatStepRegistration.query.order_by(GreatStepRegistration.created_at.desc()).all()
+    
+    # Calculate stats
+    stats = {
+        'total_registrations': len(registrations),
+        'pending': sum(1 for r in registrations if r.payment_status == 'verification_pending'),
+        'verified': sum(1 for r in registrations if r.payment_status == 'completed'),
+        'revenue': sum(r.amount_paid for r in registrations if r.payment_status == 'completed') // 100
+    }
+    
+    return render_template('admin_dashboard.html', registrations=registrations, stats=stats)
+
+@app.route('/admin/verify-payment/<int:reg_id>', methods=['POST'])
+@admin_required
+def admin_verify_payment(reg_id):
+    """Verify a pending payment"""
+    registration = GreatStepRegistration.query.get_or_404(reg_id)
+    
+    if registration.payment_status == 'completed':
+        flash('Payment already verified', 'info')
+        return redirect(url_for('admin_dashboard'))
+    
+    try:
+        # Mark payment as completed
+        registration.payment_status = 'completed'
+        registration.payment_completed_at = datetime.utcnow()
+        
+        # Update user status
+        user = User.query.filter_by(email=registration.email).first()
+        if user:
+            user.is_greatstep_registered = True
+            user.updated_at = datetime.utcnow()
+        
+        db.session.commit()
+        
+        # Send confirmation email (optional, using verify email function logic for now just flash)
+        flash(f'Payment for {registration.first_name} verified successfully!', 'success')
+        
+    except Exception as e:
+        db.session.rollback()
+        print(f"[ERROR] Verification failed: {e}")
+        flash('Error updating database', 'error')
+        
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/reject-payment/<int:reg_id>', methods=['POST'])
+@admin_required
+def admin_reject_payment(reg_id):
+    """Reject a pending payment"""
+    registration = GreatStepRegistration.query.get_or_404(reg_id)
+    
+    if registration.payment_status == 'completed':
+        flash('Cannot reject a verified payment', 'error')
+        return redirect(url_for('admin_dashboard'))
+        
+    try:
+        registration.payment_status = 'failed'
+        db.session.commit()
+        flash(f'Payment for {registration.first_name} rejected.', 'warning')
+    except Exception as e:
+        db.session.rollback()
+        flash('Error updating database', 'error')
+        
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/users')
+@admin_required
+def admin_users():
+    """Admin page to manage users"""
+    # Fetch all users
+    users = User.query.order_by(User.created_at.desc()).all()
+    return render_template('admin_users.html', users=users)
+
+@app.route('/admin/users/promote/<int:user_id>', methods=['POST'])
+@admin_required
+def admin_promote_user(user_id):
+    """Promote a user to admin"""
+    user = User.query.get_or_404(user_id)
+    
+    if user.is_admin:
+        flash(f'{user.email} is already an admin.', 'info')
+    else:
+        try:
+            user.is_admin = True
+            db.session.commit()
+            flash(f'{user.email} promoted to Admin successfully!', 'success')
+        except Exception as e:
+            db.session.rollback()
+            flash('Error updating database', 'error')
+            
+    return redirect(url_for('admin_users'))
+
+@app.route('/admin/users/revoke/<int:user_id>', methods=['POST'])
+@admin_required
+def admin_revoke_user(user_id):
+    """Revoke admin access from a user"""
+    user = User.query.get_or_404(user_id)
+    
+    # Prevent self-revocation
+    if user.id == session.get('user_id'):
+        flash('You cannot revoke your own admin access.', 'error')
+        return redirect(url_for('admin_users'))
+        
+    if not user.is_admin:
+        flash(f'{user.email} is not an admin.', 'info')
+    else:
+        try:
+            user.is_admin = False
+            db.session.commit()
+            flash(f'Admin access revoked for {user.email}.', 'warning')
+        except Exception as e:
+            db.session.rollback()
+            flash('Error updating database', 'error')
+            
+    return redirect(url_for('admin_users'))
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -355,6 +492,7 @@ def verify_login():
     # Create session
     session['user_id'] = user.id
     session['user_email'] = user.email
+    session['is_admin'] = user.is_admin
     session.permanent = True  # Make session persistent
     session.pop('pending_login_email', None)
     
@@ -1116,33 +1254,8 @@ def greatstep_register():
             flash('Please enter a valid 10-digit mobile number', 'error')
             return render_template('greatstep_register.html', user=user)
         
-        # Initialize Razorpay client
-        client = razorpay.Client(auth=(Config.RAZORPAY_KEY_ID, Config.RAZORPAY_KEY_SECRET))
-        
-        # Create Razorpay order
+        # Prepare registration data
         amount = Config.GREATSTEP_REGISTRATION_FEE  # Amount in paise
-        order_data = {
-            'amount': amount,
-            'currency': 'INR',
-            'receipt': f'greatstep_{user.id}_{datetime.utcnow().strftime("%Y%m%d%H%M%S")}',
-            'notes': {
-                'user_email': user.email,
-                'event': 'Great Step 2025'
-            }
-        }
-        
-        print(f'[DEBUG] Creating Razorpay order with data: {order_data}')
-        print(f'[DEBUG] Using Key ID: {Config.RAZORPAY_KEY_ID}')
-        
-        try:
-            order = client.order.create(data=order_data)
-            print(f'[DEBUG] Order created successfully: {order}')
-        except Exception as e:
-            import traceback
-            print(f'[ERROR] Razorpay order creation failed: {e}')
-            print(f'[ERROR] Traceback: {traceback.format_exc()}')
-            flash(f'Failed to create payment order. Please try again.', 'error')
-            return render_template('greatstep_register.html', user=user)
         
         # Delete any existing pending registration for this email
         GreatStepRegistration.query.filter_by(
@@ -1158,19 +1271,16 @@ def greatstep_register():
             mobile=mobile,
             college=college,
             year=year,
-            razorpay_order_id=order['id'],
             amount_paid=amount,
             payment_status='pending'
         )
         db.session.add(registration)
         db.session.commit()
         
-        # Render payment page with Razorpay checkout
+        # Render payment page with UPI QR code
         return render_template('greatstep_payment.html',
                                user=user,
                                registration=registration,
-                               order=order,
-                               razorpay_key_id=Config.RAZORPAY_KEY_ID,
                                amount_display=amount // 100)  # Convert paise to rupees for display
     
     return render_template('greatstep_register.html', user=user)
@@ -1179,65 +1289,47 @@ def greatstep_register():
 @app.route('/great-step/payment/verify', methods=['POST'])
 @verified_user_required
 def greatstep_payment_verify():
-    """Verify Razorpay payment signature and complete registration"""
+    """Verify Manual payment submission"""
     user = User.query.get(session['user_id'])
     
     # Get payment details from request
-    razorpay_order_id = request.form.get('razorpay_order_id')
-    razorpay_payment_id = request.form.get('razorpay_payment_id')
-    razorpay_signature = request.form.get('razorpay_signature')
+    transaction_id = request.form.get('transaction_id', '').strip()
     
-    if not all([razorpay_order_id, razorpay_payment_id, razorpay_signature]):
-        flash('Invalid payment response. Please try again.', 'error')
+    if not transaction_id:
+        flash('Please enter the Transaction ID.', 'error')
+        # We need to re-fetch registration to re-render the payment page properly if we were to redirect back
+        # But simpler to just redirect to register which will redirect to payment if pending?
+        # Actually register route creates new one. Let's redirect to a payment page route if we had one.
+        # Since we don't have a standalone GET /payment route for a specific reg, we'll redirect to register
+        # But wait, register create a NEW pending one. 
+        # Let's try to find the pending one in `greatstep_register` GET logic? No it creates valid one on POST.
+        # We should probably just redirect to register, user might have to re-enter details but that's safe.
         return redirect(url_for('greatstep_register'))
     
-    # Find the registration record
+    # Find the pending registration record for this user
     registration = GreatStepRegistration.query.filter_by(
-        razorpay_order_id=razorpay_order_id,
-        email=user.email
-    ).first()
+        email=user.email,
+        payment_status='pending'
+    ).order_by(GreatStepRegistration.created_at.desc()).first()
     
     if not registration:
-        flash('Registration not found. Please try again.', 'error')
+        flash('Registration session expired. Please register again.', 'error')
         return redirect(url_for('greatstep_register'))
     
-    # Verify signature
-    try:
-        # Generate expected signature
-        message = f"{razorpay_order_id}|{razorpay_payment_id}"
-        expected_signature = hmac.new(
-            Config.RAZORPAY_KEY_SECRET.encode('utf-8'),
-            message.encode('utf-8'),
-            hashlib.sha256
-        ).hexdigest()
-        
-        if expected_signature != razorpay_signature:
-            registration.payment_status = 'failed'
-            db.session.commit()
-            flash('Payment verification failed. Please contact support.', 'error')
-            return redirect(url_for('greatstep_payment_failure'))
-        
-        # Payment verified successfully
-        registration.razorpay_payment_id = razorpay_payment_id
-        registration.razorpay_signature = razorpay_signature
-        registration.payment_status = 'completed'
-        registration.payment_completed_at = datetime.utcnow()
-        
-        # Update user's registration status
-        user.is_greatstep_registered = True
-        user.updated_at = datetime.utcnow()
-        
-        db.session.commit()
-        
-        flash('Registration successful! Welcome to Great Step 2025!', 'success')
-        return redirect(url_for('greatstep_payment_success'))
-        
-    except Exception as e:
-        print(f'[ERROR] Payment verification error: {e}')
-        registration.payment_status = 'failed'
-        db.session.commit()
-        flash('Payment verification error. Please contact support.', 'error')
-        return redirect(url_for('greatstep_payment_failure'))
+    # Update registration
+    registration.transaction_id = transaction_id
+    registration.payment_status = 'verification_pending'
+    registration.payment_completed_at = datetime.utcnow()
+    
+    # Update user's registration status to true (provisionally) or keep false until verified?
+    # User asked for "manual upi", usually implies we wait for verification.
+    # But usually we want to show them "success - verification pending".
+    # We will NOT set is_greatstep_registered = True yet. Admin should do that.
+    
+    db.session.commit()
+    
+    flash('Payment details submitted! Verification is pending.', 'success')
+    return redirect(url_for('greatstep_payment_success'))
 
 
 @app.route('/great-step/payment/success')
@@ -1246,8 +1338,10 @@ def greatstep_payment_success():
     """Payment success page"""
     user = User.query.get(session['user_id'])
     registration = GreatStepRegistration.query.filter_by(
-        email=user.email,
-        payment_status='completed'
+        email=user.email
+    ).filter(
+        (GreatStepRegistration.payment_status == 'completed') | 
+        (GreatStepRegistration.payment_status == 'verification_pending')
     ).order_by(GreatStepRegistration.created_at.desc()).first()
     
     return render_template('greatstep_success.html', user=user, registration=registration)

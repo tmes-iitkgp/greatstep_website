@@ -9,7 +9,7 @@
         margin: 40px auto;
         padding: 0 20px;
     }
-    
+
     .payment-card {
         background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
         border-radius: 16px;
@@ -18,18 +18,18 @@
         border: 1px solid rgba(255, 255, 255, 0.1);
         text-align: center;
     }
-    
+
     .payment-header h1 {
         font-size: 1.8rem;
         color: #f0f6fc;
         margin-bottom: 10px;
     }
-    
+
     .payment-header p {
         color: #8b949e;
         margin-bottom: 30px;
     }
-    
+
     .order-summary {
         background: rgba(255, 255, 255, 0.05);
         border-radius: 12px;
@@ -37,7 +37,7 @@
         margin-bottom: 30px;
         text-align: left;
     }
-    
+
     .order-summary h3 {
         color: #c9d1d9;
         font-size: 1rem;
@@ -45,7 +45,7 @@
         padding-bottom: 10px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-    
+
     .summary-row {
         display: flex;
         justify-content: space-between;
@@ -53,11 +53,11 @@
         color: #8b949e;
         font-size: 0.95rem;
     }
-    
+
     .summary-row span:last-child {
         color: #f0f6fc;
     }
-    
+
     .summary-row.total {
         margin-top: 15px;
         padding-top: 15px;
@@ -65,11 +65,11 @@
         font-size: 1.1rem;
         font-weight: 600;
     }
-    
+
     .summary-row.total span:last-child {
         color: #10b981;
     }
-    
+
     .pay-btn {
         width: 100%;
         padding: 16px;
@@ -82,18 +82,18 @@
         cursor: pointer;
         transition: all 0.3s ease;
     }
-    
+
     .pay-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
     }
-    
+
     .pay-btn:disabled {
         opacity: 0.7;
         cursor: not-allowed;
         transform: none;
     }
-    
+
     .secure-text {
         display: flex;
         align-items: center;
@@ -103,22 +103,22 @@
         color: #8b949e;
         font-size: 0.85rem;
     }
-    
+
     .secure-text i {
         color: #10b981;
     }
-    
+
     .cancel-link {
         display: inline-block;
         margin-top: 20px;
         color: #f85149;
         font-size: 0.9rem;
     }
-    
+
     .cancel-link:hover {
         text-decoration: underline;
     }
-    
+
     .loading-spinner {
         display: none;
         width: 20px;
@@ -129,9 +129,11 @@
         animation: spin 1s linear infinite;
         margin-right: 10px;
     }
-    
+
     @keyframes spin {
-        to { transform: rotate(360deg); }
+        to {
+            transform: rotate(360deg);
+        }
     }
 </style>
 {% endblock %}
@@ -145,7 +147,7 @@
             <h1>🔐 Complete Payment</h1>
             <p>Secure payment powered by Razorpay</p>
         </div>
-        
+
         <div class="order-summary">
             <h3>Order Summary</h3>
             <div class="summary-row">
@@ -169,100 +171,81 @@
                 <span>₹{{ amount_display }}</span>
             </div>
         </div>
-        
-        <button id="pay-btn" class="pay-btn" onclick="initiatePayment()">
-            <span class="loading-spinner" id="spinner"></span>
-            Pay ₹{{ amount_display }}
-        </button>
-        
+
+        <div class="qr-container">
+            <h3>Scan using any UPI App</h3>
+            <img src="{{ url_for('static', filename='images/payment-qr.png') }}" alt="Payment QR Code" class="qr-code">
+            <p class="upi-id">UPI ID: tmes@sbi</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('greatstep_payment_verify') }}" class="payment-form">
+            <div class="form-group">
+                <label for="transaction_id">Transaction ID / UTR Number</label>
+                <input type="text" id="transaction_id" name="transaction_id" placeholder="Enter the 12-digit UTR number"
+                    required>
+            </div>
+
+            <button type="submit" id="pay-btn" class="pay-btn">
+                Submit Payment Details
+            </button>
+        </form>
+
         <div class="secure-text">
             <i class="fas fa-lock"></i>
-            <span>256-bit SSL Encrypted Payment</span>
+            <span>Secure Manual Verification</span>
         </div>
-        
+
         <a href="{{ url_for('greatstep_register') }}" class="cancel-link">
             ← Go back and edit details
         </a>
     </div>
 </div>
 
-<!-- Razorpay Checkout Script -->
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>
+    .qr-container {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
 
-<script>
-function initiatePayment() {
-    const btn = document.getElementById('pay-btn');
-    const spinner = document.getElementById('spinner');
-    
-    btn.disabled = true;
-    spinner.style.display = 'inline-block';
-    
-    var options = {
-        "key": "{{ razorpay_key_id }}",
-        "amount": "{{ order.amount }}",
-        "currency": "{{ order.currency }}",
-        "name": "TMES IIT Kharagpur",
-        "description": "Great Step 2025 Registration",
-        "order_id": "{{ order.id }}",
-        "handler": function (response) {
-            // Create form and submit to verify endpoint
-            var form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '{{ url_for("greatstep_payment_verify") }}';
-            
-            var fields = {
-                'razorpay_order_id': response.razorpay_order_id,
-                'razorpay_payment_id': response.razorpay_payment_id,
-                'razorpay_signature': response.razorpay_signature
-            };
-            
-            for (var key in fields) {
-                var input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = key;
-                input.value = fields[key];
-                form.appendChild(input);
-            }
-            
-            document.body.appendChild(form);
-            form.submit();
-        },
-        "prefill": {
-            "name": "{{ registration.first_name }} {{ registration.last_name }}",
-            "email": "{{ registration.email }}",
-            "contact": "{{ registration.mobile }}"
-        },
-        "theme": {
-            "color": "#667eea"
-        },
-        "modal": {
-            "ondismiss": function() {
-                btn.disabled = false;
-                spinner.style.display = 'none';
-            }
-        }
-    };
-    
-    var rzp = new Razorpay(options);
-    
-    rzp.on('payment.failed', function (response) {
-        btn.disabled = false;
-        spinner.style.display = 'none';
-        showToast('Payment failed: ' + response.error.description, 'error');
-    });
-    
-    rzp.open();
-}
-</script>
+    .qr-code {
+        width: 200px;
+        height: 200px;
+        margin: 10px 0;
+    }
+
+    .upi-id {
+        color: #333;
+        font-weight: bold;
+        margin-top: 5px;
+    }
+
+    .payment-form {
+        margin-top: 20px;
+        text-align: left;
+    }
+
+    .payment-form input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        color: white;
+    }
+</style>
 {% endblock %}
 
 {% block extra_scripts %}
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 <script>
-{% for category, message in messages %}
-showToast('{{ message }}', '{{ category }}');
-{% endfor %}
+    {% for category, message in messages %}
+    showToast('{{ message }}', '{{ category }}');
+    {% endfor %}
 </script>
 {% endif %}
 {% endwith %}

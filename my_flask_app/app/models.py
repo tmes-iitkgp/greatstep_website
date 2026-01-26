@@ -23,6 +23,7 @@ class User(db.Model):
     year = db.Column(db.String(20))
     
     # Account status
+    is_admin = db.Column(db.Boolean, default=False)
     is_verified = db.Column(db.Boolean, default=False)
     is_active = db.Column(db.Boolean, default=True)
     is_greatstep_registered = db.Column(db.Boolean, default=False)
@@ -170,11 +171,12 @@ class GreatStepRegistration(db.Model):
     year = db.Column(db.String(20), nullable=False)
     
     # Payment details
-    razorpay_order_id = db.Column(db.String(100), nullable=False)
-    razorpay_payment_id = db.Column(db.String(100))
-    razorpay_signature = db.Column(db.String(256))
+    transaction_id = db.Column(db.String(100), nullable=True)  # Manual payment UTR/TxnID
+    razorpay_order_id = db.Column(db.String(100), nullable=True)
+    razorpay_payment_id = db.Column(db.String(100), nullable=True)
+    razorpay_signature = db.Column(db.String(256), nullable=True)
     amount_paid = db.Column(db.Integer, nullable=False)  # Amount in paise
-    payment_status = db.Column(db.String(20), default='pending')  # pending, completed, failed
+    payment_status = db.Column(db.String(20), default='pending')  # pending, verification_pending, completed, failed
     
     # Timestamps
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
