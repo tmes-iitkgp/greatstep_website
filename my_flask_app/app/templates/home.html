@@ -4,6 +4,44 @@
 
 {% block extra_head %}
 <style>
+        .header-image img.ncl-img {
+            height: 50px;
+            max-width: 150px;
+            width: auto;
+            object-fit: contain;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            padding: 4px;
+        }
+    .header-image {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    .header-image img {
+        height: 70px;
+        max-width: 120px;
+        width: 100%;
+        object-fit: contain;
+        display: block;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        padding: 4px;
+    }
+    @media (max-width: 600px) {
+        .header-image img {
+            height: 40px;
+            max-width: 70px;
+            padding: 2px;
+        }
+        .header-image {
+            gap: 8px;
+        }
+    }
     .register-hero-btn {
         display: inline-flex;
         align-items: center;
@@ -69,20 +107,16 @@
     <section class="header section__padding">
         <div class="header-content">
             <div class="header-image">
-                <div>
-                    <img src="{{ url_for('static', filename='images/Sponsors/ncl.png') }}" alt="NCL" />
-                </div>
+                <img src="{{ url_for('static', filename='images/Sponsors/wcl.png') }}" alt="WCL" />
                 <h2>&amp;</h2>
-                <div>
-                    <img src="{{ url_for('static', filename='images/Sponsors/gmdc.jpg') }}" alt="GMDC" />
-                </div>
+                <img src="{{ url_for('static', filename='images/Sponsors/gmdc.jpg') }}" alt="GMDC" />
             </div>
 
             <h2 class="text__tmes">Technology Mining Engineering Society</h2>
             <p style="font-size: 1.6rem;" class="animate-charcter">
                 PRESENTS
             </p>
-            <h1 class="animate-charcter gradient__text">GREAT-STEP’25</h1>
+            <h1 class="animate-charcter gradient__text">GREAT-STEP’26</h1>
             <h2 class="animate-charcter" style="font-size: 1.2rem; color: var(--color-subtext);">13th-15th MARCH</h2>
             <p>
                 Upholding its legacy as a pioneer in the field, the Department of Mining Engineering, IIT Kharagpur has consistently championed the integration of practical knowledge with innovation. This philosophy has transformed traditional engineering principles into solutions aligned with modern technological demands.
@@ -94,7 +128,7 @@
             <!-- Register Now Button -->
             <div style="margin-top: 30px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
                 <a href="{{ url_for('greatstep_register') }}" class="register-hero-btn">
-                    <i class="fas fa-star"></i> Register for Great Step 2025
+                    <i class="fas fa-star"></i> Register for Great Step 2026
                 </a>
                 <a href="{{ url_for('events') }}" class="explore-events-btn">
                     <i class="fas fa-calendar-alt"></i> Explore Events
@@ -111,34 +145,22 @@
         <div class="swiper-container">
             <div class="swiper-wrapper" id="carousel-track">
                 <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/GS/a (1).jpg') }}" alt="Event 1" />
+                    <img src="{{ url_for('static', filename='images/event-highlights/1.jpeg') }}" alt="Event 1" />
                 </div>
                 <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/GS/a (2).jpg') }}" alt="Event 2" />
+                    <img src="{{ url_for('static', filename='images/event-highlights/2.jpeg') }}" alt="Event 2" />
                 </div>
                 <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/GS/a (3).jpg') }}" alt="Event 3" />
+                    <img src="{{ url_for('static', filename='images/event-highlights/3.jpeg') }}" alt="Event 3" />
                 </div>
                 <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/GS/a (4).jpg') }}" alt="Event 4" />
+                    <img src="{{ url_for('static', filename='images/event-highlights/4.jpeg') }}" alt="Event 4" />
                 </div>
                 <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/GS/a (5).jpg') }}" alt="Event 5" />
+                    <img src="{{ url_for('static', filename='images/event-highlights/5.jpeg') }}" alt="Event 5" />
                 </div>
                 <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/GS/a (6).jpg') }}" alt="Event 6" />
-                </div>
-                <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/GS/a (7).jpg') }}" alt="Event 7" />
-                </div>
-                <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/GS/a (8).jpg') }}" alt="Event 8" />
-                </div>
-                <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/GS/a (9).jpg') }}" alt="Event 9" />
-                </div>
-                <div class="swiper-slide">
-                    <img src="{{ url_for('static', filename='images/GS/a (10).jpg') }}" alt="Event 10" />
+                    <img src="{{ url_for('static', filename='images/event-highlights/6.jpeg') }}" alt="Event 6" />
                 </div>
             </div>
         </div>
@@ -162,22 +184,35 @@
             <div class="marquee">
                 <div class="marquee-content" id="sponsor-track">
                     <div class="sponsor-card">
-                        <img src="https://media-hosting.imagekit.io/4ee0822bc4994db1/WCL-TITLE SPONSOR.png?Expires=1837712100&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=pYbSVwCIiko0Zmo8sQZN7bss56Jn2YyItpKTE8A0-cTuKnJmENOoal9Ti74Ql9gqLzajnAkLrimvgvBq815exzujcVZVC1MB7BLRev9JyVKgcZWxjk9kB3A3RndBKpQSvTjsTmkdn01LL7Q6M3J3I10Phy~pS6jwjQV~ouPC0Jifx9qpYLilsbzpc0uUYo-c3RBs8G5OhQkXpGXYU2OUJiy4AqSIUPTDald92eCaGesL8nQip8kC83ogMiPRJ3w7gKobvr~mLs7pRPkxyJ93RE9IesDTqFH3h3uUDVNRf6V~77pm5xopwQelTPU-C1pw-lhHAvMlkThVigByxsKVqg__" alt="WCL" />
+                        <img src="{{ url_for('static', filename='images/Sponsors/gmdc.jpg') }}" alt="GMDC" />
                     </div>
                     <div class="sponsor-card">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/d/df/GujaratMineralDevelopmentCorporationLogo.jpg" alt="GMDC" />
+                        <img src="{{ url_for('static', filename='images/Sponsors/mg logo.png') }}" alt="MG" />
                     </div>
                     <div class="sponsor-card">
-                        <img src="https://media-hosting.imagekit.io/8e1fa0affe1647b2/TEXMIN-TECHNOLOGY PARTNER.png?Expires=1837712254&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=WYgnnZv7t-VLCUudJOAxc-SadLP3s2X3Ns24fP0Mztj6o71R7RTR7E1Zm6fIqZPI-PX9LYghLa7hMDyigi5VdvilzTliZvaC3oupkZlRRN5dj8MLFh6-x9MS~brwfetla7nc0wwLOErGn9Hd~ktIBtZ-0gzpJ7CCwkSyOD9OBrz~WU-IfgJxTVhAshVdWn~IP4z~-Z381u9fZ0lKM0KTEDAdG2fgHH~ktf-SNjSr3p-~LRQ6u20KvrULy8QSi4Y716tjuyAJV1LbIauxaZTYQn47z72QNLWIRD~TlEtSWepIQrNTsjPKh7Z7-lnVnsWcIhL~ubSHDGKxnl6Uoxc1gQ__" alt="TEXMIN" />
+                        <img src="{{ url_for('static', filename='images/Sponsors/sigma.png') }}" alt="SIGMA" />
                     </div>
                     <div class="sponsor-card">
-                        <img src="https://media-hosting.imagekit.io/da40cc6660e746c2/MG-EDUCATIONAL PARTNER.png?Expires=1837712435&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=aQBODNxzGUA9GhOTr3wPAxjJb6J8ApSaW4FbzjweB3NeEcSKHh-iIfT9OFDZ70O900wzPae9XSPFI9bvef7g1IlFlocIGrCBy8FujTg0U7d7jWDqHIdgpcyTgo1F2VPsGKripFberKNcLI5EgvFkx-HirrjLGRjzA-lIwKacnwZ7eevoSw5eCaLEEh-x1IyLDhvsrD39T87YvP-cIvNmKPfKsVzmQvM1uc5Lyde97oWAjJC6Bc5aaEHCR40eF-fiA8aU4z06gFlXS77c2gX8wZ15oWj8fGTkFR0UDTv6h8glep-AT231AIEgA3132oSl~o0I1zvegXV7U48j40464g__" alt="MG" />
+                        <img src="{{ url_for('static', filename='images/Sponsors/TexMin.png') }}" alt="TexMin" />
                     </div>
                     <div class="sponsor-card">
-                        <img src="https://media-hosting.imagekit.io/ee27a4146b314493/SIGMA-CORE SPONSOR.png?Expires=1837711918&Key-Pair-Id=K2ZIVPTIP2VGHC&Signature=CNEtGbz-ESgvHuTOJoUBNP-AJNxpKkQHMcRjg-jBP~Q9OmLSXx0ThkaeOxKgquCyirsRBH1z0PBMC1IR4fNQ9M9bVbInK1HwLQXh3-xo9cNmmKOgfoU2Z-UAF18tEdNb06Sq8rfHJf2QFAVNdVJNWwsGD~~hA3jSMusE8pCvyEoUt4HQr1cUqiHbemMyZc7ZuU6xQ7KlljYswNTBJNfznT42JY5VYk-xsKnViu-ABJXgEEdvn6rx-T~ziuVpUkpdKn5yCaVKyiXH-yH-QAnqmZMePhvxqgxExKkiPIv9ityzlRsedFx73CtpFaafNtJ39395gjWhX-tkzUv82M6BTg__" alt="SIGMA" />
+                        <img src="{{ url_for('static', filename='images/Sponsors/wcl.png') }}" alt="WCL" />
+                    </div>
+                    <!-- Loop for seamless scroll -->
+                    <div class="sponsor-card">
+                        <img src="{{ url_for('static', filename='images/Sponsors/gmdc.jpg') }}" alt="GMDC" />
                     </div>
                     <div class="sponsor-card">
-                        <img src="https://azureadb2cblob.blob.core.windows.net/resources/Prod/OM_Logo_on-transparent.png" alt="OMC" />
+                        <img src="{{ url_for('static', filename='images/Sponsors/mg logo.png') }}" alt="MG" />
+                    </div>
+                    <div class="sponsor-card">
+                        <img src="{{ url_for('static', filename='images/Sponsors/sigma.png') }}" alt="SIGMA" />
+                    </div>
+                    <div class="sponsor-card">
+                        <img src="{{ url_for('static', filename='images/Sponsors/TexMin.png') }}" alt="TexMin" />
+                    </div>
+                    <div class="sponsor-card">
+                        <img src="{{ url_for('static', filename='images/Sponsors/wcl.png') }}" alt="WCL" />
                     </div>
                 </div>
             </div>

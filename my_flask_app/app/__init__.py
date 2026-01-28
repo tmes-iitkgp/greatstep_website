@@ -444,23 +444,10 @@ def signin():
             flash('Invalid email or password', 'error')
             return render_template('signin.html')
         
-        # Generate and send OTP for login
-        otp = OTP.create_otp(user.id, 'login')
-        
-        success, message = send_login_otp(email, otp.code)
-        
-        if success:
-            session['pending_login_email'] = email
-            dev_otp = otp.code if app.debug else None
-            return render_template('verify_otp.html',
-                                   email=email,
-                                   purpose='login',
-                                   action_url=url_for('verify_login'),
-                                   back_url=url_for('signin'),
-                                   dev_otp=dev_otp)
-        else:
-            flash('Failed to send OTP. Please try again.', 'error')
-    
+        # Direct login (no OTP)
+        session['user_id'] = user.id
+        flash('Signed in successfully!', 'success')
+        return redirect(url_for('profile'))
     return render_template('signin.html')
 
 
