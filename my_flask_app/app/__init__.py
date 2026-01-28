@@ -1358,18 +1358,10 @@ def greatstep_payment_failure():
 
 # Production readiness: Logging and Error Handling
 import logging
-from logging.handlers import RotatingFileHandler
 
 if not app.debug:
-    # Set up logging for production
-    if not os.path.exists('logs'):
-        os.mkdir('logs')
-    file_handler = RotatingFileHandler('logs/greatstep.log', maxBytes=10240, backupCount=10)
-    file_handler.setFormatter(logging.Formatter(
-        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
-    ))
-    file_handler.setLevel(logging.INFO)
-    app.logger.addHandler(file_handler)
+    # Set up logging for production (console logging for serverless)
+    logging.basicConfig(level=logging.INFO)
     app.logger.setLevel(logging.INFO)
     app.logger.info('GreatStep startup')
 
