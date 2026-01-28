@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error - Great Step{% endblock %}
+
+{% block content %}
+<div class="error-container" style="text-align: center; padding: 5rem 2rem;">
+    <h1 style="font-size: 4rem; color: var(--color-gold); margin-bottom: 1rem;">500</h1>
+    <h2 style="color: var(--color-text); margin-bottom: 2rem;">Internal Server Error</h2>
+    <p style="color: var(--color-text-secondary); margin-bottom: 2rem;">
+        Something went wrong on our end. Please try again later.
+    </p>
+    <a href="{{ url_for('home') }}" class="btn" style="display: inline-block; padding: 1rem 2rem; background: var(--gradient-gold); color: white; text-decoration: none; border-radius: 8px;">
+        Go Home
+    </a>
+</div>
+{% endblock %}

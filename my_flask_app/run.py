@@ -8,12 +8,20 @@ try:
 except ImportError:
     pass
 
+# Set configuration based on environment
+# Default to production for Vercel deployment
+config_class = 'app.config.ProductionConfig'
+if os.environ.get('FLASK_ENV') == 'development':
+    config_class = 'app.config.DevelopmentConfig'
+
+app.config.from_object(config_class)
+
 # Vercel looks for a variable named 'app' in this file.
 # Since we imported it above, it is ready to go!
 
 if __name__ == '__main__':
     # This block is ONLY run on your computer, NOT on Vercel
-    debug_mode = os.environ.get('FLASK_ENV') == 'development'
+    debug_mode = app.config['DEBUG']
     
     print(f"[INFO] Starting server with debug={debug_mode}")
     # Verify API key locally without crashing if missing

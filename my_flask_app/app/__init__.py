@@ -20,8 +20,9 @@ app.config.from_object(config.get(flask_env, Config))
 print(f"[INFO] Loaded {flask_env} configuration, DEBUG={app.config.get('DEBUG', False)}")
 
 # Session configuration for better compatibility
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
+app.config['SESSION_COOKIE_SAMESITE'] = app.config.get('SESSION_COOKIE_SAMESITE', 'Lax')
+app.config['SESSION_COOKIE_SECURE'] = app.config.get('SESSION_COOKIE_SECURE', False)
+app.config['SESSION_COOKIE_HTTPONLY'] = app.config.get('SESSION_COOKIE_HTTPONLY', True)
 
 # Initialize extensions
 db.init_app(app)
@@ -1353,6 +1354,38 @@ def greatstep_payment_success():
 def greatstep_payment_failure():
     """Payment failure page"""
     return render_template('greatstep_failure.html')
+
+
+# Production readiness: Logging and Error Handling
+import logging
+from logging.handlers import RotatingFileHandler
+
+if not app.debug:
+    # Set up logging for production
+    if not os.path.exists('logs'):
+        os.mkdir('logs')
+    file_handler = RotatingFileHandler('logs/greatstep.log', maxBytes=10240, backupCount=10)
+    file_handler.setFormatter(logging.Formatter(
+        '%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'
+    ))
+    file_handler.setLevel(logging.INFO)
+    app.logger.addHandler(file_handler)
+    app.logger.setLevel(logging.INFO)
+    app.logger.info('GreatStep startup')
+
+# Error handlers
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('error_404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template('error_500.html'), 500
+
+@app.errorhandler(403)
+def forbidden_error(error):
+    return render_template('error_403.html'), 403
 
 
 if __name__ == '__main__':
