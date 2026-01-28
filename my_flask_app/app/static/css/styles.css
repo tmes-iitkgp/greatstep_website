@@ -249,7 +249,7 @@ p, .welcome-description, .about_container p, .event-name, .info_cards article h2
 }
 .tmes-team-photo-container {
     width: 100%;
-    max-width: 420px;
+    max-width: 600px;
     border-radius: 18px;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0,0,0,0.18);
@@ -3916,3 +3916,106 @@ nav .toggler .fa-solid {
 .scroll-delay-4 { transition-delay: 0.6s !important; }
 .scroll-delay-5 { transition-delay: 0.75s !important; }
 .scroll-delay-6 { transition-delay: 0.9s !important; }
+
+/* Responsive Design - Mobile First Approach */
+
+/* Tablet and smaller desktop */
+@media (max-width: 1024px) {
+    .carousel2 .swiper-slide {
+        min-width: 300px;
+        width: 300px;
+        height: 240px;
+    }
+    
+    .sponsor-card {
+        height: 100px;
+        margin: 0 0.8rem;
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+    /* Navigation adjustments */
+    .navbar {
+        padding: 1rem;
+    }
+    
+    .navbar .logo {
+        font-size: 1.5rem;
+    }
+    
+    .navbar .nav-links {
+        display: none; /* Hide desktop nav, show mobile menu if available */
+    }
+    
+    /* Hero section */
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    /* TMES team photo - make larger on mobile */
+    .tmes-team-photo-container {
+        max-width: 95vw;
+    }
+    
+    /* Carousel adjustments */
+    .carousel2 .swiper-slide {
+        min-width: 250px;
+        width: 250px;
+        height: 200px;
+    }
+    
+    .carousel2-title h2 {
+        font-size: 1.5rem;
+    }
+    
+    /* Sponsors */
+    .sponsor-card {
+        height: 80px;
+        margin: 0 0.5rem;
+        padding: 10px;
+    }
+    
+    /* Event cards */
+    .card_first {
+        margin: 0.8rem;
+    }
+    
+    /* Footer */
+    .footer {
+        padding: 2rem 1rem;
+    }
+    
+    .footer .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .carousel2 .swiper-slide {
+        min-width: 200px;
+        width: 200px;
+        height: 160px;
+    }
+    
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .hero .btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .sponsor-card {
+        height: 60px;
+        margin: 0 0.3rem;
+        padding: 8px;
+    }
+}
