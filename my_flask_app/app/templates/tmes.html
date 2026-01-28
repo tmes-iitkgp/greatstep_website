@@ -18,7 +18,7 @@
     <!-- TMES Team Photo Section -->
     <section class="tmes-team-photo-section section__padding">
         <div class="tmes-team-photo-container">
-            <img src="{{ url_for('static', filename='images/Team/tmes_team_placeholder.jpg') }}" alt="TMES Team Photo" class="tmes-team-photo" />
+            <img src="{{ url_for('static', filename='images/tmes_home.jpg') }}" alt="TMES Team Photo" class="tmes-team-photo" />
         </div>
     </section>
 
@@ -28,25 +28,31 @@
             <h2>Our Events</h2>
         </div>
         <div class="swiper-container">
-            <div class="swiper-wrapper" id="tmes-carousel-track">
-                <!-- Placeholder event slides, replace src and names when images are provided -->
+            <div class="swiper-wrapper tmes-carousel" id="tmes-carousel-track">
                 <div class="swiper-slide event-slide">
-                    <img src="{{ url_for('static', filename='images/Events/placeholder1.jpg') }}" alt="Event 1" />
-                    <div class="event-name">Event Name 1</div>
+                    <img src="{{ url_for('static', filename='images/our events/farewell.jpeg') }}" alt="Farewell" />
+                    <div class="event-name">Farewell</div>
                 </div>
                 <div class="swiper-slide event-slide">
-                    <img src="{{ url_for('static', filename='images/Events/placeholder2.jpg') }}" alt="Event 2" />
-                    <div class="event-name">Event Name 2</div>
+                    <img src="{{ url_for('static', filename='images/our events/field_trip.jpeg') }}" alt="Field Trip" />
+                    <div class="event-name">Field Trip</div>
                 </div>
                 <div class="swiper-slide event-slide">
-                    <img src="{{ url_for('static', filename='images/Events/placeholder3.jpg') }}" alt="Event 3" />
-                    <div class="event-name">Event Name 3</div>
+                    <img src="{{ url_for('static', filename='images/our events/freshers.jpeg') }}" alt="Freshers" />
+                    <div class="event-name">Freshers Party</div>
                 </div>
                 <div class="swiper-slide event-slide">
-                    <img src="{{ url_for('static', filename='images/Events/placeholder4.jpg') }}" alt="Event 4" />
-                    <div class="event-name">Event Name 4</div>
+                    <img src="{{ url_for('static', filename='images/our events/picnic.jpeg') }}" alt="Picnic" />
+                    <div class="event-name">Department Picnic</div>
                 </div>
-                <!-- Add more event slides as needed -->
+                <div class="swiper-slide event-slide">
+                    <img src="{{ url_for('static', filename='images/our events/teachers_day.jpeg') }}" alt="Teachers Day" />
+                    <div class="event-name">Teachers Day</div>
+                </div>
+                <div class="swiper-slide event-slide">
+                    <img src="{{ url_for('static', filename='images/our events/team.jpeg') }}" alt="Team Building" />
+                    <div class="event-name">Team Building</div>
+                </div>
             </div>
         </div>
     </section>

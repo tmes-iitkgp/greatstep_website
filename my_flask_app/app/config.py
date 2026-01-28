@@ -32,7 +32,7 @@ class Config:
     RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET') or 'your_razorpay_secret'
     
     # Great Step Registration Fee (in paise, 100 paise = 1 INR)
-    GREATSTEP_REGISTRATION_FEE = int(os.environ.get('GREATSTEP_REGISTRATION_FEE', 50000))  # Default: ₹500
+    GREATSTEP_REGISTRATION_FEE = int(os.environ.get('GREATSTEP_REGISTRATION_FEE', 80000))  # Default: ₹800
     
     # Main Admin Email (Protected)
     MAIN_ADMIN_EMAIL = os.environ.get('MAIN_ADMIN_EMAIL')

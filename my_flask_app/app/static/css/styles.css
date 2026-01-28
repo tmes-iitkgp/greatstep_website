@@ -1,7 +1,9 @@
 /* Signup year dropdown visibility fix */
-select#year {
-    background: rgba(255, 255, 255, 0.05) !important;
-    color: var(--color-text-muted, #888) !important;
+select, select option {
+    background: var(--color-bg) !important;
+    color: var(--color-text, #fff) !important;
+}
+select {
     border: 2px solid var(--border-color) !important;
     border-radius: 8px !important;
     font-size: 0.95rem !important;
@@ -9,11 +11,7 @@ select#year {
     box-sizing: border-box;
     transition: all 0.3s ease;
 }
-select#year option {
-    background: var(--color-bg-secondary, #f5f5f5) !important;
-    color: var(--color-text-muted, #888) !important;
-}
-select#year:focus {
+select:focus {
     outline: none !important;
     border-color: var(--color-primary) !important;
     background: rgba(233, 69, 96, 0.05) !important;
@@ -53,7 +51,7 @@ p, .welcome-description, .about_container p, .event-name, .info_cards article h2
 }
 /* Core Team Heads (CTH) Section - About Us */
 .cth_section .info_cards article {
-    background: #fff;
+    background: var(--color-bg);
     border-radius: 16px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.10);
     padding: 1.2rem 1.2rem 1.5rem 1.2rem;
@@ -75,7 +73,7 @@ p, .welcome-description, .about_container p, .event-name, .info_cards article h2
     margin-bottom: 0.7rem;
     margin-top: 0.7rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-    background: #f5f5f5;
+    background: var(--color-bg);
     transition: filter 0.3s, box-shadow 0.3s;
 }
 .cth_section .info_cards article h4 {
@@ -255,7 +253,7 @@ p, .welcome-description, .about_container p, .event-name, .info_cards article h2
     border-radius: 18px;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-    background: #fff;
+    background: var(--color-bg);
 }
 .tmes-team-photo {
     width: 100%;
@@ -281,7 +279,7 @@ p, .welcome-description, .about_container p, .event-name, .info_cards article h2
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.10);
     margin-bottom: 0.5rem;
-    background: #f5f5f5;
+    background: var(--color-bg);
 }
 .event-name {
     font-size: 1rem;
@@ -479,7 +477,7 @@ body {
 .info_cards article {
     opacity: 0;
     animation: fadeInUp 0.6s ease-out forwards;
-    background: #fff;
+    background: var(--color-bg);
     border-radius: 16px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.10);
     padding: 1.2rem 1.2rem 1.5rem 1.2rem;
@@ -503,7 +501,7 @@ body {
     border-radius: 50%;
     margin-bottom: 0.7rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-    background: #f5f5f5;
+    background: var(--color-bg);
     transition: filter 0.3s, box-shadow 0.3s;
     pointer-events: none;
 }
@@ -946,7 +944,7 @@ body {
 }
 
 .header .btn:hover {
-    background: #ffffff;
+    background: var(--color-bg);
     color: #000000;
 }
 
@@ -2058,7 +2056,6 @@ nav .toggler .fa-solid {
     cursor: grabbing;
 }
 
-.carousel2-slide,
 .carousel2 .swiper-slide {
     min-width: 350px;
     width: 350px;
@@ -2073,7 +2070,6 @@ nav .toggler .fa-solid {
     background: var(--color-bg-secondary);
 }
 
-.carousel2-slide::before,
 .carousel2 .swiper-slide::before {
     content: '';
     position: absolute;
@@ -2088,31 +2084,37 @@ nav .toggler .fa-solid {
     pointer-events: none;
 }
 
-.carousel2-slide:hover,
 .carousel2 .swiper-slide:hover {
     border-color: var(--color-gold);
     box-shadow: 0 20px 50px rgba(212, 175, 55, 0.3);
 }
 
-.carousel2-slide:hover::before,
 .carousel2 .swiper-slide:hover::before {
     opacity: 1;
 }
 
-.carousel2-slide img,
 .carousel2 .swiper-slide img {
     object-fit: cover;
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
     border-radius: 13px;
     pointer-events: none;
     transition: transform 0.5s ease, filter 0.4s ease;
 }
 
-.carousel2-slide:hover img,
 .carousel2 .swiper-slide:hover img {
     transform: scale(1.1);
     filter: brightness(1.1);
+}
+
+.tmes-carousel .swiper-slide img {
+    object-fit: cover !important;
+}
+
+.tmes-carousel .event-name {
+    display: none;
 }
 
 /* Sponsors Marquee Slider - Mining Theme Enhanced */
@@ -2163,7 +2165,7 @@ nav .toggler .fa-solid {
     overflow: hidden;
     border-radius: 12px;
     flex-shrink: 0;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--color-bg);
     padding: 15px;
     border: 1px solid var(--border-color);
     transition: all 0.4s ease;
@@ -2179,7 +2181,7 @@ nav .toggler .fa-solid {
 .sponsor-card img {
     width: 100%;
     height: 100%;
-    object-fit: fill;
+    object-fit: contain;
     filter: brightness(1.05);
 }
 
@@ -3065,7 +3067,7 @@ nav .toggler .fa-solid {
     justify-content: center;
     margin: 0;
     color: var(--color-text-secondary);
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--color-bg);
     border-radius: 50%;
     font-size: 1.2rem;
     transition: all 0.3s ease;
@@ -3335,7 +3337,7 @@ nav .toggler .fa-solid {
     gap: 10px;
     width: 100%;
     padding: 12px 20px;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--color-bg);
     border: 1px solid var(--border-color);
     border-radius: 50px;
     font-size: 14px;
@@ -3405,7 +3407,7 @@ nav .toggler .fa-solid {
     font-size: 16px;
     color: var(--color-text);
     transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--color-bg);
 }
 
 .auth-form .form-group input:focus {
@@ -3437,7 +3439,7 @@ nav .toggler .fa-solid {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--color-bg);
     transition: all 0.3s ease;
 }
 
@@ -3621,7 +3623,7 @@ nav .toggler .fa-solid {
     border-radius: 8px;
     font-size: 0.95rem;
     color: var(--color-text);
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--color-bg);
     box-sizing: border-box;
     transition: all 0.3s ease;
 }

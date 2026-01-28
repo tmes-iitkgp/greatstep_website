@@ -203,7 +203,8 @@
 
 <style>
     .qr-container {
-        background: white;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 20px;
         border-radius: 12px;
         margin-bottom: 30px;
@@ -211,15 +212,18 @@
     }
 
     .qr-code {
-        width: 200px;
-        height: 200px;
-        margin: 10px 0;
+        width: 180px;
+        height: 180px;
+        margin: 10px auto;
+        object-fit: contain;
+        border-radius: 8px;
+        display: block;
     }
 
-    .upi-id {
-        color: #333;
-        font-weight: bold;
-        margin-top: 5px;
+    .qr-container h3 {
+        color: #f0f6fc;
+        font-size: 1.1rem;
+        margin-bottom: 15px;
     }
 
     .payment-form {
