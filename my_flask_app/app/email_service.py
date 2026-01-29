@@ -198,3 +198,109 @@ def send_reset_password_email(email, otp_code):
     subject = "Password Reset - TMES IIT Kharagpur"
     html_content = get_otp_email_template(otp_code, "reset")
     return send_email(email, subject, html_content, otp_code)
+
+def get_payment_confirmation_template(name, amount, transaction_id):
+    """
+    Generate HTML email template for payment confirmation
+    
+    Args:
+        name: User's name
+        amount: Amount paid (in paise)
+        transaction_id: Payment transaction ID
+    
+    Returns:
+        str: HTML email content
+    """
+    amount_rupees = amount // 100
+    
+    return f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">
+        <table role="presentation" style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td align="center" style="padding: 40px 0;">
+                    <table role="presentation" style="width: 600px; border-collapse: collapse; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                        <!-- Header -->
+                        <tr>
+                            <td style="padding: 40px 30px; background: linear-gradient(135deg, #0E2E50 0%, #1a4a7a 100%); border-radius: 10px 10px 0 0; text-align: center;">
+                                <h1 style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 600;">TMES IIT Kharagpur</h1>
+                                <p style="color: #94c2f5; margin: 10px 0 0 0; font-size: 14px;">The Mining Engineering Society</p>
+                            </td>
+                        </tr>
+                        
+                        <!-- Content -->
+                        <tr>
+                            <td style="padding: 40px 30px;">
+                                <h2 style="color: #059669; margin: 0 0 20px 0; font-size: 22px;">Payment Verified!</h2>
+                                <p style="color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+                                    Dear <strong>{name}</strong>,
+                                </p>
+                                <p style="color: #555555; font-size: 16px; line-height: 1.6; margin: 0 0 30px 0;">
+                                    We are pleased to inform you that your payment for Great Step registration has been successfully verified by our admin team.
+                                </p>
+                                
+                                <!-- Payment Details -->
+                                <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 30px;">
+                                    <table role="presentation" style="width: 100%; border-collapse: collapse;">
+                                        <tr>
+                                            <td style="padding: 8px 0; color: #64748b; font-size: 14px;">Transaction ID:</td>
+                                            <td style="padding: 8px 0; color: #334155; font-weight: 600; text-align: right;">{transaction_id}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 8px 0; color: #64748b; font-size: 14px;">Amount Paid:</td>
+                                            <td style="padding: 8px 0; color: #334155; font-weight: 600; text-align: right;">₹{amount_rupees}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 8px 0; color: #64748b; font-size: 14px;">Status:</td>
+                                            <td style="padding: 8px 0; color: #059669; font-weight: 600; text-align: right;">Verified</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                
+                                <div style="text-align: center; margin: 30px 0;">
+                                    <a href="#" style="background: linear-gradient(135deg, #0E2E50 0%, #1a4a7a 100%); color: #ffffff; padding: 14px 28px; text-decoration: none; border-radius: 6px; font-weight: 600; display: inline-block;">Access Dashboard</a>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <!-- Footer -->
+                        <tr>
+                            <td style="padding: 30px; background-color: #f8f9fa; border-radius: 0 0 10px 10px; text-align: center;">
+                                <p style="color: #888888; font-size: 12px; margin: 0;">
+                                    © 2024 TMES IIT Kharagpur. All rights reserved.
+                                </p>
+                                <p style="color: #aaaaaa; font-size: 11px; margin: 10px 0 0 0;">
+                                    This is an automated message. Please do not reply to this email.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    """
+
+
+def send_payment_confirmation_email(email, name, amount, transaction_id):
+    """
+    Send payment verification confirmation email
+    
+    Args:
+        email: User's email address
+        name: User's name
+        amount: Amount paid (in paise)
+        transaction_id: Payment transaction ID
+    
+    Returns:
+        tuple: (success: bool, message: str)
+    """
+    subject = "Payment Verified - Great Step Registration"
+    html_content = get_payment_confirmation_template(name, amount, transaction_id)
+    return send_email(email, subject, html_content)

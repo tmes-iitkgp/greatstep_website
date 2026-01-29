@@ -396,10 +396,67 @@ body {
     }
 }
 
-/* Responsive Design */
+/* Responsive Design for Waviy */
 @media (max-width: 768px) {
+    .waviy {
+        font-size: 45px;
+    }
     .waviy span {
         font-size: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .waviy {
+        font-size: 35px;
+    }
+    .waviy span {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 360px) {
+    .waviy {
+        font-size: 25px;
+    }
+    .waviy span {
+        font-size: 18px;
+    }
+}
+
+/* Coming Soon Text Responsive Styling */
+.coming-soon-text {
+    text-align: center;
+    color: white;
+    font-size: 4rem;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+@media (max-width: 768px) {
+    .coming-soon-text {
+        font-size: 2.5rem;
+        min-height: 50vh;
+        padding: 1.5rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .coming-soon-text {
+        font-size: 2rem;
+        min-height: 40vh;
+        padding: 1rem 0.5rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .coming-soon-text {
+        font-size: 1.5rem;
+        min-height: 30vh;
+        padding: 0.5rem 0.25rem;
     }
 }
 
@@ -3600,6 +3657,58 @@ nav .toggler .fa-solid {
     }
 }
 
+/* Additional mobile breakpoints for better responsiveness */
+@media (max-width: 480px) {
+    .auth-form-card {
+        margin: 0.8rem auto;
+        max-width: 95%;
+        padding: 0 0.1rem;
+    }
+    .auth-header {
+        padding: 15px 6px;
+    }
+    .auth-header p {
+        font-size: 1.3rem;
+    }
+    .auth-body {
+        padding: 1rem 0.4rem 1rem 0.4rem;
+    }
+    .auth-body .form-group input {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    .auth-btn-primary, .auth-btn-gray, .auth-btn-next {
+        padding: 10px 0;
+        font-size: 0.9rem;
+    }
+    .auth-footer-text {
+        font-size: 0.9rem;
+        padding-top: 0.5rem;
+    }
+    .auth-copyright {
+        font-size: 0.7rem;
+        margin-top: 1rem;
+        padding-bottom: 1rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .auth-form-card {
+        max-width: 98%;
+    }
+    .auth-header p {
+        font-size: 1.3rem;
+    }
+    .auth-body .form-group input {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+    .auth-btn-primary, .auth-btn-gray, .auth-btn-next {
+        padding: 8px 0;
+        font-size: 0.85rem;
+    }
+}
+
 .auth-body .form-group {
     margin-bottom: 1.25rem;
 }
@@ -3845,7 +3954,62 @@ nav .toggler .fa-solid {
     transform: scale(1.1);
 }
 
+/* Responsive toast notifications */
+@media (max-width: 600px) {
+    #toast-container {
+        top: 15px;
+        right: 15px;
+        left: 15px;
+        width: auto;
+    }
+    
+    .toast {
+        min-width: auto;
+        width: 100%;
+        max-width: none;
+        padding: 14px 16px;
+        font-size: 0.85rem;
+    }
+    
+    .toast-close {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        margin-left: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    #toast-container {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        gap: 8px;
+    }
+    
+    .toast {
+        padding: 12px 14px;
+        font-size: 0.8rem;
+    }
+    
+    .toast-close {
+        width: 18px;
+        height: 18px;
+        font-size: 11px;
+        margin-left: 6px;
+    }
+}
+
 @keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
     from {
         transform: translateX(100%);
         opacity: 0;

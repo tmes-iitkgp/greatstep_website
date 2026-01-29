@@ -201,6 +201,125 @@
         text-align: center;
         font-size: 0.9rem;
     }
+
+    /* Responsive styles for mobile devices */
+    @media (max-width: 600px) {
+        .auth-container {
+            padding: 20px 15px;
+            min-height: calc(100vh - 100px);
+        }
+        
+        .auth-card {
+            max-width: 95%;
+        }
+        
+        .auth-header {
+            padding: 20px 15px;
+        }
+        
+        .auth-header h2 {
+            font-size: 1.5rem;
+        }
+        
+        .auth-header p {
+            font-size: 0.9rem;
+        }
+        
+        .auth-body {
+            padding: 25px 20px;
+        }
+        
+        .otp-input-container {
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .otp-input {
+            width: 45px;
+            height: 50px;
+            font-size: 1.5rem;
+        }
+        
+        .submit-btn {
+            padding: 12px;
+            font-size: 1rem;
+        }
+        
+        .resend-container p {
+            font-size: 0.9rem;
+        }
+        
+        .back-link {
+            font-size: 0.85rem;
+        }
+        
+        .error-message, .success-message {
+            padding: 10px;
+            font-size: 0.85rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .auth-container {
+            padding: 15px 10px;
+        }
+        
+        .auth-card {
+            max-width: 98%;
+        }
+        
+        .auth-header {
+            padding: 18px 12px;
+        }
+        
+        .auth-header h2 {
+            font-size: 1.4rem;
+        }
+        
+        .auth-body {
+            padding: 20px 15px;
+        }
+        
+        .otp-input-container {
+            gap: 6px;
+        }
+        
+        .otp-input {
+            width: 40px;
+            height: 45px;
+            font-size: 1.3rem;
+        }
+        
+        .submit-btn {
+            padding: 10px;
+            font-size: 0.95rem;
+        }
+        
+        .email-display {
+            padding: 12px;
+        }
+        
+        .email-display strong {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 360px) {
+        .auth-header h2 {
+            font-size: 1.3rem;
+        }
+        
+        .otp-input {
+            width: 35px;
+            height: 40px;
+            font-size: 1.2rem;
+        }
+        
+        .submit-btn {
+            padding: 8px;
+            font-size: 0.9rem;
+        }
+    }
 </style>
 {% endblock %}
 

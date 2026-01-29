@@ -9,7 +9,7 @@ import hashlib
 from .events_data import get_event_data, EVENTS_DATA
 from .config import Config, config
 from .models import db, User, OTP, PendingRegistration, GreatStepRegistration
-from .email_service import send_verification_email, send_login_otp, send_reset_password_email
+from .email_service import send_verification_email, send_login_otp, send_reset_password_email, send_payment_confirmation_email
 
 app = Flask(__name__)
 
@@ -110,6 +110,19 @@ def admin_verify_payment(reg_id):
         db.session.commit()
         
         flash(f'Payment for {registration.first_name} verified successfully!', 'success')
+        
+        # Send confirmation email
+        try:
+            send_payment_confirmation_email(
+                email=registration.email,
+                name=registration.first_name,
+                amount=registration.amount_paid,
+                transaction_id=registration.transaction_id
+            )
+            flash('Confirmation email sent.', 'info')
+        except Exception as e:
+            app.logger.error(f"Failed to send confirmation email: {e}")
+            flash('Payment verified but failed to send email.', 'warning')
         
     except Exception as e:
         db.session.rollback()
