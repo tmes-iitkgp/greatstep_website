@@ -40,303 +40,312 @@
                 <input type="text" id="searchInput" placeholder="Search name, txn ID..."
                     class="tw-bg-[#0f172a] tw-border tw-border-slate-700 tw-text-sm tw-rounded-lg tw-px-4 tw-py-2 tw-w-full tw-text-white focus:tw-outline-none focus:tw-border-blue-500">
 
+                <form action="{{ url_for('admin_cleanup_db') }}" method="POST"
+                    onsubmit="return confirm('Are you sure you want to run the database cleanup? This will remove records with missing Transaction IDs.');">
+                    <button type="submit"
+                        class="tw-bg-red-500 hover:tw-bg-red-600 tw-text-white tw-text-xs tw-font-bold tw-py-2 tw-px-4 tw-rounded-lg tw-w-full lg:tw-w-auto">
+                        Cleanup DB
+                    </button>
+                </form>
             </div>
+        </div>
+
+        <!-- Table (Desktop) -->
+        <div class="tw-hidden md:tw-block tw-overflow-x-auto">
+            <table class="tw-w-full tw-text-left tw-min-w-[800px]">
+                <thead class="tw-bg-[#0f172a] tw-text-slate-400 tw-uppercase tw-text-xs tw-font-semibold">
+                    <tr>
+                        <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">User Details</th>
+                        <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">College Info</th>
+                        <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">Payment Info</th>
+                        <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">Amount</th>
+                        <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">Status</th>
+                        <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="tw-divide-y tw-divide-slate-700" id="regTableBody">
+                    {% for reg in registrations %}
+                    <tr class="reg-row" data-status="{{ reg.payment_status }}">
+                        <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
+                            <div class="tw-font-medium tw-text-white tw-text-sm lg:tw-text-base">{{ reg.first_name }} {{
+                                reg.last_name }}</div>
+                            <div class="tw-text-xs lg:tw-text-sm tw-text-slate-400 tw-break-all">{{ reg.email }}</div>
+                            <div class="tw-text-xs tw-text-slate-500 tw-mt-1">{{ reg.mobile }}</div>
+                        </td>
+                        <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
+                            <div class="tw-text-sm lg:tw-text-base tw-text-white tw-break-words">{{ reg.college }}</div>
+                            <div class="tw-text-xs tw-text-slate-400">Year: {{ reg.year }}</div>
+                        </td>
+                        <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
+                            {% if reg.transaction_id %}
+                            <div
+                                class="tw-font-mono tw-text-xs tw-bg-blue-900/30 tw-text-blue-400 tw-px-2 tw-py-1 tw-rounded tw-inline-block tw-break-all">
+                                {{ reg.transaction_id }}
+                            </div>
+                            <div class="tw-text-xs tw-text-slate-500 tw-mt-1">Manual UPI</div>
+                            {% else %}
+                            <div
+                                class="tw-font-mono tw-text-xs tw-bg-purple-900/30 tw-text-purple-400 tw-px-2 tw-py-1 tw-rounded tw-inline-block tw-break-all">
+                                {{ reg.razorpay_payment_id }}
+                            </div>
+                            <div class="tw-text-xs tw-text-slate-500 tw-mt-1">Razorpay</div>
+                            {% endif %}
+                            <div class="tw-text-xs tw-text-slate-600 tw-mt-1">{{ reg.created_at.strftime('%b %d, %H:%M')
+                                }}
+                            </div>
+                        </td>
+                        <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
+                            <div class="tw-font-semibold tw-text-slate-200 tw-text-sm lg:tw-text-base">₹{{
+                                reg.amount_paid
+                                // 100 }}</div>
+                        </td>
+                        <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
+                            {% if reg.payment_status == 'completed' %}
+                            <span
+                                class="tw-bg-emerald-500/10 tw-text-emerald-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-emerald-500/20">Verified</span>
+                            {% elif reg.payment_status == 'verification_pending' %}
+                            <span
+                                class="tw-bg-amber-500/10 tw-text-amber-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-amber-500/20">Pending</span>
+                            {% elif reg.payment_status == 'failed' %}
+                            <span
+                                class="tw-bg-red-500/10 tw-text-red-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-red-500/20">Rejected</span>
+                            {% elif reg.payment_status == 'pending' %}
+                            <span
+                                class="tw-bg-gray-500/10 tw-text-gray-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-gray-500/20">Not
+                                Started</span>
+                            {% else %}
+                            <span
+                                class="tw-bg-slate-500/10 tw-text-slate-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-slate-500/20">Unknown</span>
+                            {% endif %}
+                        </td>
+                        <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
+                            <div class="tw-flex tw-gap-1 lg:tw-gap-2">
+                                {% if reg.payment_status in ['verification_pending', 'failed'] %}
+                                <form action="{{ url_for('admin_verify_payment', reg_id=reg.id) }}" method="POST"
+                                    onsubmit="return confirm('Verify this payment?');">
+                                    <button type="submit" class="action-btn verify-btn" title="Verify Payment">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+
+                                {% if reg.payment_status in ['verification_pending', 'completed'] %}
+                                <form action="{{ url_for('admin_reject_payment', reg_id=reg.id) }}" method="POST"
+                                    onsubmit="return confirm('Reject this payment?');">
+                                    <button type="submit" class="action-btn reject-btn" title="Reject Payment">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mobile Card View (Vertical) -->
+        <div class="md:tw-hidden tw-divide-y tw-divide-slate-700">
+            {% for reg in registrations %}
+            <div class="reg-row tw-p-4" data-status="{{ reg.payment_status }}">
+                <div class="tw-flex tw-justify-between tw-items-start tw-mb-3">
+                    <div>
+                        <div class="tw-font-medium tw-text-white">{{ reg.first_name }} {{ reg.last_name }}</div>
+                        <div class="tw-text-xs tw-text-slate-400">{{ reg.email }}</div>
+                        <div class="tw-text-xs tw-text-slate-500">{{ reg.mobile }}</div>
+                    </div>
+                    <div class="tw-text-right">
+                        <div class="tw-font-bold tw-text-emerald-400">₹{{ reg.amount_paid // 100 }}</div>
+                        <div class="tw-mt-1">
+                            {% if reg.payment_status == 'completed' %}
+                            <span class="tw-text-xs tw-text-emerald-400 tw-font-medium">Verified</span>
+                            {% elif reg.payment_status == 'verification_pending' %}
+                            <span class="tw-text-xs tw-text-amber-400 tw-font-medium">Pending</span>
+                            {% elif reg.payment_status == 'failed' %}
+                            <span class="tw-text-xs tw-text-red-400 tw-font-medium">Rejected</span>
+                            {% else %}
+                            <span class="tw-text-xs tw-text-slate-400 tw-font-medium">{{ reg.payment_status|title
+                                }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tw-grid tw-grid-cols-2 tw-gap-2 tw-text-sm tw-mb-3">
+                    <div>
+                        <div class="tw-text-xs tw-text-slate-500">College</div>
+                        <div class="tw-text-slate-300">{{ reg.college }}</div>
+                    </div>
+                    <div>
+                        <div class="tw-text-xs tw-text-slate-500">Transaction ID</div>
+                        <div class="tw-font-mono tw-text-xs tw-text-blue-400 tw-break-all">
+                            {{ reg.transaction_id or reg.razorpay_payment_id or '-' }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tw-flex tw-justify-end tw-gap-2 tw-pt-2 tw-border-t tw-border-slate-700/50">
+                    {% if reg.payment_status in ['verification_pending', 'failed'] %}
+                    <form action="{{ url_for('admin_verify_payment', reg_id=reg.id) }}" method="POST"
+                        onsubmit="return confirm('Verify this payment?');" class="tw-w-full">
+                        <button type="submit"
+                            class="tw-w-full tw-py-2 tw-bg-emerald-600 tw-text-white tw-rounded tw-text-sm tw-font-medium hover:tw-bg-emerald-500">
+                            Verify
+                        </button>
+                    </form>
+                    {% endif %}
+
+                    {% if reg.payment_status in ['verification_pending', 'completed'] %}
+                    <form action="{{ url_for('admin_reject_payment', reg_id=reg.id) }}" method="POST"
+                        onsubmit="return confirm('Reject this payment?');" class="tw-w-full">
+                        <button type="submit"
+                            class="tw-w-full tw-py-2 tw-bg-red-600 tw-text-white tw-rounded tw-text-sm tw-font-medium hover:tw-bg-red-500">
+                            Reject
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 
-    <!-- Table (Desktop) -->
-    <div class="tw-hidden md:tw-block tw-overflow-x-auto">
-        <table class="tw-w-full tw-text-left tw-min-w-[800px]">
-            <thead class="tw-bg-[#0f172a] tw-text-slate-400 tw-uppercase tw-text-xs tw-font-semibold">
-                <tr>
-                    <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">User Details</th>
-                    <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">College Info</th>
-                    <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">Payment Info</th>
-                    <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">Amount</th>
-                    <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">Status</th>
-                    <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="tw-divide-y tw-divide-slate-700" id="regTableBody">
-                {% for reg in registrations %}
-                <tr class="reg-row" data-status="{{ reg.payment_status }}">
-                    <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
-                        <div class="tw-font-medium tw-text-white tw-text-sm lg:tw-text-base">{{ reg.first_name }} {{
-                            reg.last_name }}</div>
-                        <div class="tw-text-xs lg:tw-text-sm tw-text-slate-400 tw-break-all">{{ reg.email }}</div>
-                        <div class="tw-text-xs tw-text-slate-500 tw-mt-1">{{ reg.mobile }}</div>
-                    </td>
-                    <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
-                        <div class="tw-text-sm lg:tw-text-base tw-text-white tw-break-words">{{ reg.college }}</div>
-                        <div class="tw-text-xs tw-text-slate-400">Year: {{ reg.year }}</div>
-                    </td>
-                    <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
-                        {% if reg.transaction_id %}
-                        <div
-                            class="tw-font-mono tw-text-xs tw-bg-blue-900/30 tw-text-blue-400 tw-px-2 tw-py-1 tw-rounded tw-inline-block tw-break-all">
-                            {{ reg.transaction_id }}
-                        </div>
-                        <div class="tw-text-xs tw-text-slate-500 tw-mt-1">Manual UPI</div>
-                        {% else %}
-                        <div
-                            class="tw-font-mono tw-text-xs tw-bg-purple-900/30 tw-text-purple-400 tw-px-2 tw-py-1 tw-rounded tw-inline-block tw-break-all">
-                            {{ reg.razorpay_payment_id }}
-                        </div>
-                        <div class="tw-text-xs tw-text-slate-500 tw-mt-1">Razorpay</div>
-                        {% endif %}
-                        <div class="tw-text-xs tw-text-slate-600 tw-mt-1">{{ reg.created_at.strftime('%b %d, %H:%M') }}
-                        </div>
-                    </td>
-                    <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
-                        <div class="tw-font-semibold tw-text-slate-200 tw-text-sm lg:tw-text-base">₹{{ reg.amount_paid
-                            // 100 }}</div>
-                    </td>
-                    <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
-                        {% if reg.payment_status == 'completed' %}
-                        <span
-                            class="tw-bg-emerald-500/10 tw-text-emerald-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-emerald-500/20">Verified</span>
-                        {% elif reg.payment_status == 'verification_pending' %}
-                        <span
-                            class="tw-bg-amber-500/10 tw-text-amber-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-amber-500/20">Pending</span>
-                        {% elif reg.payment_status == 'failed' %}
-                        <span
-                            class="tw-bg-red-500/10 tw-text-red-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-red-500/20">Rejected</span>
-                        {% elif reg.payment_status == 'pending' %}
-                        <span
-                            class="tw-bg-gray-500/10 tw-text-gray-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-gray-500/20">Not
-                            Started</span>
-                        {% else %}
-                        <span
-                            class="tw-bg-slate-500/10 tw-text-slate-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-slate-500/20">Unknown</span>
-                        {% endif %}
-                    </td>
-                    <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
-                        <div class="tw-flex tw-gap-1 lg:tw-gap-2">
-                            {% if reg.payment_status in ['verification_pending', 'failed'] %}
-                            <form action="{{ url_for('admin_verify_payment', reg_id=reg.id) }}" method="POST"
-                                onsubmit="return confirm('Verify this payment?');">
-                                <button type="submit" class="action-btn verify-btn" title="Verify Payment">
-                                    <i class="fas fa-check"></i>
-                                </button>
-                            </form>
-                            {% endif %}
-
-                            {% if reg.payment_status in ['verification_pending', 'completed'] %}
-                            <form action="{{ url_for('admin_reject_payment', reg_id=reg.id) }}" method="POST"
-                                onsubmit="return confirm('Reject this payment?');">
-                                <button type="submit" class="action-btn reject-btn" title="Reject Payment">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </form>
-                            {% endif %}
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Mobile Card View (Vertical) -->
-    <div class="md:tw-hidden tw-divide-y tw-divide-slate-700">
-        {% for reg in registrations %}
-        <div class="reg-row tw-p-4" data-status="{{ reg.payment_status }}">
-            <div class="tw-flex tw-justify-between tw-items-start tw-mb-3">
-                <div>
-                    <div class="tw-font-medium tw-text-white">{{ reg.first_name }} {{ reg.last_name }}</div>
-                    <div class="tw-text-xs tw-text-slate-400">{{ reg.email }}</div>
-                    <div class="tw-text-xs tw-text-slate-500">{{ reg.mobile }}</div>
-                </div>
-                <div class="tw-text-right">
-                    <div class="tw-font-bold tw-text-emerald-400">₹{{ reg.amount_paid // 100 }}</div>
-                    <div class="tw-mt-1">
-                        {% if reg.payment_status == 'completed' %}
-                        <span class="tw-text-xs tw-text-emerald-400 tw-font-medium">Verified</span>
-                        {% elif reg.payment_status == 'verification_pending' %}
-                        <span class="tw-text-xs tw-text-amber-400 tw-font-medium">Pending</span>
-                        {% elif reg.payment_status == 'failed' %}
-                        <span class="tw-text-xs tw-text-red-400 tw-font-medium">Rejected</span>
-                        {% else %}
-                        <span class="tw-text-xs tw-text-slate-400 tw-font-medium">{{ reg.payment_status|title }}</span>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-
-            <div class="tw-grid tw-grid-cols-2 tw-gap-2 tw-text-sm tw-mb-3">
-                <div>
-                    <div class="tw-text-xs tw-text-slate-500">College</div>
-                    <div class="tw-text-slate-300">{{ reg.college }}</div>
-                </div>
-                <div>
-                    <div class="tw-text-xs tw-text-slate-500">Transaction ID</div>
-                    <div class="tw-font-mono tw-text-xs tw-text-blue-400 tw-break-all">
-                        {{ reg.transaction_id or reg.razorpay_payment_id or '-' }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="tw-flex tw-justify-end tw-gap-2 tw-pt-2 tw-border-t tw-border-slate-700/50">
-                {% if reg.payment_status in ['verification_pending', 'failed'] %}
-                <form action="{{ url_for('admin_verify_payment', reg_id=reg.id) }}" method="POST"
-                    onsubmit="return confirm('Verify this payment?');" class="tw-w-full">
-                    <button type="submit"
-                        class="tw-w-full tw-py-2 tw-bg-emerald-600 tw-text-white tw-rounded tw-text-sm tw-font-medium hover:tw-bg-emerald-500">
-                        Verify
-                    </button>
-                </form>
-                {% endif %}
-
-                {% if reg.payment_status in ['verification_pending', 'completed'] %}
-                <form action="{{ url_for('admin_reject_payment', reg_id=reg.id) }}" method="POST"
-                    onsubmit="return confirm('Reject this payment?');" class="tw-w-full">
-                    <button type="submit"
-                        class="tw-w-full tw-py-2 tw-bg-red-600 tw-text-white tw-rounded tw-text-sm tw-font-medium hover:tw-bg-red-500">
-                        Reject
-                    </button>
-                </form>
-                {% endif %}
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-
-<style>
-    .filter-btn {
-        background: transparent;
-        color: #94a3b8;
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-size: 0.75rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-        border: 1px solid transparent;
-        white-space: nowrap;
-    }
-
-    @media (min-width: 1024px) {
+    <style>
         .filter-btn {
-            padding: 6px 16px;
-            font-size: 0.875rem;
+            background: transparent;
+            color: #94a3b8;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            white-space: nowrap;
         }
-    }
 
-    .filter-btn:hover {
-        color: white;
-        background: rgba(255, 255, 255, 0.05);
-    }
-
-    .filter-btn.active {
-        background: #3b82f6;
-        color: white;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-    }
-
-    /* Action Buttons */
-    .action-btn {
-        width: 36px;
-        height: 36px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 14px;
-        font-weight: 600;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    @media (min-width: 1024px) {
-        .action-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-    }
-
-    .action-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    .action-btn:active {
-        transform: translateY(0);
-    }
-
-    .verify-btn {
-        background: linear-gradient(135deg, #10b981, #059669);
-        color: white;
-    }
-
-    .verify-btn:hover:not(.tw-opacity-50) {
-        background: linear-gradient(135deg, #059669, #047857);
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-    }
-
-    .reject-btn {
-        background: linear-gradient(135deg, #ef4444, #dc2626);
-        color: white;
-    }
-
-    .reject-btn:hover:not(.tw-opacity-50) {
-        background: linear-gradient(135deg, #dc2626, #b91c1c);
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-    }
-
-    .action-btn.tw-opacity-50 {
-        cursor: not-allowed;
-        opacity: 0.5;
-    }
-
-    .action-btn.tw-opacity-50:hover {
-        transform: none;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-</style>
-
-<script>
-    // Tab Filtering and Search
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const searchInput = document.getElementById('searchInput');
-    const rows = document.querySelectorAll('.reg-row');
-
-    let currentStatusFilter = 'all';
-    let currentSearchTerm = '';
-
-    function applyFilters() {
-        rows.forEach(row => {
-            const matchesStatus = currentStatusFilter === 'all' || row.dataset.status === currentStatusFilter;
-            const matchesSearch = currentSearchTerm === '' || row.innerText.toLowerCase().includes(currentSearchTerm);
-
-            if (matchesStatus && matchesSearch) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
+        @media (min-width: 1024px) {
+            .filter-btn {
+                padding: 6px 16px;
+                font-size: 0.875rem;
             }
+        }
+
+        .filter-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .filter-btn.active {
+            background: #3b82f6;
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (min-width: 1024px) {
+            .action-btn {
+                width: 40px;
+                height: 40px;
+                border-radius: 8px;
+                font-size: 16px;
+            }
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
+        }
+
+        .verify-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .verify-btn:hover:not(.tw-opacity-50) {
+            background: linear-gradient(135deg, #059669, #047857);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .reject-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .reject-btn:hover:not(.tw-opacity-50) {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .action-btn.tw-opacity-50 {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .action-btn.tw-opacity-50:hover {
+            transform: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    <script>
+        // Tab Filtering and Search
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const searchInput = document.getElementById('searchInput');
+        const rows = document.querySelectorAll('.reg-row');
+
+        let currentStatusFilter = 'all';
+        let currentSearchTerm = '';
+
+        function applyFilters() {
+            rows.forEach(row => {
+                const matchesStatus = currentStatusFilter === 'all' || row.dataset.status === currentStatusFilter;
+                const matchesSearch = currentSearchTerm === '' || row.innerText.toLowerCase().includes(currentSearchTerm);
+
+                if (matchesStatus && matchesSearch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Status filtering
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active state
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                currentStatusFilter = btn.dataset.filter;
+                applyFilters();
+            });
         });
-    }
 
-    // Status filtering
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Update active state
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            currentStatusFilter = btn.dataset.filter;
+        // Search filtering
+        searchInput.addEventListener('input', (e) => {
+            currentSearchTerm = e.target.value.toLowerCase();
             applyFilters();
         });
-    });
-
-    // Search filtering
-    searchInput.addEventListener('input', (e) => {
-        currentSearchTerm = e.target.value.toLowerCase();
-        applyFilters();
-    });
-</script>
-{% endblock %}
+    </script>
+    {% endblock %}

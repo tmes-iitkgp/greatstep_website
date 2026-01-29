@@ -1,4 +1,5 @@
 ﻿from flask import Flask, render_template, redirect, url_for, flash, request, session, jsonify
+from sqlalchemy import or_
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
@@ -73,12 +74,70 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+@app.route('/admin/cleanup-db', methods=['POST'])
+@admin_required
+def admin_cleanup_db():
+    """Run database cleanup script to remove invalid registrations"""
+    try:
+        # Import the cleanup function dynamically to avoid circular imports if any
+        # Assuming cleanup_registrations.py is a module in the same package (app context)
+        # But wait, cleanup_registrations.py is in the root folder, not in 'app' package?
+        # The user's files show it at p:\greatstep_website-1\my_flask_app\cleanup_registrations.py
+        # And __init__.py is at p:\greatstep_website-1\my_flask_app\app\__init__.py
+        # So cleanup_registrations is in the PARENT directory of 'app'.
+        # This makes relative import tricky: "from ..cleanup_registrations" might error if not a package.
+        
+        # Better approach: Copy the logic here or ensure path is correct.
+        # Actually, let's just re-implement the logic briefly here to rely on app/models.
+        # It's cleaner than trying to import a script from parent directory in Flask.
+        
+        from sqlalchemy import or_
+        from .models import GreatStepRegistration, db
+        
+        # 1. Identify Invalid Records
+        invalid_query = GreatStepRegistration.query.filter(
+            or_(
+                GreatStepRegistration.payment_status == 'pending',
+                (
+                    (GreatStepRegistration.transaction_id == None) | (GreatStepRegistration.transaction_id == '')
+                ) & (
+                    (GreatStepRegistration.razorpay_payment_id == None) | (GreatStepRegistration.razorpay_payment_id == '')
+                )
+            )
+        )
+        
+        records = invalid_query.all()
+        count = len(records)
+        
+        if count > 0:
+            for reg in records:
+                db.session.delete(reg)
+            db.session.commit()
+            
+            flash(f"Successfully cleaned up {count} invalid records.", 'success')
+        else:
+            flash("Database is already clean. No invalid records found.", 'info')
+
+    except Exception as e:
+        db.session.rollback()
+        app.logger.error(f"Cleanup failed: {e}")
+        flash(f"Cleanup failed: {e}", 'error')
+        
+    return redirect(url_for('admin_dashboard'))
+
 @app.route('/admin/dashboard')
 @admin_required
 def admin_dashboard():
     """Admin dashboard with stats and all registrations"""
-    # Fetch all registrations sorted by newest first
-    registrations = GreatStepRegistration.query.order_by(GreatStepRegistration.created_at.desc()).all()
+    # Fetch registrations excluding those who haven't submitted payment details yet (status='pending')
+    # AND excluding those with no transaction ID visible (e.g. empty manual trxn id AND empty razorpay id)
+    registrations = GreatStepRegistration.query.filter(
+        GreatStepRegistration.payment_status != 'pending',
+        or_(
+            (GreatStepRegistration.transaction_id != None) & (GreatStepRegistration.transaction_id != ''),
+            (GreatStepRegistration.razorpay_payment_id != None) & (GreatStepRegistration.razorpay_payment_id != '')
+        )
+    ).order_by(GreatStepRegistration.created_at.desc()).all()
     
     # Calculate stats
     stats = {
@@ -1302,30 +1361,26 @@ def greatstep_register():
         # Prepare registration data
         amount = Config.GREATSTEP_REGISTRATION_FEE  # Amount in paise
         
-        # Delete any existing pending registration for this email
-        GreatStepRegistration.query.filter_by(
-            email=user.email,
-            payment_status='pending'
-        ).delete()
+        # Store registration data in session instead of DB
+        session['pending_reg_data'] = {
+            'email': user.email,
+            'first_name': first_name,
+            'last_name': last_name,
+            'mobile': mobile,
+            'college': college,
+            'year': year,
+            'amount_paid': amount,
+            'payment_status': 'pending'
+        }
         
-        # Create pending registration record
-        registration = GreatStepRegistration(
-            email=user.email,
-            first_name=first_name,
-            last_name=last_name,
-            mobile=mobile,
-            college=college,
-            year=year,
-            amount_paid=amount,
-            payment_status='pending'
-        )
-        db.session.add(registration)
-        db.session.commit()
+        # Create a dict-like object or just pass the dict for the template
+        # Jinja2 handles dicts with dot notation seamlessly
+        registration_data = session['pending_reg_data']
         
         # Render payment page with UPI QR code
         return render_template('greatstep_payment.html',
                                user=user,
-                               registration=registration,
+                               registration=registration_data,
                                amount_display=amount // 100)  # Convert paise to rupees for display
     
     return render_template('greatstep_register.html', user=user)
@@ -1351,27 +1406,32 @@ def greatstep_payment_verify():
         # We should probably just redirect to register, user might have to re-enter details but that's safe.
         return redirect(url_for('greatstep_register'))
     
-    # Find the pending registration record for this user
-    registration = GreatStepRegistration.query.filter_by(
-        email=user.email,
-        payment_status='pending'
-    ).order_by(GreatStepRegistration.created_at.desc()).first()
+    # Retrieve pending registration data from session
+    reg_data = session.get('pending_reg_data')
     
-    if not registration:
+    if not reg_data or reg_data.get('email') != user.email:
         flash('Registration session expired. Please register again.', 'error')
         return redirect(url_for('greatstep_register'))
     
-    # Update registration
-    registration.transaction_id = transaction_id
-    registration.payment_status = 'verification_pending'
-    registration.payment_completed_at = datetime.utcnow()
+    # Create the registration record now that we have the transaction ID
+    registration = GreatStepRegistration(
+        email=reg_data['email'],
+        first_name=reg_data['first_name'],
+        last_name=reg_data['last_name'],
+        mobile=reg_data['mobile'],
+        college=reg_data['college'],
+        year=reg_data['year'],
+        amount_paid=reg_data['amount_paid'],
+        transaction_id=transaction_id,
+        payment_status='verification_pending',
+        payment_completed_at=datetime.utcnow()
+    )
     
-    # Update user's registration status to true (provisionally) or keep false until verified?
-    # User asked for "manual upi", usually implies we wait for verification.
-    # But usually we want to show them "success - verification pending".
-    # We will NOT set is_greatstep_registered = True yet. Admin should do that.
-    
+    db.session.add(registration)
     db.session.commit()
+    
+    # specific cleanup
+    session.pop('pending_reg_data', None)
     
     flash('Payment details submitted! Verification is pending.', 'success')
     return redirect(url_for('greatstep_payment_success'))
