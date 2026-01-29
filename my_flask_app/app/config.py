@@ -20,13 +20,16 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # Database connection options for serverless environments
-    # Prevents connection timeout issues in Vercel/Railway
+    # Prevents connection timeout issues in Vercel/Railway/Neon
     SQLALCHEMY_ENGINE_OPTIONS = {
         'pool_pre_ping': True,  # Check connection before using
-        'pool_recycle': 300,    # Recycle connections every 5 minutes
+        'pool_recycle': 600,    # Recycle connections every 10 minutes (Neon compatible)
         'connect_args': {
             'connect_timeout': 10,
-            'options': '-c statement_timeout=30000'  # 30 second statement timeout
+            'keepalives': 1,
+            'keepalives_idle': 30,
+            'keepalives_interval': 10,
+            'keepalives_count': 5
         } if 'postgresql' in SQLALCHEMY_DATABASE_URI else {}
     }
     
