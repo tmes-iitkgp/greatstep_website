@@ -44,8 +44,8 @@
         </div>
     </div>
 
-    <!-- Table -->
-    <div class="tw-overflow-x-auto">
+    <!-- Table (Desktop) -->
+    <div class="tw-hidden md:tw-block tw-overflow-x-auto">
         <table class="tw-w-full tw-text-left tw-min-w-[800px]">
             <thead class="tw-bg-[#0f172a] tw-text-slate-400 tw-uppercase tw-text-xs tw-font-semibold">
                 <tr>
@@ -135,6 +135,70 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <!-- Mobile Card View (Vertical) -->
+    <div class="md:tw-hidden tw-divide-y tw-divide-slate-700">
+        {% for reg in registrations %}
+        <div class="reg-row tw-p-4" data-status="{{ reg.payment_status }}">
+            <div class="tw-flex tw-justify-between tw-items-start tw-mb-3">
+                <div>
+                    <div class="tw-font-medium tw-text-white">{{ reg.first_name }} {{ reg.last_name }}</div>
+                    <div class="tw-text-xs tw-text-slate-400">{{ reg.email }}</div>
+                    <div class="tw-text-xs tw-text-slate-500">{{ reg.mobile }}</div>
+                </div>
+                <div class="tw-text-right">
+                    <div class="tw-font-bold tw-text-emerald-400">₹{{ reg.amount_paid // 100 }}</div>
+                    <div class="tw-mt-1">
+                        {% if reg.payment_status == 'completed' %}
+                        <span class="tw-text-xs tw-text-emerald-400 tw-font-medium">Verified</span>
+                        {% elif reg.payment_status == 'verification_pending' %}
+                        <span class="tw-text-xs tw-text-amber-400 tw-font-medium">Pending</span>
+                        {% elif reg.payment_status == 'failed' %}
+                        <span class="tw-text-xs tw-text-red-400 tw-font-medium">Rejected</span>
+                        {% else %}
+                        <span class="tw-text-xs tw-text-slate-400 tw-font-medium">{{ reg.payment_status|title }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="tw-grid tw-grid-cols-2 tw-gap-2 tw-text-sm tw-mb-3">
+                <div>
+                    <div class="tw-text-xs tw-text-slate-500">College</div>
+                    <div class="tw-text-slate-300">{{ reg.college }}</div>
+                </div>
+                <div>
+                    <div class="tw-text-xs tw-text-slate-500">Transaction ID</div>
+                    <div class="tw-font-mono tw-text-xs tw-text-blue-400 tw-break-all">
+                        {{ reg.transaction_id or reg.razorpay_payment_id or '-' }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="tw-flex tw-justify-end tw-gap-2 tw-pt-2 tw-border-t tw-border-slate-700/50">
+                {% if reg.payment_status in ['verification_pending', 'failed'] %}
+                <form action="{{ url_for('admin_verify_payment', reg_id=reg.id) }}" method="POST"
+                    onsubmit="return confirm('Verify this payment?');" class="tw-w-full">
+                    <button type="submit"
+                        class="tw-w-full tw-py-2 tw-bg-emerald-600 tw-text-white tw-rounded tw-text-sm tw-font-medium hover:tw-bg-emerald-500">
+                        Verify
+                    </button>
+                </form>
+                {% endif %}
+
+                {% if reg.payment_status in ['verification_pending', 'completed'] %}
+                <form action="{{ url_for('admin_reject_payment', reg_id=reg.id) }}" method="POST"
+                    onsubmit="return confirm('Reject this payment?');" class="tw-w-full">
+                    <button type="submit"
+                        class="tw-w-full tw-py-2 tw-bg-red-600 tw-text-white tw-rounded tw-text-sm tw-font-medium hover:tw-bg-red-500">
+                        Reject
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 

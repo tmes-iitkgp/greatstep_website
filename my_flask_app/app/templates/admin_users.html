@@ -13,9 +13,9 @@
         </div>
     </div>
 
-    <!-- Table -->
-    <div class="tw-overflow-x-auto">
-        <table class="tw-w-full tw-text-left">
+    <!-- Table (Desktop) -->
+    <div class="tw-hidden md:tw-block tw-overflow-x-auto">
+        <table class="tw-w-full tw-text-left tw-min-w-[800px]">
             <thead class="tw-bg-[#0f172a] tw-text-slate-400 tw-uppercase tw-text-xs tw-font-semibold">
                 <tr>
                     <th class="tw-px-6 tw-py-4">User</th>
@@ -75,6 +75,68 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <!-- Mobile Card View -->
+    <div class="md:tw-hidden tw-divide-y tw-divide-slate-700">
+        {% for u in users %}
+        <div class="user-row tw-p-4">
+            <div class="tw-flex tw-justify-between tw-items-start tw-mb-3">
+                <div>
+                    <div class="tw-font-medium tw-text-white">{{ u.first_name }} {{ u.last_name }}</div>
+                    <div class="tw-text-xs tw-text-slate-400">{{ u.email }}</div>
+                </div>
+                <div>
+                    {% if u.is_admin %}
+                    <span
+                        class="tw-bg-purple-500/10 tw-text-purple-400 tw-px-2 tw-py-0.5 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-purple-500/20">Admin</span>
+                    {% else %}
+                    <span
+                        class="tw-bg-slate-500/10 tw-text-slate-400 tw-px-2 tw-py-0.5 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-slate-500/20">User</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="tw-grid tw-grid-cols-2 tw-gap-2 tw-text-sm tw-mb-4">
+                <div>
+                    <div class="tw-text-xs tw-text-slate-500">Contact</div>
+                    <div class="tw-text-slate-300">{{ u.mobile }}</div>
+                </div>
+                <div>
+                    <div class="tw-text-xs tw-text-slate-500">College</div>
+                    <div class="tw-text-slate-300">{{ u.college }}</div>
+                </div>
+                <div class="tw-col-span-2">
+                    <div class="tw-text-xs tw-text-slate-500">Joined</div>
+                    <div class="tw-text-slate-300">{{ u.created_at.strftime('%Y-%m-%d') }}</div>
+                </div>
+            </div>
+
+            <div class="tw-pt-2 tw-border-t tw-border-slate-700/50">
+                {% if u.is_admin %}
+                {% if u.id == session.get('user_id') %}
+                <div class="tw-text-center tw-text-sm tw-text-slate-500 tw-italic tw-py-2">You</div>
+                {% else %}
+                <form action="{{ url_for('admin_revoke_user', user_id=u.id) }}" method="POST"
+                    onsubmit="return confirm('Revoke admin access for {{ u.email }}?');" class="tw-w-full">
+                    <button type="submit"
+                        class="tw-w-full tw-py-2 tw-bg-red-900/30 hover:tw-bg-red-900/50 tw-text-red-400 tw-border tw-border-red-800 tw-rounded tw-text-sm tw-font-semibold tw-transition-colors">
+                        Revoke Admin
+                    </button>
+                </form>
+                {% endif %}
+                {% else %}
+                <form action="{{ url_for('admin_promote_user', user_id=u.id) }}" method="POST"
+                    onsubmit="return confirm('Promote {{ u.email }} to Admin?');" class="tw-w-full">
+                    <button type="submit"
+                        class="tw-w-full tw-py-2 tw-bg-blue-600 hover:tw-bg-blue-500 tw-text-white tw-rounded tw-text-sm tw-font-semibold tw-transition-colors">
+                        Make Admin
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 

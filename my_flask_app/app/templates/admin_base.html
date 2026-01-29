@@ -161,6 +161,64 @@
             width: calc(100% - 250px);
         }
 
+        /* Mobile Responsive Sidebar */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+            display: none;
+            backdrop-filter: blur(2px);
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 60;
+            background: var(--admin-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                width: 280px;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+                box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+                padding-top: 80px;
+            }
+
+            .mobile-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
         /* Toast Container */
         #toast-container {
             position: fixed;
@@ -201,12 +259,24 @@
 </head>
 
 <body>
+    <!-- Mobile Menu Button -->
+    <button class="mobile-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars text-xl"></i>
+    </button>
+
+    <!-- Overlay -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
             <i class="fas fa-cube text-blue-500 text-xl"></i>
             <span class="sidebar-brand">Great Step Admin</span>
+            <!-- Close button for mobile -->
+            <button onclick="toggleSidebar()"
+                class="md:tw-hidden tw-ml-auto tw-text-slate-400 hover:tw-text-white tw-block lg:tw-hidden">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
 
         <nav class="nav-links">
@@ -250,6 +320,11 @@
     <div id="toast-container"></div>
 
     <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+
         function showToast(message, type = 'info') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
