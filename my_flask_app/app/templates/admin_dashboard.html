@@ -2,25 +2,25 @@
 
 {% block content %}
 <!-- Stats Cards -->
-<div class="tw-grid tw-grid-cols-1 md:tw-grid-cols-4 tw-gap-6 tw-mb-8">
-    <div class="tw-bg-[#1e293b] tw-p-6 tw-rounded-xl tw-border tw-border-slate-700">
-        <div class="tw-text-slate-400 tw-text-sm tw-font-medium tw-mb-2">Total Revenue</div>
-        <div class="tw-text-3xl tw-font-bold tw-text-emerald-400">₹{{ stats.revenue }}</div>
+<div class="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-4 tw-gap-4 lg:tw-gap-6 tw-mb-6 lg:tw-mb-8">
+    <div class="tw-bg-[#1e293b] tw-p-4 lg:tw-p-6 tw-rounded-xl tw-border tw-border-slate-700">
+        <div class="tw-text-slate-400 tw-text-xs lg:tw-text-sm tw-font-medium tw-mb-2">Total Revenue</div>
+        <div class="tw-text-2xl lg:tw-text-3xl tw-font-bold tw-text-emerald-400">₹{{ stats.revenue }}</div>
     </div>
 
-    <div class="tw-bg-[#1e293b] tw-p-6 tw-rounded-xl tw-border tw-border-slate-700">
-        <div class="tw-text-slate-400 tw-text-sm tw-font-medium tw-mb-2">Verified Registrations</div>
-        <div class="tw-text-3xl tw-font-bold tw-text-white">{{ stats.verified }}</div>
+    <div class="tw-bg-[#1e293b] tw-p-4 lg:tw-p-6 tw-rounded-xl tw-border tw-border-slate-700">
+        <div class="tw-text-slate-400 tw-text-xs lg:tw-text-sm tw-font-medium tw-mb-2">Verified Registrations</div>
+        <div class="tw-text-2xl lg:tw-text-3xl tw-font-bold tw-text-white">{{ stats.verified }}</div>
     </div>
 
-    <div class="tw-bg-[#1e293b] tw-p-6 tw-rounded-xl tw-border tw-border-slate-700">
-        <div class="tw-text-slate-400 tw-text-sm tw-font-medium tw-mb-2">Pending Verification</div>
-        <div class="tw-text-3xl tw-font-bold tw-text-amber-400">{{ stats.pending }}</div>
+    <div class="tw-bg-[#1e293b] tw-p-4 lg:tw-p-6 tw-rounded-xl tw-border tw-border-slate-700">
+        <div class="tw-text-slate-400 tw-text-xs lg:tw-text-sm tw-font-medium tw-mb-2">Pending Verification</div>
+        <div class="tw-text-2xl lg:tw-text-3xl tw-font-bold tw-text-amber-400">{{ stats.pending }}</div>
     </div>
 
-    <div class="tw-bg-[#1e293b] tw-p-6 tw-rounded-xl tw-border tw-border-slate-700">
-        <div class="tw-text-slate-400 tw-text-sm tw-font-medium tw-mb-2">Total Signups</div>
-        <div class="tw-text-3xl tw-font-bold tw-text-blue-400">{{ stats.total_registrations }}</div>
+    <div class="tw-bg-[#1e293b] tw-p-4 lg:tw-p-6 tw-rounded-xl tw-border tw-border-slate-700">
+        <div class="tw-text-slate-400 tw-text-xs lg:tw-text-sm tw-font-medium tw-mb-2">Total Signups</div>
+        <div class="tw-text-2xl lg:tw-text-3xl tw-font-bold tw-text-blue-400">{{ stats.total_registrations }}</div>
     </div>
 </div>
 
@@ -28,54 +28,56 @@
 <div class="tw-bg-[#1e293b] tw-rounded-xl tw-border tw-border-slate-700 tw-overflow-hidden">
 
     <!-- Toolbar -->
-    <div class="tw-p-4 tw-border-b tw-border-slate-700 tw-flex tw-justify-between tw-items-center">
-        <div class="tw-flex tw-gap-2">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="verification_pending">Pending</button>
-            <button class="filter-btn" data-filter="completed">Verified</button>
-            <button class="filter-btn" data-filter="failed">Rejected</button>
-        </div>
-        <div class="tw-relative">
-            <input type="text" id="searchInput" placeholder="Search name, txn ID..."
-                class="tw-bg-[#0f172a] tw-border tw-border-slate-700 tw-text-sm tw-rounded-lg tw-px-4 tw-py-2 tw-w-64 tw-text-white focus:tw-outline-none focus:tw-border-blue-500">
+    <div class="tw-p-4 tw-border-b tw-border-slate-700">
+        <div class="tw-flex tw-flex-col lg:tw-flex-row lg:tw-justify-between lg:tw-items-center tw-gap-4">
+            <div class="tw-flex tw-flex-wrap tw-gap-2">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="verification_pending">Pending</button>
+                <button class="filter-btn" data-filter="completed">Verified</button>
+                <button class="filter-btn" data-filter="failed">Rejected</button>
+            </div>
+            <div class="tw-relative tw-w-full lg:tw-w-auto">
+                <input type="text" id="searchInput" placeholder="Search name, txn ID..."
+                    class="tw-bg-[#0f172a] tw-border tw-border-slate-700 tw-text-sm tw-rounded-lg tw-px-4 tw-py-2 tw-w-full lg:tw-w-64 tw-text-white focus:tw-outline-none focus:tw-border-blue-500">
+            </div>
         </div>
     </div>
 
     <!-- Table -->
     <div class="tw-overflow-x-auto">
-        <table class="tw-w-full tw-text-left">
+        <table class="tw-w-full tw-text-left tw-min-w-[800px]">
             <thead class="tw-bg-[#0f172a] tw-text-slate-400 tw-uppercase tw-text-xs tw-font-semibold">
                 <tr>
-                    <th class="tw-px-6 tw-py-4">User Details</th>
-                    <th class="tw-px-6 tw-py-4">College Info</th>
-                    <th class="tw-px-6 tw-py-4">Payment Info</th>
-                    <th class="tw-px-6 tw-py-4">Amount</th>
-                    <th class="tw-px-6 tw-py-4">Status</th>
-                    <th class="tw-px-6 tw-py-4">Actions</th>
+                    <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">User Details</th>
+                    <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">College Info</th>
+                    <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">Payment Info</th>
+                    <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">Amount</th>
+                    <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">Status</th>
+                    <th class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4 tw-whitespace-nowrap">Actions</th>
                 </tr>
             </thead>
             <tbody class="tw-divide-y tw-divide-slate-700" id="regTableBody">
                 {% for reg in registrations %}
                 <tr class="reg-row" data-status="{{ reg.payment_status }}">
-                    <td class="tw-px-6 tw-py-4">
-                        <div class="tw-font-medium tw-text-white">{{ reg.first_name }} {{ reg.last_name }}</div>
-                        <div class="tw-text-sm tw-text-slate-400">{{ reg.email }}</div>
+                    <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
+                        <div class="tw-font-medium tw-text-white tw-text-sm lg:tw-text-base">{{ reg.first_name }} {{ reg.last_name }}</div>
+                        <div class="tw-text-xs lg:tw-text-sm tw-text-slate-400 tw-break-all">{{ reg.email }}</div>
                         <div class="tw-text-xs tw-text-slate-500 tw-mt-1">{{ reg.mobile }}</div>
                     </td>
-                    <td class="tw-px-6 tw-py-4">
-                        <div class="tw-text-sm tw-text-white">{{ reg.college }}</div>
+                    <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
+                        <div class="tw-text-sm lg:tw-text-base tw-text-white tw-break-words">{{ reg.college }}</div>
                         <div class="tw-text-xs tw-text-slate-400">Year: {{ reg.year }}</div>
                     </td>
-                    <td class="tw-px-6 tw-py-4">
+                    <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
                         {% if reg.transaction_id %}
                         <div
-                            class="tw-font-mono tw-text-xs tw-bg-blue-900/30 tw-text-blue-400 tw-px-2 tw-py-1 tw-rounded tw-inline-block">
+                            class="tw-font-mono tw-text-xs tw-bg-blue-900/30 tw-text-blue-400 tw-px-2 tw-py-1 tw-rounded tw-inline-block tw-break-all">
                             {{ reg.transaction_id }}
                         </div>
                         <div class="tw-text-xs tw-text-slate-500 tw-mt-1">Manual UPI</div>
                         {% else %}
                         <div
-                            class="tw-font-mono tw-text-xs tw-bg-purple-900/30 tw-text-purple-400 tw-px-2 tw-py-1 tw-rounded tw-inline-block">
+                            class="tw-font-mono tw-text-xs tw-bg-purple-900/30 tw-text-purple-400 tw-px-2 tw-py-1 tw-rounded tw-inline-block tw-break-all">
                             {{ reg.razorpay_payment_id }}
                         </div>
                         <div class="tw-text-xs tw-text-slate-500 tw-mt-1">Razorpay</div>
@@ -83,24 +85,24 @@
                         <div class="tw-text-xs tw-text-slate-600 tw-mt-1">{{ reg.created_at.strftime('%b %d, %H:%M') }}
                         </div>
                     </td>
-                    <td class="tw-px-6 tw-py-4">
-                        <div class="tw-font-semibold tw-text-slate-200">₹{{ reg.amount_paid // 100 }}</div>
+                    <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
+                        <div class="tw-font-semibold tw-text-slate-200 tw-text-sm lg:tw-text-base">₹{{ reg.amount_paid // 100 }}</div>
                     </td>
-                    <td class="tw-px-6 tw-py-4">
+                    <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
                         {% if reg.payment_status == 'completed' %}
                         <span
-                            class="tw-bg-emerald-500/10 tw-text-emerald-400 tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-emerald-500/20">Verified</span>
+                            class="tw-bg-emerald-500/10 tw-text-emerald-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-emerald-500/20">Verified</span>
                         {% elif reg.payment_status == 'verification_pending' %}
                         <span
-                            class="tw-bg-amber-500/10 tw-text-amber-400 tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-amber-500/20">Pending</span>
+                            class="tw-bg-amber-500/10 tw-text-amber-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-amber-500/20">Pending</span>
                         {% else %}
                         <span
-                            class="tw-bg-red-500/10 tw-text-red-400 tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-red-500/20">Rejected</span>
+                            class="tw-bg-red-500/10 tw-text-red-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-red-500/20">Rejected</span>
                         {% endif %}
                     </td>
-                    <td class="tw-px-6 tw-py-4">
-                        <div class="tw-flex tw-gap-2">
-                            {% if reg.payment_status != 'completed' %}
+                    <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
+                        <div class="tw-flex tw-gap-1 lg:tw-gap-2">
+                            {% if reg.payment_status in ['verification_pending', 'failed'] %}
                             <form action="{{ url_for('admin_verify_payment', reg_id=reg.id) }}" method="POST"
                                 onsubmit="return confirm('Verify this payment?');">
                                 <button type="submit"
@@ -111,7 +113,7 @@
                             </form>
                             {% endif %}
                             
-                            {% if reg.payment_status != 'failed' %}
+                            {% if reg.payment_status == 'verification_pending' %}
                             <form action="{{ url_for('admin_reject_payment', reg_id=reg.id) }}" method="POST"
                                 onsubmit="return confirm('Reject this payment?');">
                                 <button type="submit"
@@ -134,13 +136,21 @@
     .filter-btn {
         background: transparent;
         color: #94a3b8;
-        padding: 6px 16px;
+        padding: 6px 12px;
         border-radius: 6px;
-        font-size: 0.875rem;
+        font-size: 0.75rem;
         font-weight: 500;
         cursor: pointer;
         transition: all 0.2s;
         border: 1px solid transparent;
+        white-space: nowrap;
+    }
+
+    @media (min-width: 1024px) {
+        .filter-btn {
+            padding: 6px 16px;
+            font-size: 0.875rem;
+        }
     }
 
     .filter-btn:hover {
@@ -156,18 +166,27 @@
 
     /* Action Buttons */
     .action-btn {
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
         border: none;
-        border-radius: 8px;
+        border-radius: 6px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 600;
         transition: all 0.2s ease;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (min-width: 1024px) {
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            font-size: 16px;
+        }
     }
 
     .action-btn:hover {
