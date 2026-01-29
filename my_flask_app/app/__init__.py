@@ -77,24 +77,12 @@ def admin_required(f):
 @app.route('/admin/cleanup-db', methods=['POST'])
 @admin_required
 def admin_cleanup_db():
-    """Run database cleanup script to remove invalid registrations"""
+    """Run database cleanup script to remove invalid registrations and duplicate pending users"""
     try:
-        # Import the cleanup function dynamically to avoid circular imports if any
-        # Assuming cleanup_registrations.py is a module in the same package (app context)
-        # But wait, cleanup_registrations.py is in the root folder, not in 'app' package?
-        # The user's files show it at p:\greatstep_website-1\my_flask_app\cleanup_registrations.py
-        # And __init__.py is at p:\greatstep_website-1\my_flask_app\app\__init__.py
-        # So cleanup_registrations is in the PARENT directory of 'app'.
-        # This makes relative import tricky: "from ..cleanup_registrations" might error if not a package.
-        
-        # Better approach: Copy the logic here or ensure path is correct.
-        # Actually, let's just re-implement the logic briefly here to rely on app/models.
-        # It's cleaner than trying to import a script from parent directory in Flask.
-        
         from sqlalchemy import or_
-        from .models import GreatStepRegistration, db
+        from .models import GreatStepRegistration, PendingRegistration, User, db
         
-        # 1. Identify Invalid Records
+        # 1. Cleanup Invalid GreatStep Registrations
         invalid_query = GreatStepRegistration.query.filter(
             or_(
                 GreatStepRegistration.payment_status == 'pending',
@@ -106,17 +94,35 @@ def admin_cleanup_db():
             )
         )
         
-        records = invalid_query.all()
-        count = len(records)
-        
-        if count > 0:
-            for reg in records:
-                db.session.delete(reg)
-            db.session.commit()
+        gs_records = invalid_query.all()
+        gs_count = len(gs_records)
+        for reg in gs_records:
+            db.session.delete(reg)
             
-            flash(f"Successfully cleaned up {count} invalid records.", 'success')
+        # 2. Cleanup Duplicate Pending Registrations
+        # Find pending regs where email already exists in User table
+        # We need to use subquery or in_ clause
+        users_emails = db.session.query(User.email)
+        duplicate_pending = PendingRegistration.query.filter(
+            PendingRegistration.email.in_(users_emails)
+        ).all()
+        
+        pending_count = len(duplicate_pending)
+        for p in duplicate_pending:
+            db.session.delete(p)
+            
+        db.session.commit()
+        
+        messages = []
+        if gs_count > 0:
+            messages.append(f"Cleaned {gs_count} invalid GreatStep registrations.")
+        if pending_count > 0:
+            messages.append(f"Removed {pending_count} duplicate pending users.")
+            
+        if messages:
+            flash(" ".join(messages), 'success')
         else:
-            flash("Database is already clean. No invalid records found.", 'info')
+            flash("Database is already clean. No issues found.", 'info')
 
     except Exception as e:
         db.session.rollback()
