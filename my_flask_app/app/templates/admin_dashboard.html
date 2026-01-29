@@ -36,9 +36,10 @@
                 <button class="filter-btn" data-filter="completed">Verified</button>
                 <button class="filter-btn" data-filter="failed">Rejected</button>
             </div>
-            <div class="tw-relative tw-w-full lg:tw-w-auto">
+            <div class="tw-relative tw-w-full lg:tw-w-auto tw-flex tw-flex-col sm:tw-flex-row tw-gap-2">
                 <input type="text" id="searchInput" placeholder="Search name, txn ID..."
-                    class="tw-bg-[#0f172a] tw-border tw-border-slate-700 tw-text-sm tw-rounded-lg tw-px-4 tw-py-2 tw-w-full lg:tw-w-64 tw-text-white focus:tw-outline-none focus:tw-border-blue-500">
+                    class="tw-bg-[#0f172a] tw-border tw-border-slate-700 tw-text-sm tw-rounded-lg tw-px-4 tw-py-2 tw-w-full tw-text-white focus:tw-outline-none focus:tw-border-blue-500">
+
             </div>
         </div>
     </div>
@@ -60,7 +61,8 @@
                 {% for reg in registrations %}
                 <tr class="reg-row" data-status="{{ reg.payment_status }}">
                     <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
-                        <div class="tw-font-medium tw-text-white tw-text-sm lg:tw-text-base">{{ reg.first_name }} {{ reg.last_name }}</div>
+                        <div class="tw-font-medium tw-text-white tw-text-sm lg:tw-text-base">{{ reg.first_name }} {{
+                            reg.last_name }}</div>
                         <div class="tw-text-xs lg:tw-text-sm tw-text-slate-400 tw-break-all">{{ reg.email }}</div>
                         <div class="tw-text-xs tw-text-slate-500 tw-mt-1">{{ reg.mobile }}</div>
                     </td>
@@ -86,7 +88,8 @@
                         </div>
                     </td>
                     <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
-                        <div class="tw-font-semibold tw-text-slate-200 tw-text-sm lg:tw-text-base">₹{{ reg.amount_paid // 100 }}</div>
+                        <div class="tw-font-semibold tw-text-slate-200 tw-text-sm lg:tw-text-base">₹{{ reg.amount_paid
+                            // 100 }}</div>
                     </td>
                     <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
                         {% if reg.payment_status == 'completed' %}
@@ -95,9 +98,16 @@
                         {% elif reg.payment_status == 'verification_pending' %}
                         <span
                             class="tw-bg-amber-500/10 tw-text-amber-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-amber-500/20">Pending</span>
-                        {% else %}
+                        {% elif reg.payment_status == 'failed' %}
                         <span
                             class="tw-bg-red-500/10 tw-text-red-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-red-500/20">Rejected</span>
+                        {% elif reg.payment_status == 'pending' %}
+                        <span
+                            class="tw-bg-gray-500/10 tw-text-gray-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-gray-500/20">Not
+                            Started</span>
+                        {% else %}
+                        <span
+                            class="tw-bg-slate-500/10 tw-text-slate-400 tw-px-2 lg:tw-px-3 tw-py-1 tw-rounded-full tw-text-xs tw-font-medium tw-border tw-border-slate-500/20">Unknown</span>
                         {% endif %}
                     </td>
                     <td class="tw-px-3 lg:tw-px-6 tw-py-3 lg:tw-py-4">
@@ -105,20 +115,16 @@
                             {% if reg.payment_status in ['verification_pending', 'failed'] %}
                             <form action="{{ url_for('admin_verify_payment', reg_id=reg.id) }}" method="POST"
                                 onsubmit="return confirm('Verify this payment?');">
-                                <button type="submit"
-                                    class="action-btn verify-btn"
-                                    title="Verify Payment">
+                                <button type="submit" class="action-btn verify-btn" title="Verify Payment">
                                     <i class="fas fa-check"></i>
                                 </button>
                             </form>
                             {% endif %}
-                            
-                            {% if reg.payment_status == 'verification_pending' %}
+
+                            {% if reg.payment_status in ['verification_pending', 'completed'] %}
                             <form action="{{ url_for('admin_reject_payment', reg_id=reg.id) }}" method="POST"
                                 onsubmit="return confirm('Reject this payment?');">
-                                <button type="submit"
-                                    class="action-btn reject-btn"
-                                    title="Reject Payment">
+                                <button type="submit" class="action-btn reject-btn" title="Reject Payment">
                                     <i class="fas fa-times"></i>
                                 </button>
                             </form>
@@ -242,7 +248,7 @@
         rows.forEach(row => {
             const matchesStatus = currentStatusFilter === 'all' || row.dataset.status === currentStatusFilter;
             const matchesSearch = currentSearchTerm === '' || row.innerText.toLowerCase().includes(currentSearchTerm);
-            
+
             if (matchesStatus && matchesSearch) {
                 row.style.display = '';
             } else {
