@@ -28,6 +28,12 @@ app.config['SESSION_COOKIE_HTTPONLY'] = app.config.get('SESSION_COOKIE_HTTPONLY'
 db.init_app(app)
 migrate = Migrate(app, db)
 
+# Database connection cleanup for serverless environments
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    """Close database connections after each request"""
+    db.session.remove()
+
 # Create tables if they don't exist (for development)
 with app.app_context():
     db.create_all()
@@ -52,10 +58,17 @@ def admin_required(f):
             flash('Please sign in to access this page', 'error')
             return redirect(url_for('signin'))
         
-        user = User.query.get(session['user_id'])
-        if not user or not user.is_admin:
-            flash('Admin access only', 'error')
-            return redirect(url_for('home'))
+        try:
+            user = User.query.get(session['user_id'])
+            if not user or not user.is_admin:
+                flash('Admin access only', 'error')
+                return redirect(url_for('home'))
+        except Exception as e:
+            # Handle database connection errors
+            app.logger.error(f"Database error in admin_required: {e}")
+            session.clear()
+            flash('Database connection error. Please try signing in again.', 'error')
+            return redirect(url_for('signin'))
             
         return f(*args, **kwargs)
     return decorated_function
@@ -80,12 +93,8 @@ def admin_dashboard():
 @app.route('/admin/verify-payment/<int:reg_id>', methods=['POST'])
 @admin_required
 def admin_verify_payment(reg_id):
-    """Verify a pending payment"""
+    """Verify a payment (can be used to change status from pending/failed to completed)"""
     registration = GreatStepRegistration.query.get_or_404(reg_id)
-    
-    if registration.payment_status == 'completed':
-        flash('Payment already verified', 'info')
-        return redirect(url_for('admin_dashboard'))
     
     try:
         # Mark payment as completed
@@ -100,7 +109,6 @@ def admin_verify_payment(reg_id):
         
         db.session.commit()
         
-        # Send confirmation email (optional, using verify email function logic for now just flash)
         flash(f'Payment for {registration.first_name} verified successfully!', 'success')
         
     except Exception as e:
@@ -113,15 +121,20 @@ def admin_verify_payment(reg_id):
 @app.route('/admin/reject-payment/<int:reg_id>', methods=['POST'])
 @admin_required
 def admin_reject_payment(reg_id):
-    """Reject a pending payment"""
+    """Reject a payment (can be used to change status from any state to failed)"""
     registration = GreatStepRegistration.query.get_or_404(reg_id)
     
-    if registration.payment_status == 'completed':
-        flash('Cannot reject a verified payment', 'error')
-        return redirect(url_for('admin_dashboard'))
-        
     try:
         registration.payment_status = 'failed'
+        # Clear the completion timestamp when rejecting
+        registration.payment_completed_at = None
+        
+        # Update user status if they were registered
+        user = User.query.filter_by(email=registration.email).first()
+        if user:
+            user.is_greatstep_registered = False
+            user.updated_at = datetime.utcnow()
+        
         db.session.commit()
         flash(f'Payment for {registration.first_name} rejected.', 'warning')
     except Exception as e:
@@ -447,6 +460,16 @@ def signin():
         
         # Direct login (no OTP)
         session['user_id'] = user.id
+        
+        # Auto-promote Main Admin on direct login too
+        main_admin = app.config.get('MAIN_ADMIN_EMAIL')
+        if user and main_admin and user.email.lower() == main_admin.lower():
+            if not user.is_admin:
+                user.is_admin = True
+                db.session.commit()
+                print(f"[INFO] Main Admin {user.email} auto-promoted on direct login.")
+        
+        session['is_admin'] = user.is_admin
         flash('Signed in successfully!', 'success')
         return redirect(url_for('profile'))
     return render_template('signin.html')
@@ -801,13 +824,20 @@ def signout():
 @app.route('/profile')
 @login_required
 def profile():
-    user = User.query.get(session['user_id'])
-    if not user:
-        # User no longer exists, clear session
+    try:
+        user = User.query.get(session['user_id'])
+        if not user:
+            # User no longer exists, clear session
+            session.clear()
+            flash('Your session has expired. Please sign in again.', 'error')
+            return redirect(url_for('signin'))
+        return render_template('profile.html', user=user)
+    except Exception as e:
+        # Handle database connection errors
+        app.logger.error(f"Database error in profile: {e}")
         session.clear()
-        flash('Your session has expired. Please sign in again.', 'error')
+        flash('Database connection error. Please try signing in again.', 'error')
         return redirect(url_for('signin'))
-    return render_template('profile.html', user=user)
 
 @app.route('/change-password', methods=['POST'])
 @login_required

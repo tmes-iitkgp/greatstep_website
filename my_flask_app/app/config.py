@@ -19,6 +19,17 @@ class Config:
     
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
+    # Database connection options for serverless environments
+    # Prevents connection timeout issues in Vercel/Railway
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        'pool_pre_ping': True,  # Check connection before using
+        'pool_recycle': 300,    # Recycle connections every 5 minutes
+        'connect_args': {
+            'connect_timeout': 10,
+            'options': '-c statement_timeout=30000'  # 30 second statement timeout
+        } if 'postgresql' in SQLALCHEMY_DATABASE_URI else {}
+    }
+    
     # Brevo Email Configuration
     BREVO_API_KEY = os.environ.get('BREVO_API_KEY')
     SENDER_EMAIL = os.environ.get('SENDER_EMAIL') or 'noreply@tmes.com'

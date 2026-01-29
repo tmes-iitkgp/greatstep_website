@@ -99,28 +99,29 @@
                         {% endif %}
                     </td>
                     <td class="tw-px-6 tw-py-4">
-                        {% if reg.payment_status == 'verification_pending' %}
                         <div class="tw-flex tw-gap-2">
+                            {% if reg.payment_status != 'completed' %}
                             <form action="{{ url_for('admin_verify_payment', reg_id=reg.id) }}" method="POST"
                                 onsubmit="return confirm('Verify this payment?');">
                                 <button type="submit"
-                                    class="tw-p-2 tw-bg-emerald-600 hover:tw-bg-emerald-500 tw-text-white tw-rounded-lg tw-transition-colors"
-                                    title="Verify">
+                                    class="action-btn verify-btn"
+                                    title="Verify Payment">
                                     <i class="fas fa-check"></i>
                                 </button>
                             </form>
+                            {% endif %}
+                            
+                            {% if reg.payment_status != 'failed' %}
                             <form action="{{ url_for('admin_reject_payment', reg_id=reg.id) }}" method="POST"
                                 onsubmit="return confirm('Reject this payment?');">
                                 <button type="submit"
-                                    class="tw-p-2 tw-bg-red-900/50 hover:tw-bg-red-800/50 tw-text-red-400 tw-border tw-border-red-800 tw-rounded-lg tw-transition-colors"
-                                    title="Reject">
+                                    class="action-btn reject-btn"
+                                    title="Reject Payment">
                                     <i class="fas fa-times"></i>
                                 </button>
                             </form>
+                            {% endif %}
                         </div>
-                        {% else %}
-                        <span class="tw-text-slate-600 tw-text-sm">-</span>
-                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
@@ -152,44 +153,101 @@
         color: white;
         box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     }
+
+    /* Action Buttons */
+    .action-btn {
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .action-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .action-btn:active {
+        transform: translateY(0);
+    }
+
+    .verify-btn {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+    }
+
+    .verify-btn:hover:not(.tw-opacity-50) {
+        background: linear-gradient(135deg, #059669, #047857);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .reject-btn {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+    }
+
+    .reject-btn:hover:not(.tw-opacity-50) {
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+
+    .action-btn.tw-opacity-50 {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .action-btn.tw-opacity-50:hover {
+        transform: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 </style>
 
 <script>
-    // Tab Filtering
+    // Tab Filtering and Search
     const filterBtns = document.querySelectorAll('.filter-btn');
+    const searchInput = document.getElementById('searchInput');
     const rows = document.querySelectorAll('.reg-row');
 
+    let currentStatusFilter = 'all';
+    let currentSearchTerm = '';
+
+    function applyFilters() {
+        rows.forEach(row => {
+            const matchesStatus = currentStatusFilter === 'all' || row.dataset.status === currentStatusFilter;
+            const matchesSearch = currentSearchTerm === '' || row.innerText.toLowerCase().includes(currentSearchTerm);
+            
+            if (matchesStatus && matchesSearch) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    // Status filtering
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             // Update active state
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            const status = btn.dataset.filter;
-
-            rows.forEach(row => {
-                if (status === 'all' || row.dataset.status === status) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
+            currentStatusFilter = btn.dataset.filter;
+            applyFilters();
         });
     });
 
-    // Search Filtering
-    const searchInput = document.getElementById('searchInput');
+    // Search filtering
     searchInput.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-
-        rows.forEach(row => {
-            const text = row.innerText.toLowerCase();
-            if (text.includes(term)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
+        currentSearchTerm = e.target.value.toLowerCase();
+        applyFilters();
     });
 </script>
 {% endblock %}
