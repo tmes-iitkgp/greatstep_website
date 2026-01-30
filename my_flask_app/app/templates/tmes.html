@@ -10,7 +10,9 @@
         <h1 class="welcome-heading animate-welcome">Welcome to TMES</h1>
         <div class="welcome-content">
             <p class="welcome-description">
-                The Technology Mining Engineering Society (TMES) promotes close collaboration between students and faculty by organizing social, cultural, and sports activities that strengthen interaction and departmental unity.
+                The Technology Mining Engineering Society (TMES) promotes close collaboration between students and
+                faculty by organizing social, cultural, and sports activities that strengthen interaction and
+                departmental unity.
             </p>
         </div>
     </section>
@@ -18,14 +20,15 @@
     <!-- TMES Team Photo Section -->
     <section class="tmes-team-photo-section section__padding">
         <div class="tmes-team-photo-container">
-            <img src="{{ url_for('static', filename='images/tmes_home.jpg') }}" alt="TMES Team Photo" class="tmes-team-photo" />
+            <img src="{{ url_for('static', filename='images/tmes_team.png') }}" alt="TMES Team Photo"
+                class="tmes-team-photo" />
         </div>
     </section>
 
     <!-- our_events Section (scrolling bar with event photos and names) -->
     <section class="carousel2">
         <div class="carousel2-title">
-            <h2>our_events</h2>
+            <h2>Our Events</h2>
         </div>
         <div class="swiper-container">
             <div class="swiper-wrapper tmes-carousel" id="tmes-carousel-track">
@@ -46,7 +49,8 @@
                     <div class="event-name">Department Picnic</div>
                 </div>
                 <div class="swiper-slide event-slide">
-                    <img src="{{ url_for('static', filename='images/our_events/teachers_day.jpeg') }}" alt="Teachers Day" />
+                    <img src="{{ url_for('static', filename='images/our_events/teachers_day.jpeg') }}"
+                        alt="Teachers Day" />
                     <div class="event-name">Teachers Day</div>
                 </div>
                 <div class="swiper-slide event-slide">
@@ -59,37 +63,42 @@
 </div>
 
 <style>
-@keyframes smoothCarouselScroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-}
+    @keyframes smoothCarouselScroll {
+        from {
+            transform: translateX(0);
+        }
 
-#tmes-carousel-track {
-    animation: smoothCarouselScroll 50s linear infinite;
-    will-change: transform;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-}
+        to {
+            transform: translateX(-50%);
+        }
+    }
 
-#tmes-carousel-track:hover,
-#tmes-carousel-track.paused {
-    animation-play-state: paused !important;
-}
+    #tmes-carousel-track {
+        animation: smoothCarouselScroll 50s linear infinite;
+        will-change: transform;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+
+    #tmes-carousel-track:hover,
+    #tmes-carousel-track.paused {
+        animation-play-state: paused !important;
+    }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const tmesTrack = document.getElementById('tmes-carousel-track');
-    if (tmesTrack) {
-        // Clone all slides for seamless infinite loop
-        const originalContent = tmesTrack.innerHTML;
-        tmesTrack.innerHTML = originalContent + originalContent;
-        
-        // Prevent image dragging
-        tmesTrack.querySelectorAll('img').forEach(img => {
-            img.addEventListener('dragstart', e => e.preventDefault());
-        });
-    }
-});
+    document.addEventListener('DOMContentLoaded', function () {
+        const tmesTrack = document.getElementById('tmes-carousel-track');
+        if (tmesTrack) {
+            // Clone all slides for seamless infinite loop
+            const originalContent = tmesTrack.innerHTML;
+            tmesTrack.innerHTML = originalContent + originalContent;
+
+            // Prevent image dragging
+            tmesTrack.querySelectorAll('img').forEach(img => {
+                img.addEventListener('dragstart', e => e.preventDefault());
+            });
+        }
+    });
 </script>
 {% endblock %}
