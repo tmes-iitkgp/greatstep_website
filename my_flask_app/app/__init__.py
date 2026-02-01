@@ -378,9 +378,9 @@ def safety_da():
                            ps_url=event.get('ps'),
                            submission_url=event.get('submission'))
 
-@app.route('/great-step/events/competitions/Geobotics')
-def geobotics():
-    event = get_event_data('Geobotics')
+@app.route('/great-step/events/competitions/mine-modeling')
+def mine_modeling():
+    event = get_event_data('mine_modeling')
     return render_template('event_detail.html', 
                            event_name=event['name'],
                            event_image=url_for('static', filename=event['image']),
