@@ -62,11 +62,11 @@ EVENTS_DATA = {
         "prize": "₹6000",
         "teamLen": 3,
     },
-    "mine_modeling": {
-        "name": "Mine Modeling",
+    "Geobotics": {
+        "name": "Geobotics",
         "image": "images/Events/geobotics.jpg",
         "info": [
-            "Participants design an underground mine layout using CAD-based software, focusing on mine planning principles, layout efficiency, and safety considerations.",
+            "Geobotics is a competition that is designed for the enthusiasts to solve different complications in the mining industry. The problem statements will revolve around mining that is inaccessible or is hazardous for man to enter. It is an offline event, organized at IIT Kharagpur, and UG/PG with a team of 4 can participate. Prize money worth 31k can be won.",
         ],
         "contact": "Aman Goswami",
         "phoneno": "+91 6006775747",

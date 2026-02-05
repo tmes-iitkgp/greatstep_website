@@ -25,6 +25,21 @@ app.config['SESSION_COOKIE_SAMESITE'] = app.config.get('SESSION_COOKIE_SAMESITE'
 app.config['SESSION_COOKIE_SECURE'] = app.config.get('SESSION_COOKIE_SECURE', False)
 app.config['SESSION_COOKIE_HTTPONLY'] = app.config.get('SESSION_COOKIE_HTTPONLY', True)
 
+# Optimize bandwidth with Caching Headers
+@app.after_request
+def add_header(response):
+    """
+    Add headers to both force latest IE rendering engine or Chrome Frame,
+    and also to cache the rendered page for 10 minutes.
+    """
+    if 'Cache-Control' not in response.headers:
+        # Cache static assets for 1 day, other content for 10 minutes
+        if request.path.startswith('/static'):
+            response.headers['Cache-Control'] = 'public, max-age=86400'
+        else:
+            response.headers['Cache-Control'] = 'public, max-age=600'
+    return response
+
 # Initialize extensions
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -378,9 +393,9 @@ def safety_da():
                            ps_url=event.get('ps'),
                            submission_url=event.get('submission'))
 
-@app.route('/great-step/events/competitions/mine-modeling')
-def mine_modeling():
-    event = get_event_data('mine_modeling')
+@app.route('/great-step/events/competitions/Geobotics')
+def geobotics():
+    event = get_event_data('Geobotics')
     return render_template('event_detail.html', 
                            event_name=event['name'],
                            event_image=url_for('static', filename=event['image']),

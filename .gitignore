@@ -44,6 +44,3 @@ coverage.xml
 
 # VS Code
 .vscode/
-
-__pycache__/
-*.pyc

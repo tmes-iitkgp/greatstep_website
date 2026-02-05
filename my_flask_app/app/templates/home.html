@@ -4,16 +4,17 @@
 
 {% block extra_head %}
 <style>
-        .header-image img.ncl-img {
-            height: 50px;
-            max-width: 150px;
-            width: auto;
-            object-fit: contain;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-            padding: 4px;
-        }
+    .header-image img.ncl-img {
+        height: 50px;
+        max-width: 150px;
+        width: auto;
+        object-fit: contain;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+        padding: 4px;
+    }
+
     .header-image {
         display: flex;
         align-items: center;
@@ -21,6 +22,7 @@
         justify-content: center;
         margin-bottom: 1rem;
     }
+
     .header-image img {
         height: 70px;
         max-width: 120px;
@@ -29,19 +31,22 @@
         display: block;
         background: #fff;
         border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
         padding: 4px;
     }
+
     @media (max-width: 600px) {
         .header-image img {
             height: 40px;
             max-width: 70px;
             padding: 2px;
         }
+
         .header-image {
             gap: 8px;
         }
     }
+
     .register-hero-btn {
         display: inline-flex;
         align-items: center;
@@ -57,17 +62,17 @@
         transition: all 0.3s ease;
         box-shadow: var(--shadow-gold);
     }
-    
+
     .register-hero-btn:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 30px rgba(212, 175, 55, 0.5);
         color: #1a1a2e !important;
     }
-    
+
     .register-hero-btn i {
         font-size: 1.2rem;
     }
-    
+
     .explore-events-btn {
         display: inline-flex;
         align-items: center;
@@ -82,16 +87,18 @@
         text-decoration: none;
         transition: all 0.3s ease;
     }
-    
+
     .explore-events-btn:hover {
         background: var(--color-primary);
         border-color: var(--color-primary);
         color: white !important;
         transform: translateY(-2px);
     }
-    
+
     @media (max-width: 600px) {
-        .register-hero-btn, .explore-events-btn {
+
+        .register-hero-btn,
+        .explore-events-btn {
             width: 100%;
             justify-content: center;
             padding: 14px 24px;
@@ -119,12 +126,19 @@
             <h1 class="animate-charcter gradient__text">GREAT-STEP’26</h1>
             <h2 class="animate-charcter" style="font-size: 1.2rem; color: var(--color-subtext);">13th-15th MARCH</h2>
             <p>
-                Upholding its legacy as a pioneer in the field, the Department of Mining Engineering, IIT Kharagpur has consistently championed the integration of practical knowledge with innovation. This philosophy has transformed traditional engineering principles into solutions aligned with modern technological demands.
+                Upholding its legacy as a pioneer in the field, the Department of Mining Engineering, IIT Kharagpur has
+                consistently championed the integration of practical knowledge with innovation. This philosophy has
+                transformed traditional engineering principles into solutions aligned with modern technological demands.
             </p>
             <p>
-                With this vision and a commitment to keeping pace with advancements in the Mining and Geology industries, the Department launched GREATSTEP (Geo-Resource Engineering and Technology Students’–Teachers’–Employers’ Partnership) in 2008. Designed as a collaborative platform for aspiring mining engineers, the fest has, over fourteen editions, hosted intellectually stimulating challenges, insightful guest lectures, and hands-on workshops that encourage exploration beyond conventional boundaries.
+                With this vision and a commitment to keeping pace with advancements in the Mining and Geology
+                industries, the Department launched GREATSTEP (Geo-Resource Engineering and Technology
+                Students’–Teachers’–Employers’ Partnership) in 2008. Designed as a collaborative platform for aspiring
+                mining engineers, the fest has, over fourteen editions, hosted intellectually stimulating challenges,
+                insightful guest lectures, and hands-on workshops that encourage exploration beyond conventional
+                boundaries.
             </p>
-            
+
             <!-- Register Now Button -->
             <div style="margin-top: 30px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;">
                 <a href="{{ url_for('greatstep_register') }}" class="register-hero-btn">
@@ -168,8 +182,14 @@
 
     <!-- Video/Prof Section -->
     <section class="video_section Prof section__padding" style="height: fit-content;">
-        <div style="width: 100%; display: flex; justify-content: center;">
-            <video src="{{ url_for('static', filename='videos/vid2.mp4') }}" controls loop autoplay muted></video>
+        <div style="width: 100%; max-width: 1000px; margin: 0 auto;">
+            <div style="padding:56.25% 0 0 0;position:relative;">
+                <iframe
+                    src="https://player.vimeo.com/video/1162126142?h=ec&autoplay=1&loop=1&muted=1&title=0&byline=0&portrait=0"
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0"
+                    allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <script src="https://player.vimeo.com/api/player.js"></script>
         </div>
     </section>
 
@@ -221,80 +241,97 @@
 </div>
 
 <style>
-@keyframes smoothCarouselScroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-}
-@keyframes smoothSponsorScroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-}
-#carousel-track {
-    animation: smoothCarouselScroll 25s linear infinite;
-    will-change: transform;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-}
-#carousel-track:hover,
-#carousel-track.paused {
-    animation-play-state: paused !important;
-}
-#sponsor-track {
-    animation: smoothSponsorScroll 15s linear infinite;
-    will-change: transform;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-}
-#sponsor-track:hover,
-#sponsor-track.paused {
-    animation-play-state: paused !important;
-}
-@media (max-width: 600px) {
+    @keyframes smoothCarouselScroll {
+        from {
+            transform: translateX(0);
+        }
+
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
+    @keyframes smoothSponsorScroll {
+        from {
+            transform: translateX(0);
+        }
+
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
     #carousel-track {
-        animation-duration: 12s !important;
+        animation: smoothCarouselScroll 25s linear infinite;
+        will-change: transform;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
     }
+
+    #carousel-track:hover,
+    #carousel-track.paused {
+        animation-play-state: paused !important;
+    }
+
     #sponsor-track {
-        animation-duration: 7s !important;
+        animation: smoothSponsorScroll 15s linear infinite;
+        will-change: transform;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
     }
-}
+
+    #sponsor-track:hover,
+    #sponsor-track.paused {
+        animation-play-state: paused !important;
+    }
+
+    @media (max-width: 600px) {
+        #carousel-track {
+            animation-duration: 12s !important;
+        }
+
+        #sponsor-track {
+            animation-duration: 7s !important;
+        }
+    }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Event Highlights Carousel
-    const track = document.getElementById('carousel-track');
-    if (track) {
-        // Clone content for seamless loop
-        const originalContent = track.innerHTML;
-        track.innerHTML = originalContent + originalContent;
-        
-        // Prevent image dragging
-        track.querySelectorAll('img').forEach(img => {
-            img.addEventListener('dragstart', e => e.preventDefault());
-        });
-    }
-    
-    // Sponsors Carousel
-    const sponsorTrack = document.getElementById('sponsor-track');
-    if (sponsorTrack) {
-        // Clone content for seamless loop
-        const originalContent = sponsorTrack.innerHTML;
-        sponsorTrack.innerHTML = originalContent + originalContent;
-        
-        // Prevent image dragging
-        sponsorTrack.querySelectorAll('img').forEach(img => {
-            img.addEventListener('dragstart', e => e.preventDefault());
-        });
-    }
-});
+    document.addEventListener('DOMContentLoaded', function () {
+        // Event Highlights Carousel
+        const track = document.getElementById('carousel-track');
+        if (track) {
+            // Clone content for seamless loop
+            const originalContent = track.innerHTML;
+            track.innerHTML = originalContent + originalContent;
+
+            // Prevent image dragging
+            track.querySelectorAll('img').forEach(img => {
+                img.addEventListener('dragstart', e => e.preventDefault());
+            });
+        }
+
+        // Sponsors Carousel
+        const sponsorTrack = document.getElementById('sponsor-track');
+        if (sponsorTrack) {
+            // Clone content for seamless loop
+            const originalContent = sponsorTrack.innerHTML;
+            sponsorTrack.innerHTML = originalContent + originalContent;
+
+            // Prevent image dragging
+            sponsorTrack.querySelectorAll('img').forEach(img => {
+                img.addEventListener('dragstart', e => e.preventDefault());
+            });
+        }
+    });
 </script>
 
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 <script>
-{% for category, message in messages %}
-showToast('{{ message }}', '{{ category }}');
-{% endfor %}
+    {% for category, message in messages %}
+    showToast('{{ message }}', '{{ category }}');
+    {% endfor %}
 </script>
 {% endif %}
 {% endwith %}
