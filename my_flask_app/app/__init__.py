@@ -33,9 +33,9 @@ def add_header(response):
     and also to cache the rendered page for 10 minutes.
     """
     if 'Cache-Control' not in response.headers:
-        # Cache static assets for 1 day, other content for 10 minutes
+        # Cache static assets for 1 year (immutable), other content for 10 minutes
         if request.path.startswith('/static'):
-            response.headers['Cache-Control'] = 'public, max-age=86400'
+            response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
         else:
             response.headers['Cache-Control'] = 'public, max-age=600'
     return response
