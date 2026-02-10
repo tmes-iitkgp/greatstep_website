@@ -1462,21 +1462,36 @@ def greatstep_payment_verify():
         flash('Registration session expired. Please register again.', 'error')
         return redirect(url_for('greatstep_register'))
     
-    # Create the registration record now that we have the transaction ID
-    registration = GreatStepRegistration(
-        email=reg_data['email'],
-        first_name=reg_data['first_name'],
-        last_name=reg_data['last_name'],
-        mobile=reg_data['mobile'],
-        college=reg_data['college'],
-        year=reg_data['year'],
-        amount_paid=reg_data['amount_paid'],
-        transaction_id=transaction_id,
-        payment_status='verification_pending',
-        payment_completed_at=datetime.utcnow()
-    )
+    # Check if registration already exists
+    existing_registration = GreatStepRegistration.query.filter_by(email=user.email).first()
     
-    db.session.add(registration)
+    if existing_registration:
+        # Update existing record
+        existing_registration.first_name = reg_data['first_name']
+        existing_registration.last_name = reg_data['last_name']
+        existing_registration.mobile = reg_data['mobile']
+        existing_registration.college = reg_data['college']
+        existing_registration.year = reg_data['year']
+        existing_registration.amount_paid = reg_data['amount_paid']
+        existing_registration.transaction_id = transaction_id
+        existing_registration.payment_status = 'verification_pending'
+        existing_registration.payment_completed_at = datetime.utcnow()
+    else:
+        # Create new record
+        registration = GreatStepRegistration(
+            email=reg_data['email'],
+            first_name=reg_data['first_name'],
+            last_name=reg_data['last_name'],
+            mobile=reg_data['mobile'],
+            college=reg_data['college'],
+            year=reg_data['year'],
+            amount_paid=reg_data['amount_paid'],
+            transaction_id=transaction_id,
+            payment_status='verification_pending',
+            payment_completed_at=datetime.utcnow()
+        )
+        db.session.add(registration)
+    
     db.session.commit()
     
     # specific cleanup
