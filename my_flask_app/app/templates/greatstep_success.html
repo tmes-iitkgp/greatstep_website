@@ -229,9 +229,6 @@
                 {% if registration.transaction_id %}
                 <span>Transaction ID</span>
                 <span class="payment-id">{{ registration.transaction_id }}</span>
-                {% else %}
-                <span>Payment ID</span>
-                <span class="payment-id">{{ registration.razorpay_payment_id }}</span>
                 {% endif %}
             </div>
             <div class="ticket-row">

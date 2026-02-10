@@ -172,9 +172,6 @@ class GreatStepRegistration(db.Model):
     
     # Payment details
     transaction_id = db.Column(db.String(100), nullable=True)  # Manual payment UTR/TxnID
-    razorpay_order_id = db.Column(db.String(100), nullable=True)
-    razorpay_payment_id = db.Column(db.String(100), nullable=True)
-    razorpay_signature = db.Column(db.String(256), nullable=True)
     amount_paid = db.Column(db.Integer, nullable=False)  # Amount in paise
     payment_status = db.Column(db.String(20), default='pending')  # pending, verification_pending, completed, failed
     

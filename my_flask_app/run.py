@@ -29,4 +29,7 @@ if __name__ == '__main__':
     has_key = 'Yes' if api_key and api_key != 'your-brevo-api-key-here' else 'No'
     print(f"[INFO] Brevo API Key configured: {has_key}")
     
-    app.run(debug=debug_mode)
+    # Use PORT environment variable if available (Koyeb/Render/etc)
+    port = int(os.environ.get('PORT', 10000))
+    # Host must be 0.0.0.0 to be accessible externally in container
+    app.run(host='0.0.0.0', port=port, debug=debug_mode)

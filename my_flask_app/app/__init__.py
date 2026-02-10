@@ -1,10 +1,11 @@
-﻿from flask import Flask, render_template, redirect, url_for, flash, request, session, jsonify
+﻿import os
+from flask import Flask, render_template, redirect, url_for, flash, request, session, jsonify
 from sqlalchemy import or_
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from datetime import datetime
-import razorpay
+
 import hmac
 import hashlib
 from .events_data import get_event_data, EVENTS_DATA
@@ -13,6 +14,38 @@ from .models import db, User, OTP, PendingRegistration, GreatStepRegistration
 from .email_service import send_verification_email, send_login_otp, send_reset_password_email, send_payment_confirmation_email
 
 app = Flask(__name__)
+
+@app.route('/healthcheck')
+def healthcheck():
+    return jsonify({"status": "ok"}), 200
+
+# Maintenance Mode Check
+@app.before_request
+def check_maintenance_mode():
+    if os.environ.get('MAINTENANCE_MODE') == 'true':
+        # Allow static files to be served so pages (if any) look okay
+        if request.path.startswith('/static'):
+            return
+            
+        # You can either return a 503 error string or render a maintenance template
+        # For simplicity, returning a clear HTML response
+        return """
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Maintenance In Progress</title>
+            <style>
+                body { font-family: sans-serif; text-align: center; padding: 50px; }
+                h1 { color: #e74c3c; }
+            </style>
+        </head>
+        <body>
+            <h1>System Maintenance</h1>
+            <p>We are currently establishing a secure connection to our new servers.</p>
+            <p>Please check back in a few minutes.</p>
+        </body>
+        </html>
+        """, 503
 
 # Load config based on FLASK_ENV
 import os
@@ -103,8 +136,6 @@ def admin_cleanup_db():
                 GreatStepRegistration.payment_status == 'pending',
                 (
                     (GreatStepRegistration.transaction_id == None) | (GreatStepRegistration.transaction_id == '')
-                ) & (
-                    (GreatStepRegistration.razorpay_payment_id == None) | (GreatStepRegistration.razorpay_payment_id == '')
                 )
             )
         )
@@ -154,10 +185,7 @@ def admin_dashboard():
     # AND excluding those with no transaction ID visible (e.g. empty manual trxn id AND empty razorpay id)
     registrations = GreatStepRegistration.query.filter(
         GreatStepRegistration.payment_status != 'pending',
-        or_(
-            (GreatStepRegistration.transaction_id != None) & (GreatStepRegistration.transaction_id != ''),
-            (GreatStepRegistration.razorpay_payment_id != None) & (GreatStepRegistration.razorpay_payment_id != '')
-        )
+        (GreatStepRegistration.transaction_id != None) & (GreatStepRegistration.transaction_id != '')
     ).order_by(GreatStepRegistration.created_at.desc()).all()
     
     # Calculate stats

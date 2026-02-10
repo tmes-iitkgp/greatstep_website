@@ -41,9 +41,7 @@ class Config:
     # OTP Configuration
     OTP_EXPIRY_MINUTES = 10
     
-    # Razorpay Configuration
-    RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID') or 'rzp_test_xxxxxxxxxxxx'
-    RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET') or 'your_razorpay_secret'
+
     
     # Great Step Registration Fee (in paise, 100 paise = 1 INR)
     GREATSTEP_REGISTRATION_FEE = int(os.environ.get('GREATSTEP_REGISTRATION_FEE', 80000))  # Default: ₹800

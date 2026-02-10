@@ -15,8 +15,6 @@ def cleanup_records(force=False):
                 GreatStepRegistration.payment_status == 'pending',
                 (
                     (GreatStepRegistration.transaction_id == None) | (GreatStepRegistration.transaction_id == '')
-                ) & (
-                    (GreatStepRegistration.razorpay_payment_id == None) | (GreatStepRegistration.razorpay_payment_id == '')
                 )
             )
         )

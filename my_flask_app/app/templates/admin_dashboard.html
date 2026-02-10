@@ -84,11 +84,7 @@
                             </div>
                             <div class="tw-text-xs tw-text-slate-500 tw-mt-1">Manual UPI</div>
                             {% else %}
-                            <div
-                                class="tw-font-mono tw-text-xs tw-bg-purple-900/30 tw-text-purple-400 tw-px-2 tw-py-1 tw-rounded tw-inline-block tw-break-all">
-                                {{ reg.razorpay_payment_id }}
-                            </div>
-                            <div class="tw-text-xs tw-text-slate-500 tw-mt-1">Razorpay</div>
+                            <div class="tw-text-xs tw-text-slate-500 tw-mt-1">-</div>
                             {% endif %}
                             <div class="tw-text-xs tw-text-slate-600 tw-mt-1">{{ reg.created_at.strftime('%b %d, %H:%M')
                                 }}
@@ -180,7 +176,7 @@
                     <div>
                         <div class="tw-text-xs tw-text-slate-500">Transaction ID</div>
                         <div class="tw-font-mono tw-text-xs tw-text-blue-400 tw-break-all">
-                            {{ reg.transaction_id or reg.razorpay_payment_id or '-' }}
+                            {{ reg.transaction_id or '-' }}
                         </div>
                     </div>
                 </div>
